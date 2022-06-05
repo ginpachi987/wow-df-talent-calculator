@@ -37,6 +37,8 @@ Object.keys(classes).forEach(key => {
         classSelector.style.display = 'none'
         trees.style.display = 'block'
 
+        document.querySelector('#class').innerHTML = `${key} Tree`
+
         setSpecs(key)
       })
   })
@@ -64,6 +66,8 @@ function setSpecs(cls) {
 
           specSelector.style.display = 'none'
           specTree.setFromFile(data)
+
+          document.querySelector('#spec').innerHTML = `${spec} Tree`
 
           document.querySelector('#spec-tree').style.display = 'inline-block'
         })

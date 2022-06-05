@@ -178,4 +178,5 @@ body {
   position: absolute;
   top: 0;
   left: calc(50% - 50px);
+  text-transform: capitalize;
 }

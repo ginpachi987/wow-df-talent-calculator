@@ -1,9 +1,9 @@
 const config = {
   root: 'src',
-  base: './',
+  base: '/df-talents/',
   build: {
     outDir: '../dist',
-    emptyOutDir: true,
+    emptyOutDir: true
   },
   server: {
     host: true

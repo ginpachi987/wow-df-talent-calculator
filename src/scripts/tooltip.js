@@ -9,7 +9,6 @@ class Tooltip {
   }
 
   show(title, descr, rank, pos) {
-    console.log(pos)
     this.el.style.display = 'block'
     this.title.innerHTML = title
     this.descr.innerHTML = descr
@@ -28,7 +27,7 @@ class Tooltip {
     else this.el.style.left = `${pos.x + cellSize + 16}px`
 
     if (pos.y + this.el.clientHeight > window.innerHeight) {
-      this.el.style.top = `${pos.y + pox.height - this.el.clientHeight}px`
+      this.el.style.top = `${pos.y + pos.height - this.el.clientHeight}px`
     }
     else this.el.style.top = `${pos.y}px`
   }
