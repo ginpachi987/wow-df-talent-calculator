@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #212121;
+  color: white;
+
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Montserrat', sans-serif;
+}
+
+.wrapper {
+  width: 620px;
+  height: 620px;
+  border: 1px solid white;
+  position: relative;
+}
+
+.talent {
+  width: 42px;
+  height: 42px;
+  border: 2px solid goldenrod;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: black;
+  background-size: cover;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.talent:hover {
+  filter: brightness(1.2);
+}
+
+.round {
+  border-radius: 50%;
+}
+
+.hexagon {
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+}
+
+#links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.class-selector {
+  flex: 1;
+  text-align: center;
+}
+
+.class {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  background-size: cover;
+  border: 2px solid goldenrod;
+  border-radius: 8px;
+  margin: 0 4px;
+
+  cursor: pointer;
+}
+
+.inactive {
+  filter: grayscale(100%);
+  cursor: default;
+}
+
+.links {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
+}
+
+.links a {
+  text-decoration: none;
+  color: white;
+  margin: 0 4px;
+}
+
+.version {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.trees {
+  flex: 1;
+  overflow: auto;
+  height: 717px;
+  display: none;
+  width: 100%;
+  text-align: center;
+}
+
+.tree {
+  position: relative;
+  display: inline-block;
+}
+
+.level {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: #212121;
+}
+
+.tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+
+  pointer-events: none;
+  padding: 8px;
+  /* background-color: #727272; */
+  border-radius: 8px;
+
+  border-style: solid;
+  border-width: 6px;
+  border-image: url('img/tooltip.png') 6 round round;
+  background-color: #010721CC;
+
+  width: 300px;
+  min-height: 40px;
+
+  font-family: sans-serif;
+}
+
+.tooltip-title {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  width: calc(300px - 55px);
+  margin-bottom: 4px;
+}
+
+.tooltip-descr {
+  color: #ffd100;
+  font-size: 14px;
+}
+
+.tooltip-rank {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.spec-selector {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 650px;
+  height: 717px;
+}
+
+#spec-tree {
+  display: none;
+}
+
+.spec-name {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 50px);
+}

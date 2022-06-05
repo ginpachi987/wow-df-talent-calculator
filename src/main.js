@@ -1,0 +1,141 @@
+import './style.css'
+import { classes } from './scripts/classes'
+import { Tree } from './scripts/tree'
+import { images } from './scripts/images'
+
+let classesEnabled
+let specsEnabled
+const classSelector = document.querySelector('.class-selector')
+const trees = document.querySelector('.trees')
+
+const specSelector = document.querySelector('.spec-selector')
+const specsElement = document.querySelector('.specs')
+
+let i = 0
+
+const classButtons = {}
+Object.keys(classes).forEach(key => {
+  classButtons[key] = document.createElement('div')
+  classButtons[key].classList.add('class')
+  classButtons[key].classList.add('inactive')
+  classButtons[key].title = key
+  if (key == 'evoker')
+    classButtons[key].style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/inv_misc_head_dragon_01.jpg)`
+  else
+    classButtons[key].style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/class_${key}.jpg)`
+
+  classButtons[key].addEventListener('click', () => {
+    if (!classesEnabled.includes(key)) return
+    // console.log(key)
+
+    fetch(`/json/trees/${key}_class.json`)
+      .then(res => res.json())
+      .then(data => {
+        // console.log(data)
+        classTree.setFromFile(data)
+
+        classSelector.style.display = 'none'
+        trees.style.display = 'block'
+
+        setSpecs(key)
+      })
+  })
+
+  classSelector.appendChild(classButtons[key])
+  i++
+  if (i % 5 == 0) classSelector.appendChild(document.createElement('br'))
+})
+
+function setSpecs(cls) {
+  specsElement.innerHTML = ''
+  classes[cls].forEach(spec => {
+    const specFull = `${cls}_${spec}`
+    const el = document.createElement('div')
+    el.classList.add('class')
+    if (!specsEnabled.includes(specFull)) el.classList.add('inactive')
+
+    el.title = spec
+    el.style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/${images[specFull]}.jpg)`
+
+    el.addEventListener('click', () => {
+      fetch(`/json/trees/${specFull}.json`)
+        .then(res => res.json())
+        .then(data => {
+
+          specSelector.style.display = 'none'
+          specTree.setFromFile(data)
+
+          document.querySelector('#spec-tree').style.display = 'inline-block'
+        })
+    })
+
+    specsElement.appendChild(el)
+  })
+}
+
+fetch('/json/classes.json')
+  .then(res => res.json())
+  .then(data => {
+    classesEnabled = data
+    classesEnabled.forEach(cls => {
+      classButtons[cls].classList.remove('inactive')
+    })
+  })
+
+fetch('/json/specs.json')
+  .then(res => res.json())
+  .then(data => {
+    specsEnabled = data
+  })
+
+const classTree = new Tree('#class-tree')
+const specTree = new Tree('#spec-tree')
+
+// const cellSize = 42
+// const cellSpace = 27
+
+// const wrapper = document.querySelector('.wrapper')
+// wrapper.style.width = cellSize * 10 + cellSpace * 9 + 'px'
+// wrapper.style.height = cellSize * 10 + cellSpace * 9 + 'px'
+
+// const canvas = document.querySelector('#links')
+// const ctx = canvas.getContext('2d')
+// canvas.width = cellSize * 10 + cellSpace * 9
+// canvas.height = cellSize * 10 + cellSpace * 9
+
+
+// const talents = document.querySelector('.talents')
+
+// cls.forEach(tal => {
+//   const el = document.createElement('div')
+//   el.classList.add('talent')
+//   if (tal.type) el.classList.add(tal.type)
+//   el.style.left = `${tal.x * (cellSize + cellSpace) + cellSpace}px`
+//   el.style.top = `${tal.y * (cellSize + cellSpace) + cellSpace}px`
+
+//   talents.appendChild(el)
+
+//   if (tal.img) {
+//     el.style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/large/${tal.img}.jpg)`
+//   }
+
+//   if (!tal.connections) return
+//   tal.connections.forEach(con => {
+//     ctx.strokeStyle = '#fff'
+//     ctx.lineWidth = 2
+//     ctx.moveTo(tal.x * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1, tal.y * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1)
+//     ctx.lineTo(con.x * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1, con.y * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1)
+//   })
+// })
+
+// ctx.stroke()
+
+// // for (let i = 0; i < 10; i++) {
+// //   for (let j = 0; j < 10; j++) {
+// //     const talent = document.createElement('div')
+// //     talent.classList.add('talent')
+// //     talent.style.left = `${j * 60 + 20}px`
+// //     talent.style.top = `${i * 60 + 20}px`
+// //     talents.appendChild(talent)
+// //   }
+// // }
