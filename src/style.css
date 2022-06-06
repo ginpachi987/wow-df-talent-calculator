@@ -36,7 +36,7 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
-.talent:hover {
+.talent:hover, .class:hover {
   filter: brightness(1.2);
 }
 
@@ -158,7 +158,7 @@ body {
   padding-bottom: 100px;
 }
 
-.disabled, .disabled:hover {
+.disabled, .disabled:hover, .inactive:hover {
   filter: grayscale(100%);
 }
 

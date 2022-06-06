@@ -29,19 +29,7 @@ Object.keys(classes).forEach(key => {
     if (!classesEnabled.includes(key)) return
     // console.log(key)
 
-    fetch(`/json/trees/${key}_class.json`)
-      .then(res => res.json())
-      .then(data => {
-        // console.log(data)
-        classTree.setFromFile(data)
-
-        classWrapper.style.display = 'none'
-        trees.style.display = 'block'
-
-        document.querySelector('#class').innerHTML = `${key} Tree`
-
-        setSpecs(key)
-      })
+    fetchTree(classTree, key)
   })
 
   classSelector.appendChild(classButtons[key])
@@ -61,17 +49,7 @@ function setSpecs(cls) {
     el.style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/${images[specFull]}.jpg)`
 
     el.addEventListener('click', () => {
-      fetch(`/json/trees/${specFull}.json`)
-        .then(res => res.json())
-        .then(data => {
-
-          specSelector.style.display = 'none'
-          specTree.setFromFile(data)
-
-          document.querySelector('#spec').innerHTML = `${spec} Tree`
-
-          document.querySelector('#spec-tree').style.display = 'inline-block'
-        })
+      fetchTree(specTree, cls, spec)
     })
 
     specsElement.appendChild(el)
@@ -93,8 +71,8 @@ fetch('/json/specs.json')
     specsEnabled = data
   })
 
-const classTree = new Tree('#class-tree')
-const specTree = new Tree('#spec-tree')
+const classTree = new Tree('#class-tree', 31)
+const specTree = new Tree('#spec-tree', 30)
 
 checkPath()
 

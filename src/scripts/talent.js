@@ -13,8 +13,8 @@ export class Talent {
     this.type = ''
     this.connections = []
     this.available = false
-    this.tree = tree
     this.countable = true
+    this.tree = tree
 
     this.el = document.createElement('div')
     this.el.classList.add('talent')
@@ -34,11 +34,15 @@ export class Talent {
         tooltip.hide()
     })
 
+    this.el.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+    })
+
     this.el.addEventListener('pointerup', (e) => {
       if (e.pointerType == 'touch')
         tooltip.show(this.title, this.descr, this.levels, this.el.getBoundingClientRect(), e.pointerType)
-      if (!this.available) return
-      this.setPoints(this.learned + 1)
+      if (!this.available || (e.button ==0 && this.tree.maxPoints == this.tree.points)) return
+      this.setPoints(this.learned + (e.button == 0 ? 1 : -1))
     })
 
     this.levelEl = document.createElement('div')
@@ -139,25 +143,26 @@ export class Talent {
     this.learned = points
     this.levelEl.innerHTML = `${points}/${this.levels}`
 
-    if (points == 0) this.el.classList.remove('learned', 'max')
-
-    if (points > 0) this.el.classList.add('learned')
+    this.el.classList.remove('max')
 
     if (points == this.levels) {
       this.el.classList.add('max')
       this.tree.setAvailable(this.connections, true)
     }
+    else this.tree.setAvailable(this.connections, false)
 
     if (recalc)
-    this.tree.recalcPoints()
+      this.tree.recalcPoints()
   }
 
   setAvailable(available) {
     // console.log(available)
     this.available = available
-    if (available)
+    if (available) {
       this.el.classList.remove('disabled')
-    else
-      this.el.classList.add('disabled')
+      return
+    }
+    this.el.classList.add('disabled')
+    this.setPoints(0)
   }
 }

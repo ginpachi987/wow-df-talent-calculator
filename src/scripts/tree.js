@@ -2,7 +2,7 @@ import { Talent } from "./talent";
 import { cellSize, cellSpace } from "./const"
 
 export class Tree {
-  constructor(selector) {
+  constructor(selector, points) {
     this.class = ''
     this.spec = ''
     this.rows = 10
@@ -16,6 +16,7 @@ export class Tree {
     this.talents
     this.transposedTalents
     this.points = 0
+    this.maxPoints = points
 
     this.resize()
   }
@@ -73,15 +74,36 @@ export class Tree {
   }
 
   setTalents(list) {
-    // const points = parseInt(list, 36).toString(4).split('').map(el => parseInt(el))
+    const p = list.split('-')
+    let res = ''
 
-    // const talents = this.transposedTalents.flat().filter(tal => tal.title)
+    p.forEach((el, i) => {
+      let t = parseInt(el, 36).toString(4)
+      if (i !== p.length - 1) t = '0'.repeat(10 - t.length) + t
+      console.log(el, t)
+      res += t
+    })
 
-    // for (let i = 0; i < points.length; i++) {
-    //   talents[i].setPoints(points[i], false)
-    // }
+    console.log(p)
+    console.log(res.split(''))
 
-    // this.recalcPoints()
+    const points = res.split('').map(el => parseInt(el))
+
+    // const points = BigInt(parseInt(list, 36)).toString(4).split('').map(el => parseInt(el))
+
+    // console.log(BigInt(parseInt(list, 36)).toString())
+    // console.log(BigInt(parseInt(list, 36)).toString(4))
+    // console.log(points)
+    // console.log(BigInt(parseInt(points.join(''), 4)).toString(36))
+
+    const talents = this.transposedTalents.flat().filter(tal => tal.title)
+
+    for (let i = 0; i < points.length; i++) {
+      if (talents[i])
+      talents[i].setPoints(points[i], false)
+    }
+
+    this.recalcPoints()
   }
 
   setAvailable(talents, state) {
@@ -89,15 +111,29 @@ export class Tree {
   }
 
   recalcPoints() {
-    // this.points = 0
-    // let line = ''
-    // this.transposedTalents.flat().filter(tal => tal.title).forEach(tal => {
-    //   this.points += parseInt(tal.learned)
-    //   line += tal.learned
-    // })
+    this.points = 0
+    let line = ''
+    this.transposedTalents.flat().filter(tal => tal.title).forEach(tal => {
+      this.points += parseInt(tal.learned)
+      line += tal.learned
+    })
     // line = line.split('').reverse().join('')
-    // // console.log(this.points)
-    // // console.log(line)
+    // console.log(this.points)
+    // console.log(line)
+    // console.log(BigInt(parseInt(line, 4)))
+    // console.clear()
+    // console.log(line)
+    // const big = BigInt(parseInt(line, 4)).toString(36)
+    // console.log(big)
+    // console.log(BigInt(parseInt(big, 36)).toString(4))
+
+    // console.log(line.match(/.{1,10}/g).map(el => el + '0'.repeat(10-el.length)))
+    // console.log(line.match(/.{1,10}/g).map(el => parseInt(el + '0'.repeat(10-el.length), 4).toString(36)).join('-'))
+
+    // console.log(line)
+    // console.log(cond)
+    // console.log(BigInt(parseInt(cond, 16)).toString(36))
+
     // console.log(parseInt(line, 4).toString(36))
   }
 }
@@ -111,3 +147,13 @@ export class TreeEditor extends Tree {
 
   }
 }
+
+// 1111121011110001002020000010011100113000110010
+// // psgf4uavnx3sqzxtilxf661og
+
+// 1001100110001000002000002001010000100011001101
+// 10011001101000002020000000
+// 1262213076830344139247714304
+// 1262213076830344139247714304
+// 4elgmcxid0x3b2mu4g
+// 4nqulay3edgx196igw
