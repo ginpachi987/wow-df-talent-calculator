@@ -131,7 +131,7 @@ body {
   transition: opacity 0.2s ease-in-out;
 }
 
-.left, .right, .up, .doubleup {
+.left, .right, .up, .doubleleft, .doubleright, .doubleup {
   position: absolute;
   cursor: pointer;
 }
@@ -149,6 +149,16 @@ body {
 .up {
   left: 12px;
   top: -16px;
+}
+
+.doubleleft {
+  left: -16px;
+  top: -32px;
+}
+
+.doubleright {
+  right: -16px;
+  top: -32px;
 }
 
 .doubleup {
@@ -171,4 +181,20 @@ textarea {
 
 .talent-info option {
   color: black;
+}
+
+.types {
+  position: absolute;
+  top: -24px;
+  left: 0x;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #010721CC;
+  padding: 4px;
+}
+
+.type {
+  display: inline-block;
 }

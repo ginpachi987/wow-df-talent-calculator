@@ -5,6 +5,7 @@ import { images } from './scripts/images'
 
 let classesEnabled
 let specsEnabled
+const classWrapper = document.querySelector('.class-selector-wrapper')
 const classSelector = document.querySelector('.class-selector')
 const trees = document.querySelector('.trees')
 
@@ -34,7 +35,7 @@ Object.keys(classes).forEach(key => {
         // console.log(data)
         classTree.setFromFile(data)
 
-        classSelector.style.display = 'none'
+        classWrapper.style.display = 'none'
         trees.style.display = 'block'
 
         document.querySelector('#class').innerHTML = `${key} Tree`
@@ -94,6 +95,47 @@ fetch('/json/specs.json')
 
 const classTree = new Tree('#class-tree')
 const specTree = new Tree('#spec-tree')
+
+checkPath()
+
+async function checkPath() {
+  const path = window.location.pathname.split('/')
+
+  if (!path[1] || !Object.keys(classes).includes(path[1])) return
+
+  await fetchTree(classTree, path[1])
+
+  if (path[2]) {
+    classTree.setTalents(path[2])
+  }
+
+  if (!path[3] || !classes[path[1]].includes(path[3])) return
+
+  await fetchTree(specTree, path[1], path[3])
+
+  if (path[4]) {
+    specTree.setTalents(path[4])
+  }
+}
+
+async function fetchTree(tree, className, specName = 'class') {
+  const data = await (await fetch(`/json/trees/${className}_${specName}.json`)).json()
+
+  tree.setFromFile(data)
+
+  if (specName == 'class') {
+    classWrapper.style.display = 'none'
+    trees.style.display = 'block'
+    document.querySelector('#class').innerHTML = `${className} Tree`
+    setSpecs(className)
+    return
+  }
+
+  specSelector.style.display = 'none'
+  document.querySelector('#spec').innerHTML = `${specName} Tree`
+  document.querySelector('#spec-tree').style.display = 'inline-block'
+
+}
 
 // const cellSize = 42
 // const cellSpace = 27

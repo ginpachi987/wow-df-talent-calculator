@@ -1,5 +1,5 @@
 import './editor-style.css'
-import {classes} from './scripts/classes'
+import { classes } from './scripts/classes'
 
 
 class Talent {
@@ -246,6 +246,8 @@ class Tree {
   redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.beginPath()
+    ctx.strokeStyle = '#a3a2a3'
+    ctx.lineWidth = 2
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         if (!this.talents[i][j].connections.length) continue
@@ -328,11 +330,11 @@ tree.resize()
 //   selected.update()
 // })
 
-const typeSelector = document.querySelector('#type')
-typeSelector.addEventListener('change', () => {
-  if (!selected) return
-  selected.setType(typeSelector.value)
-})
+// const typeSelector = document.querySelector('#type')
+// typeSelector.addEventListener('change', () => {
+//   if (!selected) return
+//   selected.setType(typeSelector.value)
+// })
 
 // const addConnetcionButton = document.querySelector('#add-connection')
 // addConnetcionButton.addEventListener('click', (e) => {
@@ -416,7 +418,7 @@ getJson.addEventListener('click', () => {
     el.el = undefined
     el.levelEl = undefined
   })
-  console.log(treeToSave)
+  // console.log(treeToSave)
   const a = document.createElement('a')
   a.href = window.URL.createObjectURL(new Blob([JSON.stringify(treeToSave)], { type: 'text/plain' }))
   a.download = `${tree.class}_${tree.spec}.json`
@@ -448,6 +450,8 @@ const arrows = {
   left: document.querySelector('.left'),
   right: document.querySelector('.right'),
   up: document.querySelector('.up'),
+  doubleleft: document.querySelector('.doubleleft'),
+  doubleright: document.querySelector('.doubleright'),
   doubleup: document.querySelector('.doubleup')
 }
 
@@ -463,9 +467,31 @@ arrows.up.addEventListener('click', () => {
   if (!selected) return
   selected.toggleConnection(0, -1)
 })
+arrows.doubleleft.addEventListener('click', () => {
+  if (!selected) return
+  selected.toggleConnection(-2, -1)
+})
+arrows.doubleright.addEventListener('click', () => {
+  if (!selected) return
+  selected.toggleConnection(2, -1)
+})
 arrows.doubleup.addEventListener('click', () => {
   if (!selected) return
   selected.toggleConnection(0, -2)
 })
 
 const talentInfo = document.querySelector('.talent-info')
+
+const types = ['', 'round', 'hexagon']
+const typesIcon = ['🟩', '🔵', '🔶']
+const typesElement = document.querySelector('.types')
+
+types.forEach((type, i) => {
+  const el = document.createElement('div')
+  el.classList.add('type')
+  el.innerHTML = typesIcon[i]
+  el.addEventListener('click', () => {
+    selected.setType(type)
+  })
+  typesElement.appendChild(el)
+})

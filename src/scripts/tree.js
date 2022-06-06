@@ -14,7 +14,9 @@ export class Tree {
     this.talentsContainer = document.createElement('div')
     this.container.appendChild(this.talentsContainer)
     this.talents
-    
+    this.transposedTalents
+    this.points = 0
+
     this.resize()
   }
 
@@ -36,6 +38,10 @@ export class Tree {
       this.talents[talent.x][talent.y].setFromFile(talent)
     })
 
+    this.talents.flat().filter(tal => tal.title && tal.y == 0).forEach(tal => {
+      tal.setAvailable(true)
+    })
+
     this.redrawCanvas()
   }
 
@@ -48,20 +54,51 @@ export class Tree {
     this.canvas.height = cellSize * this.rows + cellSpace * (this.rows + 1)
 
     this.talentsContainer.innerHTML = ''
-    this.talents = [...Array(this.cols)].map((_, i) => [...Array(this.rows)].map((_, j) => new Talent(i, j, this.talentsContainer)))
+    this.talents = [...Array(this.cols)].map((_, i) => [...Array(this.rows)].map((_, j) => new Talent(i, j, this)))
+
+    this.transposedTalents = this.talents[0].map((_, i) => this.talents.map(row => row[i]))
   }
 
   redrawCanvas() {
     this.ctx.strokeStyle = '#a3a2a3'
     this.ctx.lineWidth = 2
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    this.ctx.beginPath()
+    // this.ctx.beginPath()
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         this.talents[i][j].draw(this.ctx)
       }
     }
     this.ctx.stroke()
+  }
+
+  setTalents(list) {
+    // const points = parseInt(list, 36).toString(4).split('').map(el => parseInt(el))
+
+    // const talents = this.transposedTalents.flat().filter(tal => tal.title)
+
+    // for (let i = 0; i < points.length; i++) {
+    //   talents[i].setPoints(points[i], false)
+    // }
+
+    // this.recalcPoints()
+  }
+
+  setAvailable(talents, state) {
+    talents.forEach(tal => this.talents[tal.x][tal.y].setAvailable(state))
+  }
+
+  recalcPoints() {
+    // this.points = 0
+    // let line = ''
+    // this.transposedTalents.flat().filter(tal => tal.title).forEach(tal => {
+    //   this.points += parseInt(tal.learned)
+    //   line += tal.learned
+    // })
+    // line = line.split('').reverse().join('')
+    // // console.log(this.points)
+    // // console.log(line)
+    // console.log(parseInt(line, 4).toString(36))
   }
 }
 

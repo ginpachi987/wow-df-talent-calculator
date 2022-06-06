@@ -1,6 +1,6 @@
 const config = {
   root: 'src',
-  base: '/df-talents/',
+  base: './',
   build: {
     outDir: '../dist',
     emptyOutDir: true
