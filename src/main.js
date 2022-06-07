@@ -2,17 +2,16 @@ import './style.css'
 import { classes } from './scripts/classes'
 import { Tree } from './scripts/tree'
 import { images } from './scripts/images'
+import { build } from './scripts/build'
 
 let classesEnabled
 let specsEnabled
-const classWrapper = document.querySelector('.class-selector-wrapper')
+
 const classSelector = document.querySelector('.class-selector')
 const trees = document.querySelector('.trees')
 
 const specSelector = document.querySelector('.spec-selector')
 const specsElement = document.querySelector('.specs')
-
-let i = 0
 
 const classButtons = {}
 Object.keys(classes).forEach(key => {
@@ -27,14 +26,20 @@ Object.keys(classes).forEach(key => {
 
   classButtons[key].addEventListener('click', () => {
     if (!classesEnabled.includes(key)) return
-    // console.log(key)
-
+    getMenuUp()
+    build.reset()
+    specSelector.style.display = 'inline-flex'
+    specTree.container.style.display = 'none'
     fetchTree(classTree, key)
+
+    Object.keys(classes).forEach(key => {
+      classButtons[key].classList.remove('max')
+    })
+
+    classButtons[key].classList.add('max')
   })
 
   classSelector.appendChild(classButtons[key])
-  i++
-  if (i % 5 == 0) classSelector.appendChild(document.createElement('br'))
 })
 
 function setSpecs(cls) {
@@ -42,7 +47,7 @@ function setSpecs(cls) {
   classes[cls].forEach(spec => {
     const specFull = `${cls}_${spec}`
     const el = document.createElement('div')
-    el.classList.add('class')
+    el.classList.add('spec')
     if (!specsEnabled.includes(specFull)) el.classList.add('inactive')
 
     el.title = spec
@@ -79,20 +84,23 @@ checkPath()
 async function checkPath() {
   const path = window.location.pathname.split('/')
 
-  if (!path[1] || !Object.keys(classes).includes(path[1])) return
+  if (!path[2] || !Object.keys(classes).includes(path[2])) return
 
-  await fetchTree(classTree, path[1])
+  getMenuUp()
+  classButtons[path[2]].classList.add('max')
 
-  if (path[2]) {
-    classTree.setTalents(path[2])
+  await fetchTree(classTree, path[2])
+
+  if (path[3]) {
+    classTree.setTalents(path[3])
   }
 
-  if (!path[3] || !classes[path[1]].includes(path[3])) return
+  if (!path[4] || !classes[path[2]].includes(path[4])) return
 
-  await fetchTree(specTree, path[1], path[3])
+  await fetchTree(specTree, path[2], path[4])
 
-  if (path[4]) {
-    specTree.setTalents(path[4])
+  if (path[5]) {
+    specTree.setTalents(path[5])
   }
 }
 
@@ -102,64 +110,45 @@ async function fetchTree(tree, className, specName = 'class') {
   tree.setFromFile(data)
 
   if (specName == 'class') {
-    classWrapper.style.display = 'none'
     trees.style.display = 'block'
-    document.querySelector('#class').innerHTML = `${className} Tree`
+    tree.titleUpdate()
     setSpecs(className)
+
+    build.setClass(className)
     return
   }
 
   specSelector.style.display = 'none'
-  document.querySelector('#spec').innerHTML = `${specName} Tree`
+  tree.titleUpdate()
   document.querySelector('#spec-tree').style.display = 'inline-block'
 
+  build.setSpec(specName)
+
+  if (!data.defaultTalents.length) return
+
+  for (let tal of data.defaultTalents) {
+    const talent = classTree.talents.find(el => el.x == tal.x && el.y == tal.y)
+    talent.learned = talent.levels
+    talent.uncount()
+    talent.activate()
+    talent.childAvailable()
+  }
+
+  classTree.recalcPoints()
 }
 
-// const cellSize = 42
-// const cellSpace = 27
+function getMenuUp() {
+  document.querySelector('#logo').style.width = '150px'
+  
+  document.querySelector('.header-title').style.display = 'none'
+  document.querySelector('#choose-text').style.display = 'none'
 
-// const wrapper = document.querySelector('.wrapper')
-// wrapper.style.width = cellSize * 10 + cellSpace * 9 + 'px'
-// wrapper.style.height = cellSize * 10 + cellSpace * 9 + 'px'
+  const selector = document.querySelector('.class-selector')
+  selector.style.width = 'unset'
+  selector.style.height = '60px'
 
-// const canvas = document.querySelector('#links')
-// const ctx = canvas.getContext('2d')
-// canvas.width = cellSize * 10 + cellSpace * 9
-// canvas.height = cellSize * 10 + cellSpace * 9
-
-
-// const talents = document.querySelector('.talents')
-
-// cls.forEach(tal => {
-//   const el = document.createElement('div')
-//   el.classList.add('talent')
-//   if (tal.type) el.classList.add(tal.type)
-//   el.style.left = `${tal.x * (cellSize + cellSpace) + cellSpace}px`
-//   el.style.top = `${tal.y * (cellSize + cellSpace) + cellSpace}px`
-
-//   talents.appendChild(el)
-
-//   if (tal.img) {
-//     el.style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/large/${tal.img}.jpg)`
-//   }
-
-//   if (!tal.connections) return
-//   tal.connections.forEach(con => {
-//     ctx.strokeStyle = '#fff'
-//     ctx.lineWidth = 2
-//     ctx.moveTo(tal.x * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1, tal.y * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1)
-//     ctx.lineTo(con.x * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1, con.y * (cellSize + cellSpace) + cellSize/2 + cellSpace + 1)
-//   })
-// })
-
-// ctx.stroke()
-
-// // for (let i = 0; i < 10; i++) {
-// //   for (let j = 0; j < 10; j++) {
-// //     const talent = document.createElement('div')
-// //     talent.classList.add('talent')
-// //     talent.style.left = `${j * 60 + 20}px`
-// //     talent.style.top = `${i * 60 + 20}px`
-// //     talents.appendChild(talent)
-// //   }
-// // }
+  document.querySelectorAll('.class').forEach(el => {
+    el.style.width = '34px'
+    el.style.height = '34px'
+  })
+}

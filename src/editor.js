@@ -148,6 +148,7 @@ class Tree {
     this.rows = rows
     this.cols = cols
     this.talents = [...Array(this.cols)].map((_, i) => [...Array(this.rows)].map((_, j) => new Talent(i, j)))
+    this.defaultTalents
 
     this.rowsEl = document.querySelector('#rows')
     this.rowsEl.value = rows
@@ -259,6 +260,10 @@ class Tree {
       }
     }
     ctx.stroke()
+  }
+
+  setDefault(tals) {
+    this.defaultTalents = tals
   }
 }
 
@@ -412,7 +417,8 @@ getJson.addEventListener('click', () => {
     spec: tree.spec,
     cols: tree.cols,
     rows: tree.rows,
-    talents: JSON.parse(JSON.stringify(tree.talents.flat())).filter(el => el.title)
+    talents: JSON.parse(JSON.stringify(tree.talents.flat())).filter(el => el.title),
+    defaultTalents: tree.defaultTalents
   }
   treeToSave.talents.forEach(el => {
     el.el = undefined
@@ -494,4 +500,36 @@ types.forEach((type, i) => {
     selected.setType(type)
   })
   typesElement.appendChild(el)
+})
+
+const defaultTalentsEl = document.querySelector('.default-talents')
+const defaultTalents = []
+
+const defaultAdd = document.querySelector('.default-add')
+defaultAdd.addEventListener('click', () => {
+  const talX = document.createElement('input')
+  talX.placeholder = 'X'
+  talX.value = 0
+  const talY = document.createElement('input')
+  talY.placeholder = 'Y'
+  talY.value = 0
+
+  const i = defaultTalents.length
+  defaultTalents.push({ x: 0, y: 0 })
+
+  talX.addEventListener('change', () => {
+    if (!talX.value.match(/^\d+$/)) return
+    defaultTalents[i].x = parseInt(talX.value)
+    tree.setDefault(defaultTalents)
+  })
+
+  talY.addEventListener('change', () => {
+    if (!talY.value.match(/^\d+$/)) return
+    defaultTalents[i].y = parseInt(talY.value)
+    tree.setDefault(defaultTalents)
+  })
+
+  defaultTalentsEl.appendChild(talX)
+  defaultTalentsEl.appendChild(talY)
+  defaultTalentsEl.appendChild(document.createElement('br'))
 })

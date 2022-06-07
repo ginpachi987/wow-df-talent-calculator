@@ -11,10 +11,12 @@ export class Talent {
     this.learned = 0
     this.image = ''
     this.type = ''
-    this.connections = []
     this.available = false
     this.countable = true
     this.tree = tree
+
+    this.parents = []
+    this.children = []
 
     this.el = document.createElement('div')
     this.el.classList.add('talent')
@@ -41,7 +43,7 @@ export class Talent {
     this.el.addEventListener('pointerup', (e) => {
       if (e.pointerType == 'touch')
         tooltip.show(this.title, this.descr, this.levels, this.el.getBoundingClientRect(), e.pointerType)
-      if (!this.available || (e.button ==0 && this.tree.maxPoints == this.tree.points)) return
+      if (!this.available || (e.button == 0 && this.tree.maxPoints == this.tree.points) || !this.countable) return
       this.setPoints(this.learned + (e.button == 0 ? 1 : -1))
     })
 
@@ -57,42 +59,46 @@ export class Talent {
     this.title = ''
     this.descr = ''
     this.levels = 1
+    this.learned = 0
     this.image = ''
-    this.connections = []
+    this.available = false
+    this.countable = true
+
+    this.parents = []
+    this.children = []
 
     this.setType('')
     this.update()
+
+    this.tree.talentsContainer.removeChild(this.el)
   }
 
   draw(ctx) {
-    if (!this.connections.length) return
-    this.connections.forEach(conn => {
+    if (!this.children.length) return
+    this.children.forEach(child => {
       ctx.beginPath()
       ctx.moveTo(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace)
-      ctx.lineTo(conn.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace, conn.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace)
+      ctx.lineTo(child.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace, child.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace)
       ctx.stroke()
     })
 
     if (this.type != 'hexagon') return
     ctx.save()
 
-    if (!this.available) ctx.strokeStyle = '#a3a2a3'
-    else if (this.learned == this.levels) ctx.strokeStyle = '#daa520'
-    else ctx.strokeStyle = '#daa520'
+    if (!this.available) ctx.fillStyle = '#a3a2a3'
+    else if (this.learned == this.levels) ctx.fillStyle = '#42a841'
+    else ctx.fillStyle = '#daa520'
 
     ctx.lineWidth = 2
-    ctx.translate(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 2, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 2)
+    ctx.translate(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1)
     ctx.beginPath()
-    ctx.moveTo(cellSize / 2 + 4, 0)
-    // ctx.rotate(Math.PI / 6)
+    ctx.moveTo(cellSize / 2 + 6, 0)
     for (let i = 0; i < 6; i++) {
       ctx.rotate(Math.PI / 3)
-      ctx.lineTo(cellSize / 2 + 4, 0)
+      ctx.lineTo(cellSize / 2 + 6, 0)
     }
-    // ctx.moveTo(this.x * (cellSize + cellSpace)+ cellSpace-2, this.y * (cellSize + cellSpace) + cellSize / 2+ cellSpace)
-    // ctx.lineTo(0,0)
     ctx.closePath()
-    ctx.stroke()
+    ctx.fill()
     ctx.restore()
   }
 
@@ -107,7 +113,7 @@ export class Talent {
   update() {
     if (!this.image) {
       this.el.style.backgroundImage = 'none'
-      // return
+      return
     }
     let image = this.image
     let link = "https://wow.zamimg.com/images/wow/icons/large/"
@@ -125,20 +131,26 @@ export class Talent {
     }
   }
 
-  setFromFile(talent) {
+  setFromFile(talent, tree) {
     this.title = talent.title
     this.image = talent.image
     this.descr = talent.descr.replace(/\n/g, '<br>')
-    this.levels = talent.levels
-    this.connections = talent.connections
+    this.levels = parseInt(talent.levels)
 
     this.el.style.display = 'block'
 
     this.update()
     this.setType(talent.type || '')
+
+    talent.connections.forEach(conn => {
+      const tal = tree[conn.x][conn.y]
+      tal.parents.push(this)
+      this.children.push(tal)
+    })
   }
 
   setPoints(points, recalc = true) {
+
     if (points > this.levels || points < 0) return
     this.learned = points
     this.levelEl.innerHTML = `${points}/${this.levels}`
@@ -147,22 +159,59 @@ export class Talent {
 
     if (points == this.levels) {
       this.el.classList.add('max')
-      this.tree.setAvailable(this.connections, true)
     }
-    else this.tree.setAvailable(this.connections, false)
 
-    if (recalc)
-      this.tree.recalcPoints()
+    this.children.forEach(child => {
+      child.setAvailable(points == this.levels)
+    })
+
+    if (recalc) this.tree.recalcPoints()
+
+    if (this.type == 'hexagon') this.tree.redrawCanvas()
   }
 
-  setAvailable(available) {
-    // console.log(available)
+  setAvailable(available, points = 0, recalc = true) {
+    if (this.available == available) return
     this.available = available
-    if (available) {
-      this.el.classList.remove('disabled')
+
+    if (!this.available && this.y > 0 && this.parents.filter(p => p.learned == p.levels).length > 0) {
+      this.available = true
       return
     }
-    this.el.classList.add('disabled')
-    this.setPoints(0)
+
+    if (available) {
+      this.el.classList.remove('disabled')
+      if (this.type == 'hexagon') this.tree.redrawCanvas()
+    }
+    else {
+      this.el.classList.add('disabled')
+    }
+
+    if (!this.available) this.setPoints(0)
   }
+
+  uncount() {
+    this.countable = false
+    this.setAvailable(true, this.levels, false)
+  }
+
+  activate() {
+    this.available = true
+    this.levelEl.innerHTML = `${this.learned}/${this.levels}`
+    this.el.classList.remove('disabled')
+
+    if (this.learned == this.levels) {
+      this.el.classList.add('max')
+    }
+
+    this.draw(this.tree.ctx)
+  }
+
+  childAvailable() {
+    this.children.forEach(child => {
+      child.available = true
+      child.el.classList.remove('disabled')
+    })
+  }
+
 }

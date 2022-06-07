@@ -1,4 +1,3 @@
-import tooltipImg from '../img/tooltip.png';
 import { cellSize } from './const'
 import '../styles/tooltip.css'
 
@@ -8,7 +7,6 @@ class Tooltip {
     this.title = this.el.querySelector('.tooltip-title')
     this.descr = this.el.querySelector('.tooltip-descr')
     this.rank = this.el.querySelector('.tooltip-rank')
-    // this.learn = this.el.querySelector('.tooltip-learn')
     this.close = this.el.querySelector('.tooltip-close')
 
     this.close.addEventListener('click', () => {
