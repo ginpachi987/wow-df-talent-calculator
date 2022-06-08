@@ -3,6 +3,11 @@ import { classes } from './scripts/classes'
 import { Tree } from './scripts/tree'
 import { images } from './scripts/images'
 import { build } from './scripts/build'
+// import { Summary } from './scripts/summary'
+import { setMinigames } from './scripts/minigames'
+import { setLanguage, lang } from './scripts/language'
+
+setLanguage()
 
 let classesEnabled
 let specsEnabled
@@ -79,6 +84,8 @@ fetch('/json/specs.json')
 const classTree = new Tree('#class-tree', 31)
 const specTree = new Tree('#spec-tree', 30)
 
+// const summary = new Summary(classTree, specTree)
+
 checkPath()
 
 async function checkPath() {
@@ -105,7 +112,7 @@ async function checkPath() {
 }
 
 async function fetchTree(tree, className, specName = 'class') {
-  const data = await (await fetch(`/json/trees/${className}_${specName}.json`)).json()
+  const data = await (await fetch(`/json/trees/${lang}/${className}_${specName}.json`)).json()
 
   tree.setFromFile(data)
 
@@ -139,7 +146,7 @@ async function fetchTree(tree, className, specName = 'class') {
 
 function getMenuUp() {
   document.querySelector('#logo').style.width = '150px'
-  
+
   document.querySelector('.header-title').style.display = 'none'
   document.querySelector('#choose-text').style.display = 'none'
 
@@ -152,3 +159,5 @@ function getMenuUp() {
     el.style.height = '34px'
   })
 }
+
+setMinigames()

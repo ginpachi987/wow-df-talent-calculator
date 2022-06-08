@@ -86,7 +86,7 @@ export class Tree {
       let t = parseInt(el, 36).toString(4)
       t = '0'.repeat(10 - t.length) + t
       res += t
-      
+
     })
 
     const points = res.split('').map(el => parseInt(el))
@@ -113,9 +113,21 @@ export class Tree {
   recalcPoints(updateLink = true) {
     this.points = 0
     let line = ''
-    this.talents.filter(tal => tal.countable).forEach(tal => {
+    this.talents.filter(tal => tal.countable && tal.y < 4).forEach(tal => {
       this.points += parseInt(tal.learned)
     })
+
+    if (this.points > 7) {
+      this.talents.filter(tal => tal.y < 7 && tal.y > 3).forEach(tal => {
+        this.points += parseInt(tal.learned)
+      })
+    }
+
+    if (this.points > 20) {
+      this.talents.filter(tal => tal.y > 6).forEach(tal => {
+        this.points += parseInt(tal.learned)
+      })
+    }
 
     this.talents.forEach(tal => {
       line += tal.learned
@@ -123,6 +135,30 @@ export class Tree {
 
     build.setPoints(this.spec, this.points)
     this.titleUpdate()
+
+    if (this.points >= 8) {
+      this.talents.filter(tal => tal.y == 4).forEach(tal => {
+        tal.posibleAvailability()
+      })
+    }
+
+    if (this.points < 8) {
+      this.talents.filter(tal => tal.y > 3 && tal.y < 7).forEach(tal => {
+        tal.disableFully()
+      })
+    }
+
+    if (this.points >= 20) {
+      this.talents.filter(tal => tal.y == 7).forEach(tal => {
+        tal.posibleAvailability()
+      })
+    }
+
+    if (this.points < 20) {
+      this.talents.filter(tal => tal.y > 6).forEach(tal => {
+        tal.disableFully()
+      })
+    }
 
     if (!updateLink) return
 
@@ -140,6 +176,15 @@ export class Tree {
 export class TreeEditor extends Tree {
   constructor(selector) {
     super(selector)
+  }
+
+  setFromFile(file) {
+
+  }
+}
+
+export class TreeTranslate {
+  constructor(selector) {
   }
 
   setFromFile(file) {

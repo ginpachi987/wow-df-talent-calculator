@@ -8,13 +8,14 @@ class Tooltip {
     this.descr = this.el.querySelector('.tooltip-descr')
     this.rank = this.el.querySelector('.tooltip-rank')
     this.close = this.el.querySelector('.tooltip-close')
+    this.learn = this.el.querySelector('.tooltip-learn')
 
     this.close.addEventListener('click', () => {
       this.hide()
     })
   }
 
-  show(title, descr, rank, pos, pointer) {
+  show(title, descr, rank, pos, pointer, y, points) {
     this.el.style.display = 'block'
     this.title.innerHTML = title
     this.descr.innerHTML = descr
@@ -28,6 +29,20 @@ class Tooltip {
     }
 
     this.close.style.display = pointer == 'mouse' ? 'none' : 'block'
+
+    if (y == 4 && points < 8) {
+      this.learn.style.color = 'red'
+      this.learn.innerHTML = 'Spend at least 8 points on previous talents'
+    }
+    else if (y == 7 && points < 20) {
+      this.learn.style.color = 'red'
+      this.learn.innerHTML = 'Spend at least 20 points on previous talents'
+    }
+    else {
+      this.learn.style.color = 'green'
+      this.learn.innerHTML = ''
+      // this.learn.innerHTML = 'Left-click to learn / Right-click to unlearn'
+    }
 
     if (window.innerWidth <= 800) {
       this.el.style.left = `${(window.innerWidth - this.el.clientWidth) / 2}px`

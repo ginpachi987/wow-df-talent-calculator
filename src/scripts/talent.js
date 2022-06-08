@@ -28,7 +28,7 @@ export class Talent {
 
     this.el.addEventListener('pointerenter', (e) => {
       if (e.pointerType == 'mouse')
-        tooltip.show(this.title, this.descr, this.levels, this.el.getBoundingClientRect(), e.pointerType)
+        tooltip.show(this.title, this.descr, this.levels, this.el.getBoundingClientRect(), e.pointerType, this.y, this.tree.points)
     })
 
     this.el.addEventListener('pointerleave', (e) => {
@@ -170,11 +170,13 @@ export class Talent {
     if (this.type == 'hexagon') this.tree.redrawCanvas()
   }
 
-  setAvailable(available, points = 0, recalc = true) {
+  setAvailable(available, parentsSkip = false, points = 0, recalc = true) {
     if (this.available == available) return
+    if (this.y > 3 && this.tree.points < 8 && !parentsSkip) return
+    if (this.y > 6 && this.tree.points < 20 && !parentsSkip) return
     this.available = available
 
-    if (!this.available && this.y > 0 && this.parents.filter(p => p.learned == p.levels).length > 0) {
+    if (!parentsSkip && !this.available && this.y > 0 && this.parents.filter(p => p.learned == p.levels).length > 0) {
       this.available = true
       return
     }
@@ -188,6 +190,7 @@ export class Talent {
     }
 
     if (!this.available) this.setPoints(0)
+    if (parentsSkip) this.setPoints(0)
   }
 
   uncount() {
@@ -214,4 +217,13 @@ export class Talent {
     })
   }
 
+  posibleAvailability() {
+    if (this.available) return
+    if (this.parents.length && this.parents.filter(p => p.learned == p.levels).length == 0) return
+    this.setAvailable(true)
+  }
+
+  disableFully() {
+    this.setAvailable(false, true)
+  }
 }

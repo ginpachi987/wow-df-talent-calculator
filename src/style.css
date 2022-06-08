@@ -16,6 +16,27 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.lang-select {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  
+}
+
+.lang {
+  width: 24px;
+  height: 24px;
+  border: 2px solid goldenrod;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  margin: 2px;
+}
+
+.lang:hover {
+  filter: brightness(120%);
+}
+
 .wrapper {
   width: 620px;
   height: 620px;
@@ -218,4 +239,9 @@ canvas {
     align-items: flex-end;
     gap: 4px;
   }
+}
+
+a {
+  text-decoration: none;
+  color: goldenrod;
 }

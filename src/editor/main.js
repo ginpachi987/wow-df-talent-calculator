@@ -1,6 +1,5 @@
-import './editor-style.css'
-import { classes } from './scripts/classes'
-
+import './style.css'
+import { classes } from '../scripts/classes'
 
 class Talent {
   constructor(i, j) {
@@ -224,6 +223,8 @@ class Tree {
     this.rowsEl.value = tree.rows
     this.colsEl.value = tree.cols
 
+    this.defaultTalents = tree.defaultTalents
+
     classEl.value = this.class
     specEl.value = this.spec
 
@@ -412,12 +413,13 @@ getJson.addEventListener('click', () => {
   //   })
   // })
   // talents = talents.map(el => { el.el = undefined; return el })
+  const talents = tree.talents[0].map((_, i) => tree.talents.map(row => row[i])).flat().filter(tal => tal.title)
   const treeToSave = {
     class: tree.class,
     spec: tree.spec,
     cols: tree.cols,
     rows: tree.rows,
-    talents: JSON.parse(JSON.stringify(tree.talents.flat())).filter(el => el.title),
+    talents: JSON.parse(JSON.stringify(talents)),
     defaultTalents: tree.defaultTalents
   }
   treeToSave.talents.forEach(el => {

@@ -78,7 +78,7 @@ body {
 
   border-style: solid;
   border-width: 6px;
-  border-image: url('img/tooltip.png') 6 round round;
+  border-image: url('../img/tooltip.png') 6 round round;
   background-color: #010721CC;
 
   opacity: 0;

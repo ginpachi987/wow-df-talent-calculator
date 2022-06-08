@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  font-family: 'Montserrat', sans-serif;
+}
+
+.talent-list {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+}
+
+.lang-selector-wrapper {
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-selector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang {
+  cursor: pointer;
+  display: inline-block;
+  padding: 8px;
+  margin: 4px;
+  border: 2px solid #a7a7a7;
+  border-radius: 8px;
+}
+
+.lang:hover {
+  border-color: #ffc626;
+}
+
+.tree-selector-wrapper {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.talent {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  border: 2px solid goldenrod;
+  margin: 4px;
+  background-size: cover;
+  display: inline-block;
+  cursor: pointer;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.talent:hover {
+  filter: brightness(120%);
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  margin: 8px;
+  text-align: left;
+}
+
+.info {
+  flex: 1;
+  border: 1px solid #a7a7a7;
+  border-radius: 8px;
+  margin: 4px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+input, textarea {
+  resize: none;
+  background: none;
+  border: none;
+  outline: none;
+
+  font-family: 'Montserrat', sans-serif;
+}
+
+input {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #a7a7a7;
+}
+
+textarea {
+  height: 100px;
+}
+
+.title {
+  font-size: 16px;
+  margin: 8px;
+  color: white;
+}
+.descr {
+  font-size: 14px;
+  margin: 8px;
+  color: #d8b30b;
+}
+
+.save-button {
+  display: none;
+  background-color: #ffc626;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px;
+  cursor: pointer;
+  color: black;
+  transition: all 0.2s ease-in-out;
+}
+
+.save-button:hover {
+  filter: brightness(115%);
+}
