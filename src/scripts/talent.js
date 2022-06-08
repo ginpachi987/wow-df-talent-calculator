@@ -93,8 +93,9 @@ export class Talent {
     ctx.translate(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1)
     ctx.beginPath()
     ctx.moveTo(cellSize / 2 + 6, 0)
-    for (let i = 0; i < 6; i++) {
-      ctx.rotate(Math.PI / 3)
+    ctx.rotate(Math.PI / 8)
+    for (let i = 0; i < 8; i++) {
+      ctx.rotate(-Math.PI / 4)
       ctx.lineTo(cellSize / 2 + 6, 0)
     }
     ctx.closePath()
