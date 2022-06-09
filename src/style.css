@@ -167,10 +167,10 @@ body {
 }
 
 .spec-name {
-  width: 200px;
+  width: 260px;
   position: absolute;
   top: 0;
-  left: calc(50% - 100px);
+  left: calc(50% - 130px);
   text-transform: capitalize;
 }
 
