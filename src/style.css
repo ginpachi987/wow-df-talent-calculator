@@ -26,7 +26,7 @@ body {
 .lang {
   width: 24px;
   height: 24px;
-  border: 2px solid goldenrod;
+  border: 2px solid #42a841;
   border-radius: 50%;
   cursor: pointer;
   display: inline-block;
@@ -47,7 +47,8 @@ body {
 .talent {
   width: 42px;
   height: 42px;
-  border: 2px solid goldenrod;
+  /* border: 2px solid goldenrod; */
+  border: 2px solid #42a841;
   position: absolute;
   cursor: pointer;
   border-radius: 8px;
@@ -88,7 +89,7 @@ body {
   width: 42px;
   height: 42px;
   background-size: cover;
-  border: 2px solid goldenrod;
+  border: 2px solid #42a841;
   border-radius: 8px;
   margin: 0 4px;
 
@@ -192,7 +193,8 @@ body {
 }
 
 .max {
-  border-color: #42a841;
+  /* border-color: #42a841; */
+  border-color: #d8b30b;
 }
 
 canvas {

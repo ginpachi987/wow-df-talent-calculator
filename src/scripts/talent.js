@@ -86,8 +86,8 @@ export class Talent {
     ctx.save()
 
     if (!this.available) ctx.fillStyle = '#a3a2a3'
-    else if (this.learned == this.levels) ctx.fillStyle = '#42a841'
-    else ctx.fillStyle = '#daa520'
+    else if (this.learned == this.levels) ctx.fillStyle = '#d8b30b'
+    else ctx.fillStyle = '#42a841'
 
     ctx.lineWidth = 2
     ctx.translate(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1)
