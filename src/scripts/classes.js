@@ -10,6 +10,6 @@ export const classes = {
   priest: ['discipline', 'holy', 'shadow'],
   rogue: ['assassination', 'outlaw', 'subtiety'],
   shaman: ['elemental', 'enhancement', 'restoration'],
-  warlock: ['affliction', ' demonology', 'destruction'],
+  warlock: ['affliction', 'demonology', 'destruction'],
   warrior: ['arms', 'fury', 'protection']
 }

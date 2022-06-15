@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Description" CONTENT="Dragonflight Talent Calculator preview for Death knight and Druid. All specs: Blood, Unholy, Frost, Balance, Feral, Guardian, Restoration.">
   <title>Dragonflight Talent Calculator</title>
   <link rel="icon" type="image/svg+xml" href="https://games.yoro.dev/favicon.svg" />
   <script defer type="module" src="./main.js"></script>
@@ -19,43 +20,32 @@
 
 <body>
   <div class="header">
-    <a href="/df-talents"><img id="logo" src="https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt563e16b3504e5808/62545b180afb5024ae74b677/rc-logo-na.png?auto=webp" alt="World of Warcraft: Dragonflight" style="width:300px; padding: 8px;"></a>
+    <a href="/df-talents/"><img id="logo" src="https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt563e16b3504e5808/62545b180afb5024ae74b677/rc-logo-na.png?auto=webp" alt="World of Warcraft: Dragonflight" style="width:300px; padding: 8px;"></a>
     <div class="class-selector-wrapper">
       <div class="header-title">Talent Calculator</div>
-      <div id="choose-text" style="margin-bottom: 16px;font-size: 1.3em;">Choose a class</div>
-      <div class="class-selector">
-      </div>
+      <div class="choose-text" id="choose-class">Choose a class</div>
+      <div class="classes"></div>
+      <div class="choose-text" id="choose-spec">Choose a spec</div>
+      <div class="specs"></div>
     </div>
   </div>
 
   <div class="trees">
     <div class="tree" id="class-tree">
     </div>
-    <div class="spec-selector">
-      <div style="margin-bottom: 8px">Choose a spec</div>
-      <div class="specs"></div>
-    </div>
     <div class="tree" id="spec-tree">
     </div>
   </div>
 
-  <div class="tooltip">
-    <div class="tooltip-title">Title</div>
-    <div class="tooltip-descr">Description</div>
-    <div class="tooltip-rank">Rank 1</div>
-    <div class="tooltip-learn"></div>
-    <div class="tooltip-close">x</div>
-  </div>
-
-  <!-- <div class="summary">
-    <div class="summary-title">Summary</div>
-    <div class="summary-list"></div>
-  </div> -->
-  <div class="level-required">Character level: <level>10</level></div>
-
   <div class="links">
+<<<<<<< Updated upstream
     <div class="version">v0.4.3</div>
     <!-- <a href="./editor.html">Editor</a> -->
+=======
+    <div class="version"></div>
+    <a href="/df-talents/editor/">Editor</a>
+    <a href="/df-talents/translate/">Translation</a>
+>>>>>>> Stashed changes
     <a href="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">GitHub</a>
   </div>
 </body>

@@ -10,8 +10,14 @@ class Build {
 
     this.level = 9
 
-    this.wrapper = document.querySelector('.level-required')
-    this.levelEl = this.wrapper.querySelector('level')
+    this.wrapper = document.createElement('div')
+    this.wrapper.classList.add('level-required')
+    this.wrapper.innerHTML = 'Character level: '
+    this.levelEl = document.createElement('level')
+    this.levelEl.innerHTML = this.level
+
+    this.wrapper.appendChild(this.levelEl)
+    document.body.append(this.wrapper)
   }
 
   setClass(className) {

@@ -1,19 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  font-family: 'Montserrat', sans-serif;
-}
-
 .talent-list {
   display: none;
   flex: 1;
@@ -23,103 +7,53 @@ body {
   max-width: 800px;
 }
 
-.lang-selector-wrapper {
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.lang-selector {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.lang {
-  cursor: pointer;
-  display: inline-block;
-  padding: 8px;
-  margin: 4px;
-  border: 2px solid #a7a7a7;
-  border-radius: 8px;
-}
-
-.lang:hover {
-  border-color: #ffc626;
-}
-
-.tree-selector-wrapper {
-  display: none;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.talent {
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  border: 2px solid goldenrod;
-  margin: 4px;
-  background-size: cover;
-  display: inline-block;
-  cursor: pointer;
-
-  transition: all 0.2s ease-in-out;
-}
-
-.talent:hover {
-  filter: brightness(120%);
-}
-
 .row {
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: center;
-  margin: 8px;
+  margin: 4px;
   text-align: left;
 }
 
 .info {
   flex: 1;
-  border: 1px solid #a7a7a7;
-  border-radius: 8px;
-  margin: 4px 8px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-input, textarea {
-  resize: none;
+input,
+textarea {
   background: none;
   border: none;
   outline: none;
+  padding: 0;
 
   font-family: 'Montserrat', sans-serif;
 }
 
-input {
+/* input {
   padding-bottom: 8px;
   border-bottom: 1px solid #a7a7a7;
-}
+} */
 
 textarea {
-  height: 100px;
+  min-height: 80px;
+  resize: none;
+  flex: 1;
 }
 
 .title {
   font-size: 16px;
-  margin: 8px;
+  margin-bottom: 10px;
   color: white;
 }
+
 .descr {
   font-size: 14px;
-  margin: 8px;
+  /* margin: 8px; */
   color: #d8b30b;
 }
 
@@ -137,4 +71,85 @@ textarea {
 
 .save-button:hover {
   filter: brightness(115%);
+}
+
+.lang-selector-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-selector {
+  text-align: center;
+}
+
+.big {
+  width: 42px;
+  height: 42px;
+  background-size: cover;
+}
+
+.links {
+  position: relative;
+  align-self: flex-end;
+}
+
+.class-selector {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.spec-selector {
+  display: none;
+  height: 100px;
+}
+
+@media (max-width: 800px) {
+  .links {
+    position: relative;
+    top: 0;
+    right: 0;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 4px;
+  }
+}
+
+.small {
+  position: absolute;
+  width: 30px !important;
+  height: 30px !important;
+  top: 2px;
+  right: 2px;
+  border-width: 1px !important;
+}
+
+.talent {
+  cursor: default !important;
+}
+
+/* scrollbar */
+.descr {
+  scrollbar-width: thin;
+  scrollbar-color: #cfcfcf #010721CC;
+}
+
+/* Chrome, Edge, and Safari */
+.descr::-webkit-scrollbar {
+  width: 8px;
+}
+
+.descr::-webkit-scrollbar-track {
+  background: #010721CC;
+}
+
+.descr::-webkit-scrollbar-thumb {
+  background-color: #cfcfcf;
+  border-radius: 5px;
+  border: 3px solid #010721CC;
 }

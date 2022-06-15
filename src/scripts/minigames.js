@@ -11,10 +11,10 @@ export function setMinigames() {
   if (show) {
     setTimeout(() => {
       title.click()
-    }, 2000)
+    }, 10000)
     setTimeout(() => {
       title.click()
-    }, 6000)
+    }, 12000)
   }
 
   const title = document.createElement('div')

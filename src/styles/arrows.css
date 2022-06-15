@@ -1,0 +1,42 @@
+.arrows {
+  position: fixed;
+  width: 42px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.left, .right, .down, .doubleleft, .doubleright, .doubledown {
+  position: absolute;
+  cursor: pointer;
+}
+
+.left {
+  left: -16px;
+  bottom: -64px;
+}
+
+.right {
+  right: -20px;
+  bottom: -64px;
+}
+
+.down {
+  left: 12px;
+  bottom: -64px;
+}
+
+.doubleleft {
+  left: -16px;
+  bottom: -80px;
+}
+
+.doubleright {
+  right: -20px;
+  bottom: -80px;
+}
+
+.doubledown {
+  left: 12px;
+  bottom: -80px;
+}

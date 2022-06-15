@@ -6,67 +6,44 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dragonflight Talent Calculator - Editor</title>
+  <script type="module" defer src="./editor.js"></script>
 
-  <script type="module" defer src="./main.js"></script>
+  <style>
+    body {
+      background-color: #212121;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
-  <img src="https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt563e16b3504e5808/62545b180afb5024ae74b677/rc-logo-na.png?auto=webp" alt="" srcset="" style="width:150px; display:block;margin: 0 auto; padding: 8px;">
+  <a href="../"><img src="https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt563e16b3504e5808/62545b180afb5024ae74b677/rc-logo-na.png?auto=webp" alt="" srcset="" style="width:150px; display:block;margin: 0 auto; padding: 8px;"></a>
   <div style="margin: 0 auto; text-align: center;">
     Talent Tree Editor
   </div>
 
-  <div class="sizes">
-    <select id="class"></select>
-    <select id="spec"></select><br/>
-    <label for="">Columns <input id="cols" type="number" min="5" max="12"></label>
-    <label for="">Rows <input id="rows" type="number" min="5" max="12"></label>
-  
-    <!-- <input type="text" id="class" placeholder="Class">
-    <input type="text" id="spec" placeholder="Spec"> -->
+  <div class="classes"></div>
+  <div class="specs"></div>
+
+  <label class="sizes">Columns: <input id="cols" type="number" min="5" max="15"></label>
+
+  <div class="tree-wrapper">
+    <div class="editor-tree"></div>
   </div>
 
-  <div class="talents-wrapper">
-    <div class="talents">
-      <canvas id="links"></canvas>
-      <div class="tree"></div>
-    </div>
-  </div>
-
-  <div class="default-talents">
+  <!-- <div class="default-talents">
     <button class="default-add">Add default talent</button><br/>
-  </div>
+  </div> -->
 
   <button id="save-json" style="margin-bottom: 16px; padding: 8px 16px;">Get JSON</button>
 
-  <div class="talent-info">
-    <div style="display: flex;margin-bottom: 4px;">
-      <input style="color: white; font-size: 16px; flex: 1" type="text" name="" id="ability-title" placeholder="Title">
-      <input type="number" name="" id="ability-levels" value="1" max="5" min="1" style="width: 30px">
-    </div>
-    <input style="margin-bottom: 4px;" type="text" name="" id="ability-image" placeholder="Image">
-    <textarea name="" id="ability-descr" cols="50" rows="5" placeholder="Description" style="margin-bottom: 8px;"></textarea>
-
-    <div class="types"></div>
-    <!-- <select name="" id="type">
-      <option value="">None</option>
-      <option value="round">Round</option>
-      <option value="hexagon">Hexagon</option>
-    </select> -->
-    <!-- <div class="connections"></div> -->
-    <!-- <button id="add-connection">Add connection</button> -->
-    <!-- <button id="save-talent">Save</button> -->
-
+  <div class="links">
+    <div class="version"></div>
+    <a href="../">Main</a>
+    <a href="../translate/">Translation</a>
+    <a href="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">GitHub</a>
   </div>
 
-  <div class="arrows">
-    <div class="left">↖️</div>
-    <div class="right">↗️</div>
-    <div class="up">⬆️</div>
-    <div class="doubleleft">↖️</div>
-    <div class="doubleright">↗️</div>
-    <div class="doubleup">⬆️</div>
-  </div>
 </body>
 
 </html>

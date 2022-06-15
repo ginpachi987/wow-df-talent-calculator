@@ -1,83 +1,300 @@
-import { Talent } from "./talent";
-import { cellSize, cellSpace } from "./const"
-import { build } from "./build";
+import { EditorTalent, TranslateTalent, CalculatorTalent } from "./talent";
+import { cellSize, cellSpace, editorCellSize, editorCellSpace } from "./const"
+// import { build } from "./build"
 
-export class Tree {
-  constructor(selector, points) {
+import '../styles/tree.css'
+
+class BaseTree {
+  constructor(cols, rows) {
+    this.cols = cols
+    this.rows = rows
     this.class = ''
-    this.spec = ''
-    this.rows = 10
-    this.cols = 9
+    this.tree = ''
+    this.talents = []
+    this.defaultTalents = []
+  }
+
+  setTree(tree) {
+    this.cols = tree.cols
+    this.rows = tree.rows
+    this.class = tree.class
+    this.tree = tree.tree || tree.spec
+  }
+
+  createElement(selector) {
     this.container = document.querySelector(selector)
     this.canvas = document.createElement('canvas')
     this.container.appendChild(this.canvas)
     this.ctx = this.canvas.getContext('2d')
     this.talentsContainer = document.createElement('div')
     this.container.appendChild(this.talentsContainer)
-    this.talents = []
-    this.points = 0
-    this.maxPoints = points
+  }
+
+  resize() {
+    const width = this.size * this.cols + this.space * (this.cols + 1)
+    const height = this.size * this.rows + this.space * (this.rows + 1)
+    this.container.style.width = `${width}px`
+    this.container.style.height = `${height}px`
+
+    this.canvas.width = width
+    this.canvas.height = height
+  }
+
+  saveAsFile(talents = this.talents, lang = '') {
+    const treeToSave = {
+      class: this.class,
+      tree: this.tree,
+      cols: this.cols,
+      rows: this.rows,
+      talents: talents.map(tal => tal.saveAsFile()),
+      defaultTalents: this.defaultTalents
+    }
+    const a = document.createElement('a')
+    a.href = window.URL.createObjectURL(new Blob([JSON.stringify(treeToSave)], { type: 'text/plain' }))
+    a.download = `${this.class}_${this.tree}${lang ? '.' + lang : ''}.json`
+    a.click()
+  }
+}
+
+export class EditorTree extends BaseTree {
+  constructor(cols, rows = 10, selector, tooltip) {
+    super(cols, rows)
+    this.size = editorCellSize
+    this.space = editorCellSpace
+    this.createElement(selector)
+    this.resize()
+    this.selected
+
+    this.tooltip = tooltip
+
+    this.talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new EditorTalent(j, i, this, tooltip)))
+  }
+
+  resize(colsDiff, rowsDiff) {
+    super.resize()
+    if (!colsDiff && !rowsDiff) return
+
+    if (rowsDiff > 0) {
+      for (let i = 0; i < rowsDiff; i++) {
+        this.talents.forEach((col, j) => {
+          const tal = new EditorTalent(j, col.length, this, this.tooltip)
+          col.push(tal)
+        })
+      }
+    }
+    if (rowsDiff < 0) {
+      rowsDiff = -rowsDiff
+      for (let i = 1; i <= rowsDiff; i++) {
+        this.talents.forEach((col, j) => {
+          col[col.length - 1].delete()
+          col.splice(-1)
+        })
+      }
+    }
+    if (colsDiff > 0) {
+      for (let i = 0; i < colsDiff; i++) {
+        let col = [...Array(this.rows)].map((_, j) => new EditorTalent(this.talents.length, j, this, this.tooltip))
+        this.talents.push(col)
+      }
+    }
+    if (colsDiff < 0) {
+      colsDiff = -colsDiff
+      for (let i = 1; i <= colsDiff; i++) {
+        this.talents[this.talents.length - i].forEach(tal => tal.delete())
+      }
+      this.talents.splice(this.talents.length - colsDiff)
+    }
+
+    this.redraw()
+  }
+
+  setTree(tree) {
+    const collDiff = tree.cols - this.cols
+    const rowDiff = tree.rows - this.rows
+
+    super.setTree(tree)
+
+    this.talents.forEach((col, j) => {
+      col.forEach((tal, i) => {
+        tal.clear()
+      })
+    })
+
+    this.resize(collDiff, rowDiff)
+
+    tree.talents.forEach(talent => {
+      this.talents[talent.col || talent.x || 0][talent.row || talent.y || 0].setInfo(talent)
+    })
+
+    if (tree.defaultTalents) this.defaultTalents = tree.defaultTalents.map(tal => {
+      return {col: tal.col || tal.x || 0, row: tal.row || tal.y || 0}
+    })
+
+    this.redraw()
+  }
+
+  saveAsFile() {
+    const talents = this.talents[0].map((_, i) => this.talents.map(row => row[i])).flat().filter(tal => tal.title)
+    super.saveAsFile(talents)
+  }
+
+  redraw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.beginPath()
+    this.ctx.fillStyle = '#FFF'
+    this.ctx.lineWidth = 2
+    this.talents.forEach(col => {
+      col.forEach(tal => {
+        tal.draw(this.ctx)
+      })
+    })
+    this.ctx.stroke()
+  }
+}
+
+export class TranslateTree extends BaseTree {
+  setTree(tree) {
+    super.setTree(tree)
+
+    this.talents = tree.talents.map(talent => new TranslateTalent(talent))
+
+    this.defaultTalents = tree.defaultTalents
+  }
+
+  copyTranslation(tree, callback) {
+    const talents = tree.talents
+
+    this.talents.forEach(tal => {
+      const talent = talents.find(t => (t.col == tal.col && t.row == tal.row) || (t.x == tal.col && t.y == tal.row))
+      if (talent) {
+        tal.setInfo(talent, false)
+      }
+      else {
+        tal.clearTexts()
+      }
+    })
+
+    callback()
+  }
+
+  setClear(callback) {
+    this.talents.forEach(tal => {
+      tal.clearTexts()
+    })
+
+    callback()
+  }
+}
+
+export class CalculatorTree extends BaseTree {
+  constructor(selector, points, tooltip, build) {
+    super(10, 10)
+    this.size = cellSize
+    this.space = cellSpace
+    this.createElement(selector)
+    this.resize()
 
     this.title = document.createElement('div')
     this.title.classList.add('spec-name')
     this.container.appendChild(this.title)
 
-    this.resize()
+    this.tooltip = tooltip
+    this.points = points
+    this.pointsSpent = 0
+    this.sectionPoints = [0, 0, 0]
+
+    this.build = build
   }
 
-  setFromFile(file) {
-    this.class = file.class
-    this.spec = file.spec
-    this.rows = file.rows
-    this.cols = file.cols
-
+  setTree(tree, build = '') {
+    super.setTree(tree)
     this.talents.forEach(talent => {
-      talent.clear()
+      talent.delete()
     })
+
+    this.title.innerText = `${this.tree == 'class' ? this.class : this.tree} Tree`
 
     this.resize()
 
-    const talents = [...Array(this.cols)].map((_, i) => [...Array(this.rows)].map((_, j) => new Talent(i, j, this)))
+    let talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new CalculatorTalent(j, i, this, this.tooltip)))
 
-    file.talents.forEach(talent => {
-      talents[talent.x][talent.y].setFromFile(talent, talents)
+    tree.talents.forEach(talent => {
+      const col = talent.col || talent.x || 0
+      const row = talent.row || talent.y || 0
+      talents[col][row].setInfo(talent)
+
+      const children = talent.children || talent.connections
+
+      children.forEach(child => {
+        talents[col][row].children.push(talents[child.col || child.x || 0][child.row || child.y || 0])
+        talents[child.col || child.x || 0][child.row || child.y || 0].parents.push(talents[col][row])
+      })
+    })
+    
+    talents = talents[0].map((_, i) => talents.map(row => row[i])).flat().filter(tal => tal.title)
+
+    this.talents = talents.flat().filter(talent => talent.title)
+    this.talents.forEach(talent => talent.createElements(this.talentsContainer))
+
+    this.talents.filter(talent => talent.row == 0).forEach(talent => {
+      talent.enable()
     })
 
-    this.talents = talents[0].map((_, i) => talents.map(row => row[i])).flat().filter(tal => tal.title)
+    this.redraw()
 
-    this.talents.filter(tal => tal.y == 0).forEach(tal => {
-      tal.setAvailable(true)
-    })
-
-    this.redrawCanvas()
+    if (build) this.setTalents(build)
   }
 
-  resize() {
-    let style = this.container.style
-    style.width = cellSize * this.cols + cellSpace * (this.cols + 1) + 'px'
-    style.height = cellSize * this.rows + cellSpace * (this.rows + 1) + 'px'
+  addPoints(points, section) {
+    this.sectionPoints[section] += points
+    this.pointsSpent = this.sectionPoints.reduce((a, b) => a + b, 0)
 
-    this.canvas.width = cellSize * this.cols + cellSpace * (this.cols + 1)
-    this.canvas.height = cellSize * this.rows + cellSpace * (this.rows + 1)
+    this.title.innerText = `${this.tree == 'class' ? this.class : this.tree} Tree (${this.pointsSpent}/${this.points})`
 
-    this.talentsContainer.innerHTML = ''
+    if (this.sectionPoints[0] > 7) {
+      this.talents.filter(talent => talent.row == 4).forEach(talent => {
+        talent.enable(true)
+      })
+    }
+
+    if (this.sectionPoints[0] + this.sectionPoints[1] > 19) {
+      this.talents.filter(talent => talent.row == 7).forEach(talent => {
+        talent.enable(true)
+      })
+    }
+
+    if (this.sectionPoints[0] < 8) {
+      this.talents.filter(talent => talent.row == 4).forEach(talent => {
+        talent.disable(true)
+      })
+    }
+
+    if (this.sectionPoints[0] + this.sectionPoints[1] < 20) {
+      this.talents.filter(talent => talent.row == 7).forEach(talent => {
+        talent.disable(true)
+      })
+    }
+
+    this.updateLink()
   }
 
-  redrawCanvas() {
-    this.ctx.strokeStyle = '#a3a2a3'
-    this.ctx.lineWidth = 2
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    // this.ctx.beginPath()
-    this.talents.forEach(talent => {
-      talent.draw(this.ctx)
-    })
-    this.ctx.stroke()
+  updateLink() {
+    let line = this.talents.reduce((prev, curr) => {
+      return prev + curr.rank
+    }, '')
+    const link = line.match(/.{1,10}/g).map(el => parseInt(el + '0'.repeat(10 - el.length), 4).toString(36)).map(el => el == '0' ? '' : el).join('-').replace(/-*$/, '')
+
+    if (this.tree == 'class') this.build.setClassLink(link)
+    else this.build.setSpecLink(link)
+
+    this.build.setPoints(this.tree, this.pointsSpent)
   }
 
-  setTalents(list) {
-    const p = list.split('-')
+  setTalents(build) {
+    this.sectionPoints = [0, 0, 0]
+    this.build.setClassLink('')
+    const p = build.split('-')
     let res = ''
-
     p.forEach((el, i) => {
       if (el == '') {
         res += '0'.repeat(10)
@@ -86,108 +303,51 @@ export class Tree {
       let t = parseInt(el, 36).toString(4)
       t = '0'.repeat(10 - t.length) + t
       res += t
-
     })
 
     const points = res.split('').map(el => parseInt(el))
-
-    for (let i = 0; i < Math.min(this.talents.length, points.length); i++) {
+    for (let i = 0; i < Math.min(/*this.talents.length,*/ points.length); i++) {
       if (points[i] == 0) continue
-      this.talents[i].learned = points[i]
+      
+      // this.talents[i].rank = points[i]
+      this.talents[i].activate(points[i])
     }
 
-    this.talents.filter(el => el.learned > 0).forEach(tal => {
-      tal.activate()
+    this.addPoints(0, 0)
+
+    // this.talents.filter(el => el.learned > 0).forEach(tal => {
+    //   tal.activate()
+    // })
+
+    // this.talents.filter(el => el.learned > 0).forEach(tal => {
+    //   tal.childAvailable()
+    // })
+
+    // this.recalcPoints()
+  }
+
+  setDefaultTalents(talents) {
+    talents = talents.map(tal => {
+      return { col: tal.col || tal.x || 0, row: tal.row || tal.y || 0}
     })
 
-    this.talents.filter(el => el.learned > 0).forEach(tal => {
-      tal.childAvailable()
+    this.talents.filter(talent => !talent.countable).forEach(talent => talent.countable = true)
+
+    talents.forEach(tal => {
+      const talent = this.talents.find(talent => talent.col == tal.col && talent.row == tal.row)
+      talent.countable = false
+      talent.activate(talent.ranks)
     })
 
-    this.recalcPoints()
+    this.addPoints(-talents.length, 0)
   }
 
-  setAvailable(talents, state) {
-  }
-
-  recalcPoints(updateLink = true) {
-    this.points = 0
-    let line = ''
-    this.talents.filter(tal => tal.countable && tal.y < 4).forEach(tal => {
-      this.points += parseInt(tal.learned)
-    })
-
-    if (this.points > 7) {
-      this.talents.filter(tal => tal.y < 7 && tal.y > 3).forEach(tal => {
-        this.points += parseInt(tal.learned)
-      })
-    }
-
-    if (this.points > 20) {
-      this.talents.filter(tal => tal.y > 6).forEach(tal => {
-        this.points += parseInt(tal.learned)
-      })
-    }
-
-    this.talents.forEach(tal => {
-      line += tal.learned
-    })
-
-    build.setPoints(this.spec, this.points)
-    this.titleUpdate()
-
-    if (this.points >= 8) {
-      this.talents.filter(tal => tal.y == 4).forEach(tal => {
-        tal.posibleAvailability()
-      })
-    }
-
-    if (this.points < 8) {
-      this.talents.filter(tal => tal.y > 3 && tal.y < 7).forEach(tal => {
-        tal.disableFully()
-      })
-    }
-
-    if (this.points >= 20) {
-      this.talents.filter(tal => tal.y == 7).forEach(tal => {
-        tal.posibleAvailability()
-      })
-    }
-
-    if (this.points < 20) {
-      this.talents.filter(tal => tal.y > 6).forEach(tal => {
-        tal.disableFully()
-      })
-    }
-
-    if (!updateLink) return
-
-    const link = line.match(/.{1,10}/g).map(el => parseInt(el + '0'.repeat(10 - el.length), 4).toString(36)).map(el => el == '0' ? '' : el).join('-').replace(/-*$/, '')
-
-    if (this.spec == 'class') build.setClassLink(link)
-    else build.setSpecLink(link)
-  }
-
-  titleUpdate() {
-    this.title.innerHTML = `${this.spec == 'class' ? this.class : this.spec} Tree ${this.points > 0 ? '(' + this.points + '/' + this.maxPoints + ')' : ''}`
-  }
-}
-
-export class TreeEditor extends Tree {
-  constructor(selector) {
-    super(selector)
-  }
-
-  setFromFile(file) {
-
-  }
-}
-
-export class TreeTranslate {
-  constructor(selector) {
-  }
-
-  setFromFile(file) {
-
+  redraw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.beginPath()
+    // this.ctx.fillStyle = '#FFF'
+    // this.ctx.lineWidth = 2
+    this.talents.forEach(talent => talent.draw(this.ctx))
+    this.ctx.stroke()
   }
 }

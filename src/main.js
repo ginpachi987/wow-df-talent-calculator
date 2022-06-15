@@ -1,163 +1,161 @@
 import './style.css'
 import { classes } from './scripts/classes'
-import { Tree } from './scripts/tree'
 import { images } from './scripts/images'
+import { CalculatorTree } from './scripts/tree'
+import { CalculatorTooltip } from './scripts/tooltip'
+import { imageServer } from './scripts/const'
+
+import { setVersion } from './scripts/version'
+
 import { build } from './scripts/build'
 // import { Summary } from './scripts/summary'
 import { setMinigames } from './scripts/minigames'
 import { setLanguage, lang } from './scripts/language'
 
 setLanguage()
+setVersion()
+setMinigames()
 
-let classesEnabled
-let specsEnabled
+const tooltip = new CalculatorTooltip()
 
-const classSelector = document.querySelector('.class-selector')
-const trees = document.querySelector('.trees')
+const classTree = new CalculatorTree('#class-tree', 31, tooltip, build)
+const specTree = new CalculatorTree('#spec-tree', 30, tooltip, build)
+let bufferTree
 
-const specSelector = document.querySelector('.spec-selector')
-const specsElement = document.querySelector('.specs')
+let currentClass = ''
+let currentSpec = ''
+
+let availableClasses
+let availableSpecs
 
 const classButtons = {}
-Object.keys(classes).forEach(key => {
-  classButtons[key] = document.createElement('div')
-  classButtons[key].classList.add('class')
-  classButtons[key].classList.add('inactive')
-  classButtons[key].title = key
-  if (key == 'evoker')
-    classButtons[key].style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/inv_misc_head_dragon_01.jpg)`
-  else
-    classButtons[key].style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/class_${key}.jpg)`
+let specButtons = {}
 
-  classButtons[key].addEventListener('click', () => {
-    if (!classesEnabled.includes(key)) return
-    getMenuUp()
-    build.reset()
-    specSelector.style.display = 'inline-flex'
-    specTree.container.style.display = 'none'
-    fetchTree(classTree, key)
+const classSelector = document.querySelector('.classes')
+const specSelector = document.querySelector('.specs')
 
-    Object.keys(classes).forEach(key => {
-      classButtons[key].classList.remove('max')
+const trees = document.querySelector('.trees')
+const specsElement = document.querySelector('.specs')
+
+document.querySelector('#choose-spec').style.display = 'none'
+
+let path = window.location.pathname.split('/')
+
+getAvailable()
+
+function getAvailable() {
+  fetch('/json/classes.json')
+    .then(res => res.json())
+    .then(res => {
+      availableClasses = res
+
+
+      fetch('/json/specs.json')
+        .then(res => res.json())
+        .then(res => {
+          availableSpecs = res
+          setClassButtons()
+        })
     })
+}
 
-    classButtons[key].classList.add('max')
-  })
+function setClassButtons() {
+  Object.entries(classes).forEach(([key, value]) => {
+    classButtons[key] = document.createElement('div')
+    classButtons[key].classList.add('talent', 'inline-talent')
+    classButtons[key].style.backgroundImage = `url(${imageServer}${images[key + '_class']}.jpg)`
 
-  classSelector.appendChild(classButtons[key])
-})
+    classSelector.appendChild(classButtons[key])
 
-function setSpecs(cls) {
-  specsElement.innerHTML = ''
-  classes[cls].forEach(spec => {
-    const specFull = `${cls}_${spec}`
-    const el = document.createElement('div')
-    el.classList.add('spec')
-    if (!specsEnabled.includes(specFull)) el.classList.add('inactive')
+    if (!availableClasses.includes(key)) {
+      classButtons[key].classList.add('disabled')
+      return
+    }
 
-    el.title = spec
-    el.style.backgroundImage = `url(https://wow.zamimg.com/images/wow/icons/medium/${images[specFull]}.jpg)`
+    classButtons[key].addEventListener('click', () => {
+      if (currentClass == key) return
 
-    el.addEventListener('click', () => {
-      fetchTree(specTree, cls, spec)
+      build.setClass(key)
+      if (!currentSpec) document.querySelector('#choose-spec').style.display = 'block'
+      specsElement.style.display = 'block'
+
+      Object.entries(classButtons).forEach(([k, v]) => {
+        v.classList.remove('max')
+      })
+      classButtons[key].classList.add('max')
+
+      specSelector.innerHTML = ''
+      specButtons = {}
+      currentClass = key
+
+      getTree(true, 'class')
+      setSpecButtons(value)
     })
-
-    specsElement.appendChild(el)
   })
+  if (path[2]) classButtons[path[2]].click()
 }
 
-fetch('/json/classes.json')
-  .then(res => res.json())
-  .then(data => {
-    classesEnabled = data
-    classesEnabled.forEach(cls => {
-      classButtons[cls].classList.remove('inactive')
+function setSpecButtons(specList) {
+  specList.forEach(sp => {
+    specButtons[sp] = document.createElement('div')
+    specButtons[sp].classList.add('talent', 'inline-talent')
+    specButtons[sp].style.backgroundImage = `url(${imageServer}${images[currentClass + '_' + sp]}.jpg)`
+
+    specSelector.appendChild(specButtons[sp])
+
+    if (!availableSpecs.includes(currentClass + '_' + sp)) {
+      specButtons[sp].classList.add('disabled')
+      return
+    }
+
+    specButtons[sp].addEventListener('click', () => {
+      if (currentSpec == sp) return
+      currentSpec = sp
+
+      build.setSpec(sp)
+      Object.entries(specButtons).forEach(([k, v]) => {
+        v.classList.remove('max')
+      })
+      specButtons[sp].classList.add('max')
+
+      getTree(false)
+
+      document.querySelector('#logo').style.width = '150px'
+      const header = document.querySelector('.header')
+      header.style.flexDirection = 'row'
+
+      document.querySelector('.header-title').style.display = 'none'
+      document.querySelector('#choose-class').style.display = 'none'
+      document.querySelector('#choose-spec').style.display = 'none'
+
+      trees.style.display = 'block'
+
+      document.querySelector('.classes').classList.add('v-scroll')
+      specsElement.classList.add('v-scroll')
     })
   })
-
-fetch('/json/specs.json')
-  .then(res => res.json())
-  .then(data => {
-    specsEnabled = data
-  })
-
-const classTree = new Tree('#class-tree', 31)
-const specTree = new Tree('#spec-tree', 30)
-
-// const summary = new Summary(classTree, specTree)
-
-checkPath()
-
-async function checkPath() {
-  const path = window.location.pathname.split('/')
-
-  if (!path[2] || !Object.keys(classes).includes(path[2])) return
-
-  getMenuUp()
-  classButtons[path[2]].classList.add('max')
-
-  await fetchTree(classTree, path[2])
-
-  if (path[3]) {
-    classTree.setTalents(path[3])
-  }
-
-  if (!path[4] || !classes[path[2]].includes(path[4])) return
-
-  await fetchTree(specTree, path[2], path[4])
-
-  if (path[5]) {
-    specTree.setTalents(path[5])
+  if (path[4]) {
+    specButtons[path[4]].click()
+    // checkPath()
   }
 }
 
-async function fetchTree(tree, className, specName = 'class') {
-  const data = await (await fetch(`/json/trees/${lang}/${className}_${specName}.json`)).json()
+function getTree(buffer = false, spec = currentSpec) {
+  fetch(`/json/trees/${lang}/${currentClass}_${spec}.json`)
+    .then(res => res.json())
+    .then(res => {
+      if (buffer) {
+        bufferTree = res
+        return
+      }
+      classTree.setTree(bufferTree, path[3] || '')
+      specTree.setTree(res, path[5], '')
+      path = []
 
-  tree.setFromFile(data)
-
-  if (specName == 'class') {
-    trees.style.display = 'block'
-    tree.titleUpdate()
-    setSpecs(className)
-
-    build.setClass(className)
-    return
-  }
-
-  specSelector.style.display = 'none'
-  tree.titleUpdate()
-  document.querySelector('#spec-tree').style.display = 'inline-block'
-
-  build.setSpec(specName)
-
-  if (!data.defaultTalents.length) return
-
-  for (let tal of data.defaultTalents) {
-    const talent = classTree.talents.find(el => el.x == tal.x && el.y == tal.y)
-    talent.learned = talent.levels
-    talent.uncount()
-    talent.activate()
-    talent.childAvailable()
-  }
-
-  classTree.recalcPoints()
+      if (res.defaultTalents) classTree.setDefaultTalents(res.defaultTalents)
+    })
+    .catch(err => {
+      console.log(err)
+      if (err) alert(`Something went wrong. Please try to reload the page.`)
+    })
 }
-
-function getMenuUp() {
-  document.querySelector('#logo').style.width = '150px'
-
-  document.querySelector('.header-title').style.display = 'none'
-  document.querySelector('#choose-text').style.display = 'none'
-
-  const selector = document.querySelector('.class-selector')
-  selector.style.width = 'unset'
-  selector.style.height = '60px'
-
-  document.querySelectorAll('.class').forEach(el => {
-    el.style.width = '34px'
-    el.style.height = '34px'
-  })
-}
-
-setMinigames()
