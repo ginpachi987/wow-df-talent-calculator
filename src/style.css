@@ -74,13 +74,6 @@ body {
   border-radius: 50%;
 }
 
-<<<<<<< Updated upstream
-.hexagon {
-  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-}
-
-=======
->>>>>>> Stashed changes
 #links {
   position: absolute;
   top: 0;

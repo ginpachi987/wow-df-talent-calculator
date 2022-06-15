@@ -107,32 +107,6 @@ class BaseTalent {
     this.children = []
   }
 
-<<<<<<< Updated upstream
-  draw(ctx) {
-    if (!this.children.length) return
-    this.children.forEach(child => {
-      ctx.beginPath()
-      ctx.moveTo(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace)
-      ctx.lineTo(child.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace, child.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace)
-      ctx.stroke()
-    })
-
-    if (this.type != 'hexagon') return
-    ctx.save()
-
-    if (!this.available) ctx.fillStyle = '#a3a2a3'
-    else if (this.learned == this.levels) ctx.fillStyle = '#d8b30b'
-    else ctx.fillStyle = '#42a841'
-
-    ctx.lineWidth = 2
-    ctx.translate(this.x * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1, this.y * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1)
-    ctx.beginPath()
-    ctx.moveTo(cellSize / 2 + 6, 0)
-    ctx.rotate(Math.PI / 8)
-    for (let i = 0; i < 8; i++) {
-      ctx.rotate(-Math.PI / 4)
-      ctx.lineTo(cellSize / 2 + 6, 0)
-=======
   delete() {
     this.el.remove()
   }
@@ -147,7 +121,6 @@ class BaseTalent {
       title: this.title,
       descr: this.descr,
       children: this.children
->>>>>>> Stashed changes
     }
     if (this.type == 'octagon') {
       talent.ranks = 2
