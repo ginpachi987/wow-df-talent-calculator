@@ -18,18 +18,37 @@ class BaseTalent {
     this.title2 = ''
     this.descr2 = ''
 
+    this.shiftRight = false
+
     this.children = []
     // this.tree = tree
   }
 
-  draw(ctx) {
+  draw(ctx, addShift = false) {
     if (!this.children.length) return
     this.children.forEach(child => {
       ctx.beginPath()
       ctx.strokeStyle = '#a3a2a3'
       ctx.lineWidth = 2
-      ctx.moveTo(this.col * (this.size + this.space) + this.size / 2 + this.space, this.row * (this.size + this.space) + this.size / 2 + this.space)
-      ctx.lineTo(child.col * (this.size + this.space) + this.size / 2 + this.space, child.row * (this.size + this.space) + this.size / 2 + this.space)
+
+      let x1 = this.col * (this.size + this.space) + this.size / 2 + this.space
+      let x2 = child.col * (this.size + this.space) + this.size / 2 + this.space
+      let y1 = this.row * (this.size + this.space) + this.size / 2 + this.space
+      let y2 = child.row * (this.size + this.space) + this.size / 2 + this.space
+
+      if (addShift) {
+        if (this.shiftRight) {
+          x1 += (this.size + this.space)/2
+          // y1 += (this.size + this.space)/2
+        }
+        if (child.shiftRight) {
+          x2 += (this.size + this.space)/2
+          // y2 += (this.size + this.space)/2
+        }
+      }
+
+      ctx.moveTo(x1, y1)
+      ctx.lineTo(x2, y2)
       ctx.stroke()
     })
   }
@@ -52,8 +71,7 @@ class BaseTalent {
   createElements(container) {
     this.el = document.createElement('div')
     this.el.classList.add('talent')
-    this.el.style.left = `${this.col * (this.size + this.space) + this.space}px`
-    this.el.style.top = `${this.row * (this.size + this.space) + this.space}px`
+    this.placeEl()
 
     this.rankEl = document.createElement('div')
     this.rankEl.classList.add('level')
@@ -79,12 +97,15 @@ class BaseTalent {
     this.title2 = talent.title2 || ''
     this.descr2 = talent.descr2 || ''
 
+    this.shiftRight = talent.shift || talent.shiftRight || false
+
     if (images) {
       this.image = talent.image
       this.image2 = talent.image2 || ''
+
+      this.ranks = parseInt(talent.ranks || talent.levels)
     }
 
-    this.ranks = parseInt(talent.ranks || talent.levels)
     // this.type = talent.type
     // this.children = talent.children || talent.connections.map(conn => {
     //   return { col: conn.x, row: conn.y }
@@ -120,8 +141,11 @@ class BaseTalent {
       image: this.image,
       title: this.title,
       descr: this.descr,
-      children: this.children
+      children: this.children.map(child => {
+        return { col: child.col, row: child.row }
+      })
     }
+    if (this.shiftRight) talent.shiftRight = true
     if (this.type == 'octagon') {
       talent.ranks = 2
       talent.image2 = this.image2
@@ -163,6 +187,12 @@ class BaseTalent {
     }
     this.el.style.backgroundImage = link
     this.image = image
+  }
+
+  placeEl(addShift = false) {
+    const left = this.col * (this.size + this.space) + this.space + (addShift ? (this.size + this.space) / 2 : 0)
+    this.el.style.left = `${left}px`
+    this.el.style.top = `${this.row * (this.size + this.space) + this.space}px`
   }
 }
 
@@ -209,9 +239,8 @@ export class EditorTalent extends BaseTalent {
     const type = talent.type == 'hexagon' ? 'octagon' : talent.type
     this.setType(type)
 
-    this.children = talent.children || talent.connections.map(conn => {
-      return { col: conn.x, row: conn.y }
-    })
+    this.children = talent.children.map(child => this.tree.talents[child.col][child.row])
+
     this.update()
   }
 
@@ -237,7 +266,7 @@ export class EditorTalent extends BaseTalent {
 
   setRanks(ranks) {
     this.ranks = ranks
-    this.rankEl.innerText = ranks > 1 ? `0/${ranks}` : ''
+    if (this.type != 'octagon') this.rankEl.innerText = ranks > 1 ? `0/${ranks}` : ''
     // this.rankEl.innerText = this.title ? `0/${ranks}` : ''
   }
 
@@ -252,7 +281,25 @@ export class EditorTalent extends BaseTalent {
     if (c < 0 || r < 0 || c > this.tree.cols || r > this.tree.rows) return
     const conn = this.children.find(conn => conn.col == c && conn.row == r)
     if (conn) this.children = this.children.filter(c => c != conn)
-    else this.children.push({ col: c, row: r })
+    else this.children.push(this.tree.talents[c][r])
+    this.tree.redraw()
+  }
+
+  move(dir) {
+    if (this.col + dir[0] < 0 || this.row + dir[1] < 0 || this.col + dir[0] >= this.tree.cols || this.row + dir[1] >= this.tree.rows) return
+    const replaceTalent = this.tree.talents[this.col + dir[0]][this.row + dir[1]]
+    replaceTalent.col = this.col
+    replaceTalent.row = this.row
+
+    this.col += dir[0]
+    this.row += dir[1]
+
+    this.tree.talents[this.col][this.row] = this
+    this.tree.talents[replaceTalent.col][replaceTalent.row] = replaceTalent
+
+    this.placeEl()
+    replaceTalent.placeEl()
+
     this.tree.redraw()
   }
 }
@@ -528,9 +575,17 @@ export class CalculatorTalent extends BaseTalent {
     this.setRank(0)
   }
 
+  placeEl() {
+    super.placeEl(this.shiftRight)
+  }
+
   activate(points) {
     this.enable()
     this.setRank(points)
+  }
+
+  draw(ctx) {
+    super.draw(ctx, true)
   }
 
   update() {

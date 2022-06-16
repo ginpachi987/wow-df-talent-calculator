@@ -6,7 +6,7 @@
   transition: opacity 0.2s ease-in-out;
 }
 
-.left, .right, .down, .doubleleft, .doubleright, .doubledown {
+.left, .right, .down, .doubleleft, .doubleright, .doubledown, .move-left, .move-right {
   position: absolute;
   cursor: pointer;
 }
@@ -39,4 +39,18 @@
 .doubledown {
   left: 12px;
   bottom: -80px;
+}
+
+.move-left, .move-right {
+  filter: hue-rotate(-90deg);
+}
+
+.move-left {
+  left: -22px;
+  bottom: -32px;
+}
+
+.move-right {
+  right: -24px;
+  bottom: -32px;
 }

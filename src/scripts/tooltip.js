@@ -1,4 +1,5 @@
 import { cellSize, editorCellSize } from './const'
+import { langTexts } from './language'
 import '../styles/tooltip.css'
 
 class BaseTooltip {
@@ -123,8 +124,21 @@ export class EditorTooltip extends BaseTooltip {
       this.talent.descr2 = this.descr2.value
     })
 
-    this.setTypes()
+    const label = document.createElement('label')
+    this.shiftRight = document.createElement('input')
+    this.shiftRight.type = 'checkbox'
+    this.shiftRight.checked = false
+    this.shiftRight.addEventListener('change', () => {
+      console.log(this.shiftRight.checked)
+      this.talent.shiftRight = this.shiftRight.checked
+    })
 
+    label.appendChild(this.shiftRight)
+    label.appendChild(document.createTextNode('Shift right'))
+
+    this.el.appendChild(label)
+
+    this.setTypes()
     this.createArrows()
   }
 
@@ -178,9 +192,10 @@ export class EditorTooltip extends BaseTooltip {
     this.arrows.style.pointerEvents = 'all'
     this.arrows.style.opacity = 1
 
+    this.shiftRight.checked = talent.shiftRight
+
     if (this.talent.type != 'octagon') return
     this.ranks.style.display = 'none'
-
 
     this.title2.value = talent.title2
     this.image2.value = talent.image2
@@ -207,6 +222,22 @@ export class EditorTooltip extends BaseTooltip {
       this.arrows.appendChild(arrow)
     })
 
+    const move = ['⬅️', '➡️']
+    const mClasses = ['left', 'right']
+    const mDir = [[-1, 0], [1, 0]]
+
+    move.forEach((direction, i) => {
+      const arrow = document.createElement('div')
+      arrow.innerHTML = direction
+      arrow.classList.add(`move-${mClasses[i]}`)
+      const dir = mDir[i]
+      arrow.addEventListener('click', () => {
+        this.talent.move(dir)
+      })
+
+      this.arrows.appendChild(arrow)
+    })
+
     document.body.appendChild(this.arrows)
   }
 
@@ -226,7 +257,7 @@ export class CalculatorTooltip extends BaseTooltip {
 
     this.choose = document.createElement('div')
     this.choose.classList.add('tooltip-choose')
-    this.choose.innerHTML = 'Choose node'
+    
 
     this.el.appendChild(this.choose)
 
@@ -300,21 +331,8 @@ export class CalculatorTooltip extends BaseTooltip {
   }
 
   show(talent, mobile = false) {
-    super.show(talent, mobile)
-
-    if (mobile) {
-      this.close.style.display = 'block'
-      if (talent.enabled && talent.countable) this.controlls.style.display = 'flex'
-      else this.controlls.style.display = 'none'
-    }
-
-    this.title.innerHTML = talent.title
-    this.descr.innerHTML = talent.descr.replace(/\n/g, '<br>')
-    if (talent.ranks > 1 && talent.type != 'octagon') {
-      this.ranks.style.display = 'block'
-      this.ranks.innerHTML = `${talent.ranks} Ranks`
-    }
-
+    this.showSecond(false)
+    this.learn.style.display = 'none'
     if (talent.type == 'octagon') {
       this.showFirst(true)
       if (talent.rank == 0) {
@@ -332,16 +350,34 @@ export class CalculatorTooltip extends BaseTooltip {
       this.title2.innerHTML = talent.title2
       this.descr2.innerHTML = talent.descr2.replace(/\n/g, '<br>')
     }
+    
+    super.show(talent, mobile)
+    this.choose.innerHTML = langTexts["Choose node"]
+
+    if (mobile) {
+      this.close.style.display = 'block'
+      if (talent.enabled && talent.countable) this.controlls.style.display = 'flex'
+      else this.controlls.style.display = 'none'
+    }
+
+    this.title.innerHTML = talent.title
+    this.descr.innerHTML = talent.descr.replace(/\n/g, '<br>')
+    if (talent.ranks > 1 && talent.type != 'octagon') {
+      this.ranks.style.display = 'block'
+      this.ranks.innerHTML = `${talent.ranks} ${langTexts["Ranks"]}`
+    }
+
+    
 
     if (talent.row == 4 && talent.tree.pointsSpent < 8) {
       this.learn.style.display = 'block'
       this.learn.classList.add('tooltip-learn-red')
-      this.learn.innerHTML = `Spend ${8 - talent.tree.pointsSpent} more points to unlock`
+      this.learn.innerHTML = langTexts["Spend"].replace('?', 8 - talent.tree.pointsSpent)
     }
     if (talent.row == 7 && talent.tree.pointsSpent < 20) {
       this.learn.style.display = 'block'
       this.learn.classList.add('tooltip-learn-red')
-      this.learn.innerHTML = `Spend ${20 - talent.tree.pointsSpent} more points to unlock`
+      this.learn.innerHTML = langTexts["Spend"].replace('?', 20 - talent.tree.pointsSpent)
     }
   }
 

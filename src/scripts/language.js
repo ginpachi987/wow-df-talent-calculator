@@ -7,7 +7,7 @@ export async function setLanguage() {
   const langList = await (await fetch('/json/langs/list.json')).json()
   if (!langList.includes(lang)) lang = 'en'
 
-  // langTexts = await (await fetch(`/json/langs/${lang}.json`)).json()
+  langTexts = await (await fetch(`/json/langs/${lang}.json`)).json()
 
   const langSelect = document.createElement('div')
   langSelect.classList.add('lang-select')

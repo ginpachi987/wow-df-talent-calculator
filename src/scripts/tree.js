@@ -207,6 +207,7 @@ export class CalculatorTree extends BaseTree {
   }
 
   setTree(tree, build = '') {
+    this.sectionPoints = [0, 0, 0]
     super.setTree(tree)
     this.talents.forEach(talent => {
       talent.delete()

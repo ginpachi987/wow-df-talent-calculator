@@ -123,8 +123,10 @@ input, textarea {
 
 .ranks-calculator {
   display: none;
-  width: 52px;
+  width: 54px;
   font-size: 14px;
+  text-align: right;
+  color: #9d9d9d;
 }
 
 .tooltip-controlls {
