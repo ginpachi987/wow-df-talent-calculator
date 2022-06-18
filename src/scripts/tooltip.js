@@ -257,7 +257,7 @@ export class CalculatorTooltip extends BaseTooltip {
 
     this.choose = document.createElement('div')
     this.choose.classList.add('tooltip-choose')
-    
+
 
     this.el.appendChild(this.choose)
 
@@ -325,7 +325,8 @@ export class CalculatorTooltip extends BaseTooltip {
     this.up.classList.add('tooltip-rank-up')
     this.up.innerHTML = '+'
     this.up.addEventListener('click', () => {
-      this.talent.setRank(this.talent.rank + 1)
+      if (this.talent.tree.pointsSpent < this.talent.tree.points)
+        this.talent.setRank(this.talent.rank + 1)
     })
     this.controlls.appendChild(this.up)
   }
@@ -350,13 +351,13 @@ export class CalculatorTooltip extends BaseTooltip {
       this.title2.innerHTML = talent.title2
       this.descr2.innerHTML = talent.descr2.replace(/\n/g, '<br>')
     }
-    
+
     super.show(talent, mobile)
     this.choose.innerHTML = langTexts["Choose node"]
 
     if (mobile) {
       this.close.style.display = 'block'
-      if (talent.enabled && talent.countable) this.controlls.style.display = 'flex'
+      if (talent.enabled && talent.countable && !talent.grayout) this.controlls.style.display = 'flex'
       else this.controlls.style.display = 'none'
     }
 
