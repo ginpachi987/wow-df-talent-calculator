@@ -367,8 +367,6 @@ export class CalculatorTooltip extends BaseTooltip {
       this.ranks.innerHTML = `${talent.ranks} ${langTexts["Ranks"]}`
     }
 
-    
-
     if (talent.row == 4 && talent.tree.pointsSpent < 8) {
       this.learn.style.display = 'block'
       this.learn.classList.add('tooltip-learn-red')

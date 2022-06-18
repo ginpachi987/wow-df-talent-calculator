@@ -31,19 +31,22 @@ class BaseTalent {
       ctx.strokeStyle = '#a3a2a3'
       ctx.lineWidth = 2
 
-      let x1 = this.col * (this.size + this.space) + this.size / 2 + this.space
-      let x2 = child.col * (this.size + this.space) + this.size / 2 + this.space
-      let y1 = this.row * (this.size + this.space) + this.size / 2 + this.space
-      let y2 = child.row * (this.size + this.space) + this.size / 2 + this.space
+      let x1 = this.col * (this.size + this.space) + this.size / 2 + this.space + 2
+      let x2 = child.col * (this.size + this.space) + this.size / 2 + this.space + 2
+      let y1 = this.row * (this.size + this.space) + this.size / 2 + this.space + 2
+      let y2 = child.row * (this.size + this.space) + this.size / 2 + this.space + 2
 
       if (addShift) {
         if (this.shiftRight) {
-          x1 += (this.size + this.space)/2
-          // y1 += (this.size + this.space)/2
+          x1 += (this.size + this.space) / 2
         }
         if (child.shiftRight) {
-          x2 += (this.size + this.space)/2
-          // y2 += (this.size + this.space)/2
+          x2 += (this.size + this.space) / 2
+        }
+        if (this.rank == this.ranks || (this.type == 'octagon' && this.rank > 0)) {
+          if (child.rank == child.ranks || (child.type == 'octagon' && child.rank > 0)) ctx.strokeStyle = '#bb9a09'
+          else if ((child.row == 4 && child.tree.sectionPoints[0] < 8) || (child.row == 7 && child.tree.sectionPoints[0] + child.tree.sectionPoints[1] < 20) || child.grayout) ctx.strokeStyle = '#a3a2a3'
+          else ctx.strokeStyle = '#2f722e'
         }
       }
 
@@ -434,6 +437,7 @@ export class CalculatorTalent extends BaseTalent {
     this.tooltip = tooltip
     this.rank = 0
     this.enabled = false
+    this.grayout = false
     this.countable = true
     // this.createElements(this.tree.container)
 
@@ -586,6 +590,11 @@ export class CalculatorTalent extends BaseTalent {
 
   draw(ctx) {
     super.draw(ctx, true)
+  }
+
+  setGray(state) {
+    this.grayout = state
+    this.el.classList.toggle('disabled', state)
   }
 
   update() {

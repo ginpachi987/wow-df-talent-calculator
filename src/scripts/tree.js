@@ -276,7 +276,20 @@ export class CalculatorTree extends BaseTree {
       })
     }
 
+    if (this.pointsSpent == this.points) {
+      this.talents.filter(talent => talent.enabled && talent.rank == 0).forEach(talent => {
+        talent.setGray(true)
+      })
+    }
+
+    if (this.pointsSpent < this.points) {
+      this.talents.filter(talent => talent.grayout).forEach(talent => {
+        talent.setGray(false)
+      })
+    }
+
     this.updateLink()
+    this.redraw()
   }
 
   updateLink() {

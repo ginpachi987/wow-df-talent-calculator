@@ -31,8 +31,15 @@ getAvailable()
 
 function getTree(lang = 'en') {
   fetch(`../json/trees/${lang}/${currentClass}_${currentSpec}.json`)
-    .then(res => res.json())
     .then(res => {
+      if (!res.ok) {
+        loc.setClear(createTable)
+        return false
+      }
+      return res.json()
+    })
+    .then(res => {
+      if (!res) return
       if (lang == 'en') {
         en.setTree(res)
         loc.setTree(res)
@@ -41,7 +48,7 @@ function getTree(lang = 'en') {
     })
     .catch(err => {
       console.log(err)
-      if (err) alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
+      // if (err) alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
       if (lang != 'en') loc.setClear(createTable)
     })
 }
@@ -110,7 +117,7 @@ function setClassButtons() {
       classButtons[key].classList.add('disabled')
       return
     }
-    
+
     classButtons[key].addEventListener('click', () => {
       if (currentClass == key) return
 
@@ -120,13 +127,13 @@ function setClassButtons() {
         v.classList.remove('max')
       })
       classButtons[key].classList.add('max')
-    
+
       specSelector.innerHTML = ''
       specButtons = {}
       currentClass = key
 
-      setSpecButtons(value)      
-    })    
+      setSpecButtons(value)
+    })
   })
 }
 
@@ -139,7 +146,7 @@ function setSpecButtons(specList) {
 
     specSelector.appendChild(specButtons[sp])
 
-    if (!availableSpecs.includes(currentClass+'_'+sp)) {
+    if (!availableSpecs.includes(currentClass + '_' + sp)) {
       specButtons[sp].classList.add('disabled')
       return
     }

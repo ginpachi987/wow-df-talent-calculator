@@ -44,13 +44,13 @@ let path = window.location.pathname.split('/')
 getAvailable()
 
 function getAvailable() {
-  fetch('/json/classes.json')
+  fetch('/df-talents/json/classes.json')
     .then(res => res.json())
     .then(res => {
       availableClasses = res
 
 
-      fetch('/json/specs.json')
+      fetch('/df-talents/json/specs.json')
         .then(res => res.json())
         .then(res => {
           availableSpecs = res
@@ -141,7 +141,7 @@ function setSpecButtons(specList) {
 }
 
 function getTree(buffer = false, spec = currentSpec) {
-  fetch(`/json/trees/${lang}/${currentClass}_${spec}.json`)
+  fetch(`/df-talents/json/trees/${lang}/${currentClass}_${spec}.json`)
     .then(res => res.json())
     .then(res => {
       if (buffer) {

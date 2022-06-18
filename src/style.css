@@ -37,6 +37,7 @@ body {
   cursor: pointer;
   display: inline-block;
   margin: 2px;
+  background-size: cover;
 }
 
 .lang:hover {
