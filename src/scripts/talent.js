@@ -572,7 +572,7 @@ export class CalculatorTalent extends BaseTalent {
   }
 
   enable(checkParents = false) {
-    if (checkParents && this.parents.length && !this.parents.some(parent => parent.rank == parent.ranks)) return
+    if (checkParents && this.parents.length && !this.parents.some(parent => (parent.rank == parent.ranks && parent.type != 'octagon') || (parent.rank > 0 && parent.type == 'octagon'))) return
     if (this.row == 4 && this.tree.pointsSpent < 8) return
     if (this.row == 7 && this.tree.pointsSpent < 20) return
 
