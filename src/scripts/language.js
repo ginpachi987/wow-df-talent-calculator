@@ -5,26 +5,37 @@ export async function setLanguage() {
   lang = localStorage.getItem('lang') || navigator.language.split('-')[0]
 
   const langList = await (await fetch('/df-talents/json/langs/list.json')).json()
-  if (!langList.includes(lang)) lang = 'en'
+  if (!Object.keys(langList).includes(lang)) lang = 'en'
 
   langTexts = await (await fetch(`/df-talents/json/langs/${lang}.json`)).json()
 
-  const langSelect = document.createElement('div')
+  const wrapper = document.createElement('div')
+  wrapper.classList.add('lang-select-wrapper')
+
+  const langSelect = document.createElement('select')
   langSelect.classList.add('lang-select')
 
+  wrapper.appendChild(langSelect)
+
   if (langList.length == 1) return
-  langList.forEach(l => {
-    const langButton = document.createElement('div')
-    langButton.classList.add('lang')
-    if (lang == l) langButton.classList.add('max')
-    langButton.style.backgroundImage = `url(/df-talents/img/${l}.png)`
-    langButton.addEventListener('click', () => {
-      // lang = lang
-      localStorage.setItem('lang', l)
-      location.reload()
-    })
-    langSelect.appendChild(langButton)
+  Object.keys(langList).forEach(lang => {
+    const option = document.createElement('option')
+    option.value = lang
+
+    const img = document.createElement('img')
+    img.src = `/df-talents/img/${lang}.png`
+    img.alt = lang
+    option.appendChild(img)
+    option.innerHTML += ` ${langList[lang]}`
+
+    if (lang == localStorage.getItem('lang')) option.selected = true
+    langSelect.appendChild(option)
   })
 
-  document.body.appendChild(langSelect)
+  langSelect.addEventListener('change', () => {
+    localStorage.setItem('lang', langSelect.value)
+    location.reload()
+  })
+
+  document.querySelector('.header').appendChild(wrapper)
 }

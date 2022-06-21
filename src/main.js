@@ -9,12 +9,12 @@ import { setVersion } from './scripts/version'
 
 import { build } from './scripts/build'
 // import { Summary } from './scripts/summary'
-import { setMinigames } from './scripts/minigames'
+// import { setMinigames } from './scripts/minigames'
 import { setLanguage, lang } from './scripts/language'
 
 setLanguage()
 setVersion()
-setMinigames()
+// setMinigames()
 
 const tooltip = new CalculatorTooltip()
 
@@ -132,6 +132,10 @@ function setSpecButtons(specList) {
 
       document.querySelector('.classes').classList.add('v-scroll')
       specsElement.classList.add('v-scroll')
+
+      document.querySelector('.lang-select-wrapper').style.display = 'block'
+
+      document.querySelector('.trees').style.backgroundImage = `url(https://wow.zamimg.com/images/tools/dragonflight-talent-calc/${currentClass}-${currentSpec}.webp)`
     })
   })
   if (path[4]) {

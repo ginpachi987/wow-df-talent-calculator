@@ -181,3 +181,7 @@ input, textarea {
   /* background-color: #a7a7a7; */
   margin: 16px 0;
 }
+
+green {
+  color: rgb(0, 255, 0);
+}

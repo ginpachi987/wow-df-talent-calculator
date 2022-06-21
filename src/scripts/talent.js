@@ -477,16 +477,28 @@ export class CalculatorTalent extends BaseTalent {
     if (button == 0) {
       if (this.tree.pointsSpent == this.tree.points && !(this.type == 'octagon' && this.rank > 0)) return
       this.setRank(this.rank + 1)
+      this.tooltip.hide()
+      this.tooltip.show(this)
     }
     if (button == 2) {
       if (!this.countable) return
       this.setRank(this.rank - 1)
+      this.tooltip.hide()
+      this.tooltip.show(this)
     }
   }
 
   setInfo(talent) {
     super.setInfo(talent, false)
     this.type = talent.type
+
+    if (this.ranks > 1 && this.type !== 'octagon') {
+      const vars = this.descr.match(/\[.*\]/g)
+      if (!vars) return
+
+      this.vars = vars.map(v => v.replace(/[\[\]]/g, '').split('/'))
+      this.descr = this.descr.replace(/\[.*\]/g, '?')
+    }
   }
 
   createElements(container) {

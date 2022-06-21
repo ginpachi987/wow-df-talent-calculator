@@ -93,3 +93,11 @@ function getTree() {
       tree.tree = currentSpec
     })
 }
+
+document.querySelector('#color').addEventListener('input', (e) => {
+  tree.color = e.target.value
+  document.body.style.backgroundColor = e.target.value
+})
+document.querySelector('#title').addEventListener('input', (e) => {
+  tree.title = e.target.value
+})

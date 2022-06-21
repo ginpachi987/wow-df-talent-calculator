@@ -282,6 +282,17 @@ export class CalculatorTooltip extends BaseTooltip {
     this.descr = document.createElement('div')
     this.el.appendChild(this.descr)
 
+    // Next rank
+    this.next = document.createElement('div')
+    this.next.innerHTML = 'Next rank:'
+    this.next.style.marginTop = '16px'
+    this.next.style.color = 'white'
+    this.next.style.display = 'none'
+    this.el.appendChild(this.next)
+
+    this.nextRank = document.createElement('div')
+    this.el.appendChild(this.nextRank)
+
     // Talent 2
     this.hr = document.createElement('hr')
     this.hr.classList.add('tooltip-hr')
@@ -319,14 +330,19 @@ export class CalculatorTooltip extends BaseTooltip {
     this.down.innerHTML = '-'
     this.down.addEventListener('click', () => {
       this.talent.setRank(this.talent.rank - 1)
+      this.hide()
+      this.show(this.talent, true)
     })
     this.controlls.appendChild(this.down)
     this.up = document.createElement('div')
     this.up.classList.add('tooltip-rank-up')
     this.up.innerHTML = '+'
     this.up.addEventListener('click', () => {
-      if (this.talent.tree.pointsSpent < this.talent.tree.points)
+      if (this.talent.tree.pointsSpent < this.talent.tree.points) {
         this.talent.setRank(this.talent.rank + 1)
+        this.hide()
+        this.show(this.talent, true)
+      }
     })
     this.controlls.appendChild(this.up)
   }
@@ -354,6 +370,7 @@ export class CalculatorTooltip extends BaseTooltip {
 
     super.show(talent, mobile)
     this.choose.innerHTML = langTexts["Choose node"]
+    this.next.innerHTML =  langTexts['Next rank'] + ':'
 
     if (mobile) {
       this.close.style.display = 'block'
@@ -364,8 +381,27 @@ export class CalculatorTooltip extends BaseTooltip {
     this.title.innerHTML = talent.title
     this.descr.innerHTML = talent.descr.replace(/\n/g, '<br>')
     if (talent.ranks > 1 && talent.type != 'octagon') {
+      let descr = talent.descr
+      const rank = talent.rank > 0 ? talent.rank : 1
       this.ranks.style.display = 'block'
-      this.ranks.innerHTML = `${talent.ranks} ${langTexts["Ranks"]}`
+
+      this.ranks.innerHTML = `${langTexts["Rank"]} ${rank}`
+
+      talent.vars.forEach(vars => {
+        descr = descr.replace('?', vars[rank - 1])
+      })
+      this.descr.innerHTML = descr.replace(/\n/g, '<br>')
+
+      if (talent.rank > 0 && talent.rank < talent.ranks) {
+        this.next.style.display = 'block'
+        this.nextRank.style.display = 'block'
+
+        let descr = talent.descr
+        talent.vars.forEach(vars => {
+          descr = descr.replace('?', `<green>${vars[rank]}</green>`)
+        })
+        this.nextRank.innerHTML = descr.replace(/\n/g, '<br>')
+      }
     }
 
     if (talent.row == 4 && talent.tree.pointsSpent < 8) {
@@ -392,6 +428,9 @@ export class CalculatorTooltip extends BaseTooltip {
 
     this.close.style.display = 'none'
     this.controlls.style.display = 'none'
+
+    this.next.style.display = 'none'
+    this.nextRank.style.display = 'none'
   }
 
   showFirst(show) {

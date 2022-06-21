@@ -27,6 +27,9 @@ let specButtons = {}
 const classSelector = document.querySelector('.classes')
 const specSelector = document.querySelector('.specs')
 
+document.querySelector('.lang-selector-wrapper').style.display = 'none'
+document.querySelector('.class-selector').style.display = 'flex'
+
 getAvailable()
 
 function getTree(lang = 'en') {
@@ -59,12 +62,19 @@ function createTable() {
   en.talents.forEach(talent => {
     const localeTalent = loc.talents.find(t => t.col == talent.col && t.row == talent.row)
     if (!localeTalent) return
+
     talent.createElements(list, localeTalent)
   })
 }
 
 const save = document.querySelector('.save-button')
 save.addEventListener('click', () => {
+  loc.saveAsFile(undefined, lang)
+})
+
+document.addEventListener('keydown', e => {
+  if (!(e.code == 'KeyS' && e.ctrlKey)) return
+  e.preventDefault()
   loc.saveAsFile(undefined, lang)
 })
 
@@ -85,7 +95,11 @@ function getLanguageList() {
           lang = l
           wrapper.style.display = 'none'
 
-          document.querySelector('.class-selector').style.display = 'flex'
+          getTree(lang)
+          document.querySelector('.talent-list').style.display = 'block'
+          document.querySelector('.save-button').style.display = 'block'
+          document.querySelector('#logo').style.width = '150px'
+
         })
         langs.appendChild(el)
       })
@@ -161,13 +175,10 @@ function setSpecButtons(specList) {
       specButtons[sp].classList.add('max')
 
       getTree()
-      getTree(lang)
 
+      document.querySelector('.lang-selector-wrapper').style.display = 'flex'
       document.querySelector('.class-selector').style.display = 'none'
       document.querySelector('.spec-selector').style.display = 'none'
-      document.querySelector('.talent-list').style.display = 'block'
-      document.querySelector('.save-button').style.display = 'block'
-      document.querySelector('#logo').style.width = '150px'
     })
   })
 }

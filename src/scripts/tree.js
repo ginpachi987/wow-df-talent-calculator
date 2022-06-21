@@ -12,6 +12,8 @@ class BaseTree {
     this.tree = ''
     this.talents = []
     this.defaultTalents = []
+    this.title = ''
+    this.color = ''
   }
 
   setTree(tree) {
@@ -19,6 +21,8 @@ class BaseTree {
     this.rows = tree.rows
     this.class = tree.class
     this.tree = tree.tree || tree.spec
+    this.title = tree.title || ''
+    this.color = tree.color || '#212121'
   }
 
   createElement(selector) {
@@ -47,8 +51,10 @@ class BaseTree {
       cols: this.cols,
       rows: this.rows,
       talents: talents.map(tal => tal.saveAsFile()),
-      defaultTalents: this.defaultTalents
+      defaultTalents: this.defaultTalents,
+      title: this.title
     }
+    if (this.color != '' && this.color != '#212121') treeToSave.color = this.color
     const a = document.createElement('a')
     a.href = window.URL.createObjectURL(new Blob([JSON.stringify(treeToSave)], { type: 'text/plain' }))
     a.download = `${this.class}_${this.tree}${lang ? '.' + lang : ''}.json`
@@ -130,6 +136,11 @@ export class EditorTree extends BaseTree {
       return {col: tal.col || tal.x || 0, row: tal.row || tal.y || 0}
     })
 
+    document.querySelector('#color').value = this.color
+    document.querySelector('#title').value = this.title
+
+    document.body.style.backgroundColor = this.color
+
     this.redraw()
   }
 
@@ -159,6 +170,10 @@ export class TranslateTree extends BaseTree {
     this.talents = tree.talents.map(talent => new TranslateTalent(talent))
 
     this.defaultTalents = tree.defaultTalents
+    document.querySelector('#title-en').innerHTML = this.title
+
+
+    document.body.style.backgroundColor = this.color
   }
 
   copyTranslation(tree, callback) {
@@ -172,6 +187,13 @@ export class TranslateTree extends BaseTree {
       else {
         tal.clearTexts()
       }
+    })
+
+    this.title = tree.title || ''
+    const title = document.querySelector('#title-locale')
+    title.value = this.title
+    title.addEventListener('input', () => {
+      this.title = title.value
     })
 
     callback()
@@ -194,9 +216,9 @@ export class CalculatorTree extends BaseTree {
     this.createElement(selector)
     this.resize()
 
-    this.title = document.createElement('div')
-    this.title.classList.add('spec-name')
-    this.container.appendChild(this.title)
+    this.titleEl = document.createElement('div')
+    this.titleEl.classList.add('spec-name')
+    this.container.appendChild(this.titleEl)
 
     this.tooltip = tooltip
     this.points = points
@@ -213,7 +235,7 @@ export class CalculatorTree extends BaseTree {
       talent.delete()
     })
 
-    this.title.innerText = `${this.tree == 'class' ? this.class : this.tree} Tree`
+    this.titleEl.innerText = `${this.title?this.title:(this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
 
     this.resize()
 
@@ -244,13 +266,15 @@ export class CalculatorTree extends BaseTree {
     this.redraw()
 
     if (build) this.setTalents(build)
+
+    document.querySelector('.trees').style.backgroundColor = this.color
   }
 
   addPoints(points, section) {
     this.sectionPoints[section] += points
     this.pointsSpent = this.sectionPoints.reduce((a, b) => a + b, 0)
 
-    this.title.innerText = `${this.tree == 'class' ? this.class : this.tree} Tree (${this.pointsSpent}/${this.points})`
+    this.titleEl.innerHTML = `${this.title?this.title:(this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
 
     if (this.sectionPoints[0] > 7) {
       this.talents.filter(talent => talent.row == 4).forEach(talent => {
