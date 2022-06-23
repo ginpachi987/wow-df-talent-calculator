@@ -1,5 +1,4 @@
 .talent-list {
-  display: none;
   flex: 1;
   flex-direction: column;
   align-items: center;
@@ -57,7 +56,6 @@ textarea {
 }
 
 .save-button {
-  display: none;
   background-color: #ffc626;
   border: none;
   border-radius: 8px;
@@ -74,7 +72,7 @@ textarea {
 
 .lang-selector-wrapper {
   flex: 1;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -90,11 +88,6 @@ textarea {
   background-size: cover;
 }
 
-.links {
-  position: relative;
-  align-self: flex-end;
-}
-
 .class-selector {
   display: none;
   flex: 1;
@@ -106,17 +99,6 @@ textarea {
 .spec-selector {
   display: none;
   height: 100px;
-}
-
-@media (max-width: 800px) {
-  .links {
-    position: relative;
-    top: 0;
-    right: 0;
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 4px;
-  }
 }
 
 .small {

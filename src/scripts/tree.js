@@ -139,7 +139,7 @@ export class EditorTree extends BaseTree {
     document.querySelector('#color').value = this.color
     document.querySelector('#title').value = this.title
 
-    document.body.style.backgroundColor = this.color
+    // document.body.style.backgroundColor = this.color
 
     this.redraw()
   }
@@ -173,7 +173,7 @@ export class TranslateTree extends BaseTree {
     document.querySelector('#title-en').innerHTML = this.title
 
 
-    document.body.style.backgroundColor = this.color
+    // document.body.style.backgroundColor = this.color
   }
 
   copyTranslation(tree, callback) {
@@ -230,6 +230,7 @@ export class CalculatorTree extends BaseTree {
 
   setTree(tree, build = '') {
     this.sectionPoints = [0, 0, 0]
+    this.pointsSpent = 0
     super.setTree(tree)
     this.talents.forEach(talent => {
       talent.delete()
@@ -267,7 +268,7 @@ export class CalculatorTree extends BaseTree {
 
     if (build) this.setTalents(build)
 
-    document.querySelector('.trees').style.backgroundColor = this.color
+    // document.querySelector('.trees').style.backgroundColor = this.color
   }
 
   addPoints(points, section) {

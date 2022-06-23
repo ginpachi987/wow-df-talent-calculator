@@ -3,12 +3,10 @@ import './style.css'
 import '../styles/arrows.css'
 import { EditorTree } from '../scripts/tree'
 import { EditorTooltip } from '../scripts/tooltip'
-import { classes } from '../scripts/classes'
-import { imageServer } from '../scripts/const'
-import { images } from '../scripts/images'
-
 import { setVersion } from '../scripts/version'
+import { Menu } from '../scripts/menu'
 
+const menu = new Menu('Talent Tree Editor', menuCallback, false, true)
 setVersion()
 
 let cols = 10
@@ -31,51 +29,17 @@ document.querySelector('#save-json').addEventListener('click', () => {
 let currentClass = ''
 let currentSpec = ''
 
-const cls = {}
-let spc = {}
+const wrapper = document.querySelector('.editor-wrapper')
 
-const classesEl = document.querySelector('.classes')
-const specsEl = document.querySelector('.specs')
+function menuCallback(cls, spec) {
+  if (currentClass == cls && currentSpec == spec) return
+  currentClass = cls
+  currentSpec = spec
+  menu.up()
+  wrapper.style.display = 'flex'
 
-Object.entries(classes).forEach(([key, value]) => {
-  cls[key] = document.createElement('div')
-  cls[key].classList.add('talent', 'inline-talent')
-  cls[key].style.backgroundImage = `url(${imageServer}/${images[key + '_class']}.jpg)`
-  cls[key].addEventListener('click', () => {
-    if (currentClass == key) return
-
-    Object.entries(cls).forEach(([k, v]) => {
-      v.classList.remove('max')
-    })
-    cls[key].classList.add('max')
-
-    specsEl.innerHTML = ''
-    spc = {}
-    currentClass = key
-    const s = ['class']
-    s.concat([...value]).forEach(sp => {
-      spc[sp] = document.createElement('div')
-      spc[sp].classList.add('talent', 'inline-talent')
-      spc[sp].style.backgroundImage = `url(${imageServer}/${images[key + '_' + sp]}.jpg)`
-
-      spc[sp].addEventListener('click', () => {
-        if (currentSpec == sp) return
-        currentSpec = sp
-
-        Object.entries(spc).forEach(([k, v]) => {
-          v.classList.remove('max')
-        })
-        spc[sp].classList.add('max')
-
-        getTree()
-      })
-
-      specsEl.appendChild(spc[sp])
-    })
-  })
-
-  classesEl.appendChild(cls[key])
-})
+  getTree()
+}
 
 function getTree() {
   fetch(`../json/trees/en/${currentClass}_${currentSpec}.json`)
@@ -84,6 +48,8 @@ function getTree() {
       tree.setTree(res)
       colsEl.value = tree.cols
       cols = tree.cols
+
+      wrapper.style.backgroundColor = res.color || '#212121'
     })
     .catch(err => {
       if (err) alert(`Where is currently no tree for ${currentClass} ${currentSpec}. You can start making it!`)
@@ -91,12 +57,15 @@ function getTree() {
 
       tree.class = currentClass
       tree.tree = currentSpec
+
+      const title = tree.tree == 'class' ? tree.class : tree.tree
+      document.querySelector('#title').value = title[0].toUpperCase() + title.substring(1) + ' Tree'
     })
 }
 
 document.querySelector('#color').addEventListener('input', (e) => {
   tree.color = e.target.value
-  document.body.style.backgroundColor = e.target.value
+  wrapper.style.backgroundColor = e.target.value
 })
 document.querySelector('#title').addEventListener('input', (e) => {
   tree.title = e.target.value

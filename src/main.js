@@ -1,17 +1,14 @@
 import './style.css'
-import { classes } from './scripts/classes'
-import { images } from './scripts/images'
 import { CalculatorTree } from './scripts/tree'
 import { CalculatorTooltip } from './scripts/tooltip'
-import { imageServer } from './scripts/const'
-
 import { setVersion } from './scripts/version'
-
 import { build } from './scripts/build'
+import { setLanguage, lang } from './scripts/language'
+import { Menu } from './scripts/menu'
 // import { Summary } from './scripts/summary'
 // import { setMinigames } from './scripts/minigames'
-import { setLanguage, lang } from './scripts/language'
 
+const menu = new Menu('Talent Calculator', getTrees, true, false)
 setLanguage()
 setVersion()
 // setMinigames()
@@ -25,141 +22,50 @@ let bufferTree
 let currentClass = ''
 let currentSpec = ''
 
-let availableClasses
-let availableSpecs
-
-const classButtons = {}
-let specButtons = {}
-
-const classSelector = document.querySelector('.classes')
-const specSelector = document.querySelector('.specs')
-
 const trees = document.querySelector('.trees')
-const specsElement = document.querySelector('.specs')
-
-document.querySelector('#choose-spec').style.display = 'none'
 
 let path = window.location.pathname.split('/')
+setTimeout(setPath,100)
 
-getAvailable()
-
-function getAvailable() {
-  fetch('/df-talents/json/classes.json')
-    .then(res => res.json())
-    .then(res => {
-      availableClasses = res
-
-
-      fetch('/df-talents/json/specs.json')
-        .then(res => res.json())
-        .then(res => {
-          availableSpecs = res
-          setClassButtons()
-        })
-    })
+function setPath() {
+  if (path[2]) menu.setClass(path[2])
+  if (path[4]) menu.setSpec(path[4])
 }
 
-function setClassButtons() {
-  Object.entries(classes).forEach(([key, value]) => {
-    classButtons[key] = document.createElement('div')
-    classButtons[key].classList.add('talent', 'inline-talent')
-    classButtons[key].style.backgroundImage = `url(${imageServer}${images[key + '_class']}.jpg)`
+async function getTrees(cls, spec) {
+  if (currentClass == cls && currentSpec == spec) return
+  menu.up()
+  currentClass = cls
+  currentSpec = spec
 
-    classSelector.appendChild(classButtons[key])
+  await getTree(true, 'class')
+  await getTree()
 
-    if (!availableClasses.includes(key)) {
-      classButtons[key].classList.add('disabled')
-      return
-    }
+  build.setClass(currentClass)
+  build.setSpec(currentSpec)
 
-    classButtons[key].addEventListener('click', () => {
-      if (currentClass == key) return
-
-      build.setClass(key)
-      if (!currentSpec) document.querySelector('#choose-spec').style.display = 'block'
-      specsElement.style.display = 'block'
-
-      Object.entries(classButtons).forEach(([k, v]) => {
-        v.classList.remove('max')
-      })
-      classButtons[key].classList.add('max')
-
-      specSelector.innerHTML = ''
-      specButtons = {}
-      currentClass = key
-
-      getTree(true, 'class')
-      setSpecButtons(value)
-    })
-  })
-  if (path[2]) classButtons[path[2]].click()
+  trees.style.display = 'flex'
+  document.querySelector('.lang-select-wrapper').style.display = 'block'
 }
 
-function setSpecButtons(specList) {
-  specList.forEach(sp => {
-    specButtons[sp] = document.createElement('div')
-    specButtons[sp].classList.add('talent', 'inline-talent')
-    specButtons[sp].style.backgroundImage = `url(${imageServer}${images[currentClass + '_' + sp]}.jpg)`
+async function getTree(buffer = false, spec = currentSpec) {
+  const tree = await (await (fetch(`/df-talents/json/trees/${lang}/${currentClass}_${spec}.json`))).json()
 
-    specSelector.appendChild(specButtons[sp])
-
-    if (!availableSpecs.includes(currentClass + '_' + sp)) {
-      specButtons[sp].classList.add('disabled')
-      return
-    }
-
-    specButtons[sp].addEventListener('click', () => {
-      if (currentSpec == sp) return
-      currentSpec = sp
-
-      build.setSpec(sp)
-      Object.entries(specButtons).forEach(([k, v]) => {
-        v.classList.remove('max')
-      })
-      specButtons[sp].classList.add('max')
-
-      getTree(false)
-
-      document.querySelector('#logo').style.width = '150px'
-      const header = document.querySelector('.header')
-      header.style.flexDirection = 'row'
-
-      document.querySelector('.header-title').style.display = 'none'
-      document.querySelector('#choose-class').style.display = 'none'
-      document.querySelector('#choose-spec').style.display = 'none'
-
-      trees.style.display = 'block'
-
-      document.querySelector('.classes').classList.add('v-scroll')
-      specsElement.classList.add('v-scroll')
-
-      document.querySelector('.lang-select-wrapper').style.display = 'block'
-
-      document.querySelector('.trees').style.backgroundImage = `url(https://wow.zamimg.com/images/tools/dragonflight-talent-calc/${currentClass}-${currentSpec}.webp)`
-    })
-  })
-  if (path[4]) {
-    specButtons[path[4]].click()
-    // checkPath()
+  if (!tree) {
+    alert(`Something went wrong. Please try to reload the page.`)
+    return
   }
-}
 
-function getTree(buffer = false, spec = currentSpec) {
-  fetch(`/df-talents/json/trees/${lang}/${currentClass}_${spec}.json`)
-    .then(res => res.json())
-    .then(res => {
-      if (buffer) {
-        bufferTree = res
-        return
-      }
-      classTree.setTree(bufferTree, path[3] || '')
-      specTree.setTree(res, path[5], '')
-      path = []
+  if (buffer) {
+    bufferTree = tree
+    return
+  }
+  classTree.setTree(bufferTree, path[3] || '')
+  specTree.setTree(tree, path[5] || '')
+  path = []
 
-      if (res.defaultTalents) classTree.setDefaultTalents(res.defaultTalents)
-    })
-    .catch(err => {
-      console.log(err)
-      if (err) alert(`Something went wrong. Please try to reload the page.`)
-    })
+  if (tree.defaultTalents) classTree.setDefaultTalents(tree.defaultTalents)
+
+  trees.style.backgroundColor = tree.color || '#212121'
+  document.querySelector('.trees').style.backgroundImage = `url(https://wow.zamimg.com/images/tools/dragonflight-talent-calc/${currentClass}-${currentSpec}.webp)`
 }

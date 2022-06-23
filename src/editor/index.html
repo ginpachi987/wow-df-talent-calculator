@@ -17,29 +17,22 @@
 </head>
 
 <body>
-  <a href="../"><img src="https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt563e16b3504e5808/62545b180afb5024ae74b677/rc-logo-na.png?auto=webp" alt="" srcset="" style="width:150px; display:block;margin: 0 auto; padding: 8px;"></a>
-  <div style="margin: 0 auto; text-align: center;">
-    Talent Tree Editor
+  <header></header>
+
+  <div class="editor-wrapper" style="padding-top: 24px;">
+    <div style="display: flex; flex-direction: column;">
+      <label>Title: <input id="title" class="title" type="text" placeholder="Title"></label>
+      <label>Color: <input id="color" type="color" name=""></label>
+      <label class="sizes">Columns: <input id="cols" type="number" min="5" max="15"></label>
+    </div>
+    <div class="tree-wrapper">
+      <div class="editor-tree"></div>
+    </div>
+    <!-- <div class="default-talents">
+      <button class="default-add">Add default talent</button><br/>
+    </div> -->
+    <button id="save-json">Get JSON</button>
   </div>
-
-  <div class="classes"></div>
-  <div class="specs"></div>
-
-  <div>
-    <input id="title" type="text" placeholder="Title">
-    <input id="color" type="color" name="">
-    <label class="sizes">Columns: <input id="cols" type="number" min="5" max="15"></label>
-  </div>
-
-  <div class="tree-wrapper">
-    <div class="editor-tree"></div>
-  </div>
-
-  <!-- <div class="default-talents">
-    <button class="default-add">Add default talent</button><br/>
-  </div> -->
-
-  <button id="save-json" style="margin-bottom: 16px; padding: 8px 16px;">Get JSON</button>
 
   <div class="links">
     <div class="version"></div>

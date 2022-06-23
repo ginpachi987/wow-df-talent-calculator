@@ -29,7 +29,7 @@ class BaseTalent {
     this.children.forEach(child => {
       ctx.beginPath()
       ctx.strokeStyle = '#a3a2a3'
-      ctx.lineWidth = 2
+      ctx.lineWidth = 4
 
       let x1 = this.col * (this.size + this.space) + this.size / 2 + this.space + 2
       let x2 = child.col * (this.size + this.space) + this.size / 2 + this.space + 2
@@ -53,6 +53,20 @@ class BaseTalent {
       ctx.moveTo(x1, y1)
       ctx.lineTo(x2, y2)
       ctx.stroke()
+
+      // Arrows on lines
+      // ctx.save()
+      // ctx.translate((x1+x2)/2, (y1+y2)/2)
+      // let angle = 0
+      // if (x1 < x2) angle = Math.atan2( y1 - y2, x2 - x1 )
+      // if (x1 > x2) angle = Math.PI*2 - Math.atan2( y1 - y2, x1 - x2 )
+      // ctx.rotate(angle)
+      // ctx.moveTo(0, 2)
+      // ctx.lineTo(-3,-4)
+      // ctx.moveTo(0, 2)
+      // ctx.lineTo(3,-4)
+      // ctx.stroke()
+      // ctx.restore()
     })
   }
 

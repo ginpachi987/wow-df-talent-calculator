@@ -37,5 +37,5 @@ export async function setLanguage() {
     location.reload()
   })
 
-  document.querySelector('.header').appendChild(wrapper)
+  document.querySelector('header').appendChild(wrapper)
 }
