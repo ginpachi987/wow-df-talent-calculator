@@ -5,6 +5,7 @@ import { EditorTree } from '../scripts/tree'
 import { EditorTooltip } from '../scripts/tooltip'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
+import { request } from '../scripts/api'
 
 const menu = new Menu('Talent Tree Editor', menuCallback, false, true)
 setVersion()
@@ -25,6 +26,9 @@ const tree = new EditorTree(cols, 10, '.editor-tree', tooltip)
 document.querySelector('#save-json').addEventListener('click', () => {
   tree.saveAsFile()
 })
+document.querySelector('#save-server').addEventListener('click', () => {
+  tree.saveAsFile(true)
+})
 
 let currentClass = ''
 let currentSpec = ''
@@ -42,24 +46,35 @@ function menuCallback(cls, spec) {
 }
 
 function getTree() {
-  fetch(`../json/trees/en/${currentClass}_${currentSpec}.json`)
+  const req = {
+    // lang: 'en',
+    class: currentClass,
+    spec: currentSpec
+  }
+  request('getTree', req)
+    // fetch(`../json/trees/en/${currentClass}_${currentSpec}.json`)
     .then(res => res.json())
     .then(res => {
+      if (!res) {
+        alert(`Where is currently no tree for ${currentClass} ${currentSpec}. You can start making it!`)
+
+        tree.class = currentClass
+        tree.tree = currentSpec
+
+        const title = tree.tree == 'class' ? tree.class : tree.tree
+        document.querySelector('#title').value = title[0].toUpperCase() + title.substring(1) + ' Tree'
+
+        return
+      }
       tree.setTree(res)
       colsEl.value = tree.cols
       cols = tree.cols
 
       wrapper.style.backgroundColor = res.color || '#212121'
+      document.querySelector('#title').value = tree.title
     })
     .catch(err => {
-      if (err) alert(`Where is currently no tree for ${currentClass} ${currentSpec}. You can start making it!`)
       console.log(err)
-
-      tree.class = currentClass
-      tree.tree = currentSpec
-
-      const title = tree.tree == 'class' ? tree.class : tree.tree
-      document.querySelector('#title').value = title[0].toUpperCase() + title.substring(1) + ' Tree'
     })
 }
 

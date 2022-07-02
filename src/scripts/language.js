@@ -1,13 +1,20 @@
+import { request } from "./api"
+
 export let lang
 export let langTexts
 
 export async function setLanguage() {
   lang = localStorage.getItem('lang') || navigator.language.split('-')[0]
 
-  const langList = await (await fetch('/df-talents/json/langs/list.json')).json()
+  // const langList = await (await fetch('/df-talents/json/langs/list.json')).json()
+  const langList = await (await request('getLangList')).json()
   if (!Object.keys(langList).includes(lang)) lang = 'en'
 
-  langTexts = await (await fetch(`/df-talents/json/langs/${lang}.json`)).json()
+  // langTexts = await (await fetch(`/df-talents/json/langs/${lang}.json`)).json()
+  const l = {
+    lang: lang
+  }
+  langTexts = await (await request('getTexts', l)).json()
 
   const wrapper = document.createElement('div')
   wrapper.classList.add('lang-select-wrapper')

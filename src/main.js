@@ -5,8 +5,11 @@ import { setVersion } from './scripts/version'
 import { build } from './scripts/build'
 import { setLanguage, lang } from './scripts/language'
 import { Menu } from './scripts/menu'
+import { request } from './scripts/api'
 // import { Summary } from './scripts/summary'
 // import { setMinigames } from './scripts/minigames'
+
+
 
 const menu = new Menu('Talent Calculator', getTrees, true, false)
 setLanguage()
@@ -34,12 +37,13 @@ function setPath() {
 
 async function getTrees(cls, spec) {
   if (currentClass == cls && currentSpec == spec) return
-  menu.up()
   currentClass = cls
   currentSpec = spec
 
   await getTree(true, 'class')
   await getTree()
+
+  menu.up()
 
   build.setClass(currentClass)
   build.setSpec(currentSpec)
@@ -49,8 +53,15 @@ async function getTrees(cls, spec) {
 }
 
 async function getTree(buffer = false, spec = currentSpec) {
-  const tree = await (await (fetch(`/df-talents/json/trees/${lang}/${currentClass}_${spec}.json`))).json()
-
+  const req = {
+    lang: lang,
+    class: currentClass,
+    spec: spec
+  }
+  // console.log(req)
+  const tree = await (await (request('getTree', req))).json()
+  // console.log(tree)
+  
   if (!tree) {
     alert(`Something went wrong. Please try to reload the page.`)
     return

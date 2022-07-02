@@ -2,6 +2,7 @@ import '../styles/menu.css'
 import { classes } from './classes'
 import { imageServer } from './const'
 import { images } from './images'
+import { request } from './api'
 
 export class Menu {
   constructor(title, callback, onlyAvailable = true, showClassButton = false) {
@@ -54,36 +55,38 @@ export class Menu {
     this.specSelector.style.display = 'none'
     wrapper.appendChild(this.specSelector)
 
-    this.setClassButtons()
+    this.setClassButtons(onlyAvailable)
 
     if (onlyAvailable) this.getAvailable()
   }
 
   getAvailable() {
-    fetch('/df-talents/json/classes.json')
+    request('getClasses')
+      // fetch('/df-talents/json/classes.json')
       .then(res => res.json())
       .then(res => {
         this.availableClasses = res
 
         Object.keys(classes)
-          .filter(cls => !this.availableClasses.includes(cls))
+          .filter(cls => this.availableClasses.includes(cls))
           .forEach(cls => {
-            this.classButtons[cls].classList.add('disabled')
+            this.classButtons[cls].classList.remove('disabled')
           })
       })
 
-
-    fetch('/df-talents/json/specs.json')
+    request('getSpecs')
+    // fetch('/df-talents/json/specs.json')
       .then(res => res.json())
       .then(res => {
         this.availableSpecs = res
       })
   }
 
-  setClassButtons() {
+  setClassButtons(onlyAvailable) {
     Object.entries(classes).forEach(([key, value]) => {
       this.classButtons[key] = document.createElement('div')
       this.classButtons[key].classList.add('talent', 'inline-talent')
+      if (onlyAvailable) this.classButtons[key].classList.add('disabled')
       this.classButtons[key].style.backgroundImage = `url(${imageServer}${images[key + '_class']}.jpg)`
       this.classButtons[key].title = key
 

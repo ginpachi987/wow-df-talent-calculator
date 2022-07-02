@@ -3,19 +3,18 @@ import './style.css'
 import { TranslateTree } from '../scripts/tree'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
+import { request } from '../scripts/api'
 
 let lang
 
 const menu = new Menu('Talent Tree Translator', menuCallback, true, true)
 setVersion()
 
-
 const en = new TranslateTree()
 const loc = new TranslateTree()
 
 let currentClass = ''
 let currentSpec = ''
-
 
 const wrapper = document.querySelector('.editor-wrapper')
 const langsWrapper = document.createElement('div')
@@ -31,17 +30,20 @@ function menuCallback(cls, spec) {
 }
 
 function getTree(lang = 'en') {
-  console.log('tree')
-  fetch(`../json/trees/${lang}/${currentClass}_${currentSpec}.json`)
+  const req = {
+    lang: lang,
+    class: currentClass,
+    spec: currentSpec,
+    exact: true
+  }
+  request('getTree', req)
+  // fetch(`../json/trees/${lang}/${currentClass}_${currentSpec}.json`)
+    .then(res => res.json())
     .then(res => {
-      if (!res.ok) {
+      if (!res) {
         loc.setClear(createTable)
-        return false
+        return
       }
-      return res.json()
-    })
-    .then(res => {
-      if (!res) return
       if (lang == 'en') {
         en.setTree(res)
         loc.setTree(res)
@@ -59,7 +61,7 @@ function getTree(lang = 'en') {
 
 function createTable() {
   const list = document.querySelector('.talent-list')
-  console.log(en, loc)
+  // console.log(en, loc)
 
   en.talents.forEach(talent => {
     const localeTalent = loc.talents.find(t => t.col == talent.col && t.row == talent.row)
@@ -69,9 +71,12 @@ function createTable() {
   })
 }
 
-const save = document.querySelector('.save-button')
+const save = document.querySelector('#save-json')
 save.addEventListener('click', () => {
   loc.saveAsFile(undefined, lang)
+})
+document.querySelector('#save-server').addEventListener('click', () => {
+  loc.saveAsFile(undefined, lang, true)
 })
 
 document.addEventListener('keydown', e => {
@@ -95,18 +100,19 @@ function getLanguageList() {
   langs.classList.add('lang-selector')
   langsWrapper.appendChild(langs)
 
-  fetch('../json/langs/available.json')
+  request('getLocaleList')
+  // fetch('../json/langs/available.json')
     .then(res => res.json())
     .then(langList => {
 
-      langList.forEach(l => {
+      langList.sort().forEach(l => {
         const el = document.createElement('div')
         el.classList.add('lang', 'big')
         // el.innerHTML = l
         el.style.backgroundImage = `url(../img/${l}.png)`
         el.addEventListener('click', () => {
           menu.up()
-          
+
           lang = l
           langsWrapper.style.display = 'none'
 

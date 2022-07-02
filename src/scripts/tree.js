@@ -1,5 +1,6 @@
 import { EditorTalent, TranslateTalent, CalculatorTalent } from "./talent";
 import { cellSize, cellSpace, editorCellSize, editorCellSpace } from "./const"
+import { request } from "./api";
 // import { build } from "./build"
 
 import '../styles/tree.css'
@@ -44,7 +45,7 @@ class BaseTree {
     this.canvas.height = height
   }
 
-  saveAsFile(talents = this.talents, lang = '') {
+  saveAsFile(talents = this.talents, lang = 'en', upload = false) {
     const treeToSave = {
       class: this.class,
       tree: this.tree,
@@ -55,6 +56,21 @@ class BaseTree {
       title: this.title
     }
     if (this.color != '' && this.color != '#212121') treeToSave.color = this.color
+    if (upload) {
+      const req = {
+        lang: lang,
+        class: this.class,
+        spec: this.tree,
+        tree: treeToSave
+      }
+      request('saveTree', req, true)
+        .then(res => res.json())
+        .then(res => {
+          if (res == true) alert('Tree is saved successfully')
+          else alert(res.error)
+        })
+      return
+    }
     const a = document.createElement('a')
     a.href = window.URL.createObjectURL(new Blob([JSON.stringify(treeToSave)], { type: 'text/plain' }))
     a.download = `${this.class}_${this.tree}${lang ? '.' + lang : ''}.json`
@@ -133,7 +149,7 @@ export class EditorTree extends BaseTree {
     })
 
     if (tree.defaultTalents) this.defaultTalents = tree.defaultTalents.map(tal => {
-      return {col: tal.col || tal.x || 0, row: tal.row || tal.y || 0}
+      return { col: tal.col || tal.x || 0, row: tal.row || tal.y || 0 }
     })
 
     document.querySelector('#color').value = this.color
@@ -144,9 +160,9 @@ export class EditorTree extends BaseTree {
     this.redraw()
   }
 
-  saveAsFile() {
+  saveAsFile(upload = false) {
     const talents = this.talents[0].map((_, i) => this.talents.map(row => row[i])).flat().filter(tal => tal.title)
-    super.saveAsFile(talents)
+    super.saveAsFile(talents, 'en', upload)
   }
 
   redraw() {
@@ -236,7 +252,7 @@ export class CalculatorTree extends BaseTree {
       talent.delete()
     })
 
-    this.titleEl.innerText = `${this.title?this.title:(this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
+    this.titleEl.innerText = `${this.title ? this.title : (this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
 
     this.resize()
 
@@ -254,7 +270,7 @@ export class CalculatorTree extends BaseTree {
         talents[child.col || child.x || 0][child.row || child.y || 0].parents.push(talents[col][row])
       })
     })
-    
+
     talents = talents[0].map((_, i) => talents.map(row => row[i])).flat().filter(tal => tal.title)
 
     this.talents = talents.flat().filter(talent => talent.title)
@@ -275,7 +291,7 @@ export class CalculatorTree extends BaseTree {
     this.sectionPoints[section] += points
     this.pointsSpent = this.sectionPoints.reduce((a, b) => a + b, 0)
 
-    this.titleEl.innerHTML = `${this.title?this.title:(this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
+    this.titleEl.innerHTML = `${this.title ? this.title : (this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
 
     if (this.sectionPoints[0] > 7) {
       this.talents.filter(talent => talent.row == 4).forEach(talent => {
@@ -347,7 +363,7 @@ export class CalculatorTree extends BaseTree {
     const points = res.split('').map(el => parseInt(el))
     for (let i = 0; i < Math.min(/*this.talents.length,*/ points.length); i++) {
       if (points[i] == 0) continue
-      
+
       // this.talents[i].rank = points[i]
       this.talents[i].activate(points[i])
     }
@@ -367,7 +383,7 @@ export class CalculatorTree extends BaseTree {
 
   setDefaultTalents(talents) {
     talents = talents.map(tal => {
-      return { col: tal.col || tal.x || 0, row: tal.row || tal.y || 0}
+      return { col: tal.col || tal.x || 0, row: tal.row || tal.y || 0 }
     })
 
     this.talents.filter(talent => !talent.countable).forEach(talent => talent.countable = true)

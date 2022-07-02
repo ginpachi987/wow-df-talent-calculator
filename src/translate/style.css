@@ -55,21 +55,6 @@ textarea {
   color: #d8b30b;
 }
 
-.save-button {
-  background-color: #ffc626;
-  border: none;
-  border-radius: 8px;
-  padding: 8px;
-  margin: 8px;
-  cursor: pointer;
-  color: black;
-  transition: all 0.2s ease-in-out;
-}
-
-.save-button:hover {
-  filter: brightness(115%);
-}
-
 .lang-selector-wrapper {
   flex: 1;
   display: none;
@@ -83,8 +68,8 @@ textarea {
 }
 
 .big {
-  width: 42px;
-  height: 42px;
+  width: 34px;
+  height: 34px;
   background-size: cover;
 }
 
@@ -108,10 +93,6 @@ textarea {
   top: 2px;
   right: 2px;
   border-width: 1px !important;
-}
-
-.talent {
-  cursor: default !important;
 }
 
 /* scrollbar */
