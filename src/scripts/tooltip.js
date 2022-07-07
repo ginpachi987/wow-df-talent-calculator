@@ -11,7 +11,7 @@ class BaseTooltip {
     document.body.appendChild(this.el)
   }
 
-  show(talent, mobile = false) {
+  show(talent, mobile = false, editor = false) {
     this.talent = talent
     this.el.classList.add('tooltip-show')
 
@@ -29,18 +29,29 @@ class BaseTooltip {
       return
     }
 
-    if (top + this.el.clientHeight > window.innerHeight) {
+    if (top + this.el.clientHeight > window.innerHeight || editor) {
       this.el.style.top = top + talent.size - 8 - this.el.clientHeight + 'px'
     }
     else {
       this.el.style.top = top - 4 + 'px'
     }
 
-    if (left + this.el.clientWidth + editorCellSize + 20 > window.innerWidth) {
-      this.el.style.left = left - this.el.clientWidth - 30 + 'px'
+    if (!editor) {
+      if (left + this.el.clientWidth + editorCellSize + 20 > window.innerWidth) {
+        this.el.style.left = left - this.el.clientWidth - 30 + 'px'
+      }
+      else {
+        this.el.style.left = left + editorCellSize + 20 + 'px'
+      }
     }
     else {
-      this.el.style.left = left + editorCellSize + 20 + 'px'
+      if (left - this.el.clientWidth - 20 < 0) {
+        
+        this.el.style.left = left + editorCellSize + 20 + 'px'
+      }
+      else {
+        this.el.style.left = left - this.el.clientWidth - 30 + 'px'
+      }
     }
   }
 
@@ -139,7 +150,7 @@ export class EditorTooltip extends BaseTooltip {
     this.el.appendChild(label)
 
     this.setTypes()
-    this.createArrows()
+    // this.createArrows()
   }
 
   setTypes() {
@@ -191,64 +202,64 @@ export class EditorTooltip extends BaseTooltip {
     this.image.value = talent.image
     this.descr.value = talent.descr
 
-    const top = talent.el.getBoundingClientRect().top
-    const left = talent.el.getBoundingClientRect().left
+    // const top = talent.el.getBoundingClientRect().top
+    // const left = talent.el.getBoundingClientRect().left
 
-    this.arrows.style.top = `${top}px`
-    this.arrows.style.left = `${left}px`
-    this.arrows.style.pointerEvents = 'all'
-    this.arrows.style.opacity = 1
+    // this.arrows.style.top = `${top}px`
+    // this.arrows.style.left = `${left}px`
+    // this.arrows.style.pointerEvents = 'all'
+    // this.arrows.style.opacity = 1
 
     this.shiftRight.checked = talent.shiftRight
 
-    super.show(talent)
+    super.show(talent, false, true)
   }
 
-  createArrows() {
-    this.arrows = document.createElement('div')
-    this.arrows.classList.add('arrows')
-    const directions = ['↙️', '↘️', '⬇️', '↙️', '↘️', '⬇️']
-    const classes = ['left', 'right', 'down', 'doubleleft', 'doubleright', 'doubledown']
-    const connections = [[-1, 1], [1, 1], [0, 1], [-2, 1], [2, 1], [0, 2]]
+  // createArrows() {
+  //   this.arrows = document.createElement('div')
+  //   this.arrows.classList.add('arrows')
+  //   const directions = ['↙️', '↘️', '⬇️', '↙️', '↘️', '⬇️']
+  //   const classes = ['left', 'right', 'down', 'doubleleft', 'doubleright', 'doubledown']
+  //   const connections = [[-1, 1], [1, 1], [0, 1], [-2, 1], [2, 1], [0, 2]]
 
-    directions.forEach((direction, i) => {
-      const arrow = document.createElement('div')
-      arrow.innerHTML = direction
-      arrow.classList.add(classes[i])
-      const conn = connections[i]
-      arrow.addEventListener('click', () => {
-        this.talent.toggleConnection(conn[0], conn[1])
-      })
+  //   directions.forEach((direction, i) => {
+  //     const arrow = document.createElement('div')
+  //     arrow.innerHTML = direction
+  //     arrow.classList.add(classes[i])
+  //     const conn = connections[i]
+  //     arrow.addEventListener('click', () => {
+  //       this.talent.toggleConnection(conn[0], conn[1])
+  //     })
 
-      this.arrows.appendChild(arrow)
-    })
+  //     this.arrows.appendChild(arrow)
+  //   })
 
-    const move = ['⬅️', '➡️']
-    const mClasses = ['left', 'right']
-    const mDir = [[-1, 0], [1, 0]]
+  //   const move = ['⬅️', '➡️']
+  //   const mClasses = ['left', 'right']
+  //   const mDir = [[-1, 0], [1, 0]]
 
-    move.forEach((direction, i) => {
-      const arrow = document.createElement('div')
-      arrow.innerHTML = direction
-      arrow.classList.add(`move-${mClasses[i]}`)
-      const dir = mDir[i]
-      arrow.addEventListener('click', () => {
-        this.talent.move(dir)
-      })
+  //   move.forEach((direction, i) => {
+  //     const arrow = document.createElement('div')
+  //     arrow.innerHTML = direction
+  //     arrow.classList.add(`move-${mClasses[i]}`)
+  //     const dir = mDir[i]
+  //     arrow.addEventListener('click', () => {
+  //       this.talent.move(dir)
+  //     })
 
-      this.arrows.appendChild(arrow)
-    })
+  //     this.arrows.appendChild(arrow)
+  //   })
 
-    document.body.appendChild(this.arrows)
-  }
+  //   document.body.appendChild(this.arrows)
+  // }
 
   hide() {
     super.hide()
     if (!this.talent.title) this.talent.setType('')
     this.showSecond(false)
 
-    this.arrows.style.pointerEvents = 'none'
-    this.arrows.style.opacity = 0
+    // this.arrows.style.pointerEvents = 'none'
+    // this.arrows.style.opacity = 0
   }
 }
 

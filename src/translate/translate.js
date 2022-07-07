@@ -42,6 +42,7 @@ function getTree(lang = 'en') {
     .then(res => {
       if (!res) {
         loc.setClear(createTable)
+        alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
         return
       }
       if (lang == 'en') {

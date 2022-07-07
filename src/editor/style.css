@@ -9,3 +9,30 @@
   width: 40px;
   text-align: center;
 }
+
+/* scrollbar */
+.tooltip textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #cfcfcf #010721CC;
+}
+
+/* Chrome, Edge, and Safari */
+.tooltip textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tooltip textarea::-webkit-scrollbar-track {
+  background: #010721CC;
+}
+
+.tooltip textarea::-webkit-scrollbar-thumb {
+  background-color: #cfcfcf;
+  border-radius: 5px;
+  border: 3px solid #010721CC;
+}
+
+@media (max-width:960px) {
+  .editor-tree {
+    margin-left: 220px;
+  }
+}

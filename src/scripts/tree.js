@@ -220,6 +220,11 @@ export class TranslateTree extends BaseTree {
       tal.clearTexts()
     })
 
+    const title = document.querySelector('#title-locale')
+    title.addEventListener('input', () => {
+      this.title = title.value
+    })
+
     callback()
   }
 }
@@ -232,9 +237,20 @@ export class CalculatorTree extends BaseTree {
     this.createElement(selector)
     this.resize()
 
+    const title = document.createElement('div')
+    title.classList.add('spec-name')
     this.titleEl = document.createElement('div')
-    this.titleEl.classList.add('spec-name')
-    this.container.appendChild(this.titleEl)
+    // this.titleEl.classList.add('spec-name')
+    title.appendChild(this.titleEl)
+    const reset = document.createElement('div')
+    reset.classList.add('reset-tree')
+    reset.title = 'Reset Tree'
+    reset.innerHTML = '❌'
+    reset.addEventListener('click', () => {
+      this.reset()
+    })
+    title.appendChild(reset)
+    this.container.appendChild(title)
 
     this.tooltip = tooltip
     this.points = points
@@ -404,5 +420,15 @@ export class CalculatorTree extends BaseTree {
     // this.ctx.lineWidth = 2
     this.talents.forEach(talent => talent.draw(this.ctx))
     this.ctx.stroke()
+  }
+
+  reset() {
+    this.talents.filter(talent => talent.grayout).forEach(talent => {
+      talent.setGray(false)
+    })
+    
+    this.talents.filter(tal => tal.row == 0).forEach(tal => {
+      tal.reset()
+    })
   }
 }

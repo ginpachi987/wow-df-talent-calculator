@@ -163,6 +163,10 @@ body {
     padding-bottom: 36px;
     padding-top: 32px;
   }
+
+  .tree + .tree {
+    margin-top: 30px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -220,12 +224,19 @@ body {
 } */
 
 .spec-name {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
   width: 340px;
   position: absolute;
   top: -16px;
   left: calc(50% - 170px);
   text-shadow: 1px 1px 2px black, -1px -1px 2px black,
     -1px 1px 2px black, 1px -1px 2px black;
+}
+
+.reset-tree {
+  cursor: pointer;
 }
 
 .disabled,

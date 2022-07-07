@@ -1,6 +1,6 @@
 {
   "name": "wow-df-talent-calculator",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "description": "",
   "main": "index.js",
   "scripts": {

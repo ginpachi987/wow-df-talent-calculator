@@ -227,28 +227,44 @@ export class EditorTalent extends BaseTalent {
   }
 
   setPointerHanlers() {
-    this.el.addEventListener('click', () => {
-      const selected = this.tree.selected
-      if (selected) {
-        if (!selected.title) {
-          selected.el.classList.remove('round', 'octagon', 'fill')
-          selected.el.classList.add('empty')
-          selected.children = []
-          this.tree.redraw()
-        }
-        selected.el.classList.remove('max')
-      }
-      if (selected == this) {
-        this.tree.selected = null
-        this.tooltip.hide()
-        return
-      }
-      this.el.classList.remove('empty')
-      this.el.classList.add('max')
-
-      this.tooltip.show(this)
-      this.tree.selected = this
+    this.el.addEventListener('pointerdown', (e) => {
+      if (e.button == 0) this.leftClick()
+      if (e.button == 2) this.rightClick()
     })
+
+    this.el.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+    })
+  }
+
+  leftClick() {
+    const selected = this.tree.selected
+    if (selected) {
+      if (!selected.title && !selected.image) {
+        selected.el.classList.remove('round', 'octagon', 'fill')
+        selected.el.classList.add('empty')
+        selected.children = []
+        this.tree.redraw()
+      }
+      selected.el.classList.remove('max')
+    }
+    if (selected == this) {
+      this.tree.selected = null
+      this.tooltip.hide()
+      return
+    }
+    this.el.classList.remove('empty')
+    this.el.classList.add('max')
+
+    this.tooltip.show(this)
+    this.tree.selected = this
+  }
+
+  rightClick() {
+    if (!this.tree.selected || this == this.tree.selected) return
+    const selected = this.tree.selected
+    if (selected.row >= this.row) return
+    selected.toggleConnection(this.col, this.row)
   }
 
   setInfo(talent) {
@@ -278,7 +294,8 @@ export class EditorTalent extends BaseTalent {
     this.el2.style.backgroundImage = 'none'
     this.el.click()
     this.el.click()
-
+    this.el.classList.add('empty')
+    this.el.classList.remove('round', 'octagon')
   }
 
   setRanks(ranks) {
@@ -293,12 +310,10 @@ export class EditorTalent extends BaseTalent {
   // }
 
   toggleConnection(col, row) {
-    const c = this.col + col
-    const r = this.row + row
-    if (c < 0 || r < 0 || c > this.tree.cols || r > this.tree.rows) return
-    const conn = this.children.find(conn => conn.col == c && conn.row == r)
+    if (col < 0 || row < 0 || col > this.tree.cols || row > this.tree.rows) return
+    const conn = this.children.find(conn => conn.col == col && conn.row == row)
     if (conn) this.children = this.children.filter(c => c != conn)
-    else this.children.push(this.tree.talents[c][r])
+    else this.children.push(this.tree.talents[col][row])
     this.tree.redraw()
   }
 
@@ -621,6 +636,17 @@ export class CalculatorTalent extends BaseTalent {
   setGray(state) {
     this.grayout = state
     this.el.classList.toggle('disabled', state)
+  }
+
+  reset() {
+    // if (!this.enabled) return
+    if (this.countable) {
+      this.setRank(0)
+      return
+    }
+    this.children.forEach(child => {
+      child.reset()
+    })
   }
 
   update() {
