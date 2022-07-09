@@ -62,7 +62,8 @@ function getTree() {
         tree.tree = currentSpec
 
         const title = tree.tree == 'class' ? tree.class : tree.tree
-        document.querySelector('#title').value = title[0].toUpperCase() + title.substring(1) + ' Tree'
+        tree.title = title[0].toUpperCase() + title.substring(1) + ' Tree'
+        document.querySelector('#title').value = tree.title
 
         return
       }

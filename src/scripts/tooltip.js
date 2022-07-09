@@ -213,6 +213,7 @@ export class EditorTooltip extends BaseTooltip {
     this.shiftRight.checked = talent.shiftRight
 
     super.show(talent, false, true)
+    setTimeout(() => this.image.focus(),100)
   }
 
   // createArrows() {
