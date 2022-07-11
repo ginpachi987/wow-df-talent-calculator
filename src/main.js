@@ -78,5 +78,5 @@ async function getTree(buffer = false, spec = currentSpec) {
   if (tree.defaultTalents) classTree.setDefaultTalents(tree.defaultTalents)
 
   trees.style.backgroundColor = tree.color || '#212121'
-  document.querySelector('.trees').style.backgroundImage = `url(https://wow.zamimg.com/images/tools/dragonflight-talent-calc/${currentClass}-${currentSpec}.webp)`
+  document.querySelector('.trees').style.backgroundImage = `url(https://projects.yoro.dev/df-talents/img/bg/${currentClass}-${currentSpec}.webp)`
 }

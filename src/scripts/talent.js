@@ -522,11 +522,11 @@ export class CalculatorTalent extends BaseTalent {
     this.type = talent.type
 
     if (this.ranks > 1 && this.type !== 'octagon') {
-      const vars = this.descr.match(/\[.*\]/g)
+      const vars = this.descr.match(/\[[^\]]*\]/g)
       if (!vars) return
 
       this.vars = vars.map(v => v.replace(/[\[\]]/g, '').split('/'))
-      this.descr = this.descr.replace(/\[.*\]/g, '?')
+      this.descr = this.descr.replace(/\[[^\]]*\]/g, '?')
     }
   }
 
