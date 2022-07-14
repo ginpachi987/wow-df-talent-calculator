@@ -420,6 +420,8 @@ export class EditorTalent extends BaseTalent {
     })
 
     this.div.appendChild(del)
+
+    this.showSecond(false)
   }
 
   createInput(type, cls, placeholder, field, parent) {
