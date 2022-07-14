@@ -84,16 +84,29 @@ export class EditorTree extends BaseTree {
     this.size = editorCellSize
     this.space = editorCellSpace
     this.createElement(selector)
-    this.resize()
     this.selected
 
     this.tooltip = tooltip
 
     this.talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new EditorTalent(j, i, this, tooltip)))
+    this.texts = document.querySelector('.editor-texts')
+
+    this.resize()
   }
 
   resize(colsDiff, rowsDiff) {
     super.resize()
+
+    this.texts.innerHTML = ''
+    const tr = this.talents[0].map((_, colIndex) => this.talents.map(row => row[colIndex]))
+    tr.forEach((row, i) => {
+      const num = document.createElement('h4')
+      num.innerText = `Row ${i + 1}`
+      this.texts.appendChild(num)
+      row.forEach(talent => {
+        this.texts.appendChild(talent.div)
+      })
+    })
     if (!colsDiff && !rowsDiff) return
 
     if (rowsDiff > 0) {
@@ -310,25 +323,25 @@ export class CalculatorTree extends BaseTree {
     this.titleEl.innerHTML = `${this.title ? this.title : (this.tree + ' tree')} (${this.pointsSpent}/${this.points})`
 
     if (this.sectionPoints[0] > 7) {
-      this.talents.filter(talent => talent.row == 4).forEach(talent => {
+      this.talents.filter(talent => talent.row >= 4 && talent.row < 7).forEach(talent => {
         talent.enable(true)
       })
     }
 
     if (this.sectionPoints[0] + this.sectionPoints[1] > 19) {
-      this.talents.filter(talent => talent.row == 7).forEach(talent => {
+      this.talents.filter(talent => talent.row >= 7).forEach(talent => {
         talent.enable(true)
       })
     }
 
     if (this.sectionPoints[0] < 8) {
-      this.talents.filter(talent => talent.row == 4).forEach(talent => {
+      this.talents.filter(talent => talent.row >= 4 && talent.row < 7).forEach(talent => {
         talent.disable(true)
       })
     }
 
     if (this.sectionPoints[0] + this.sectionPoints[1] < 20) {
-      this.talents.filter(talent => talent.row == 7).forEach(talent => {
+      this.talents.filter(talent => talent.row >= 7).forEach(talent => {
         talent.disable(true)
       })
     }
@@ -426,7 +439,7 @@ export class CalculatorTree extends BaseTree {
     this.talents.filter(talent => talent.grayout).forEach(talent => {
       talent.setGray(false)
     })
-    
+
     this.talents.filter(tal => tal.row == 0).forEach(tal => {
       tal.reset()
     })

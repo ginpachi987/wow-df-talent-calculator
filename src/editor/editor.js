@@ -34,6 +34,7 @@ let currentClass = ''
 let currentSpec = ''
 
 const wrapper = document.querySelector('.editor-wrapper')
+const buttons = document.querySelector('.editor-buttons')
 
 function menuCallback(cls, spec) {
   if (currentClass == cls && currentSpec == spec) return
@@ -41,6 +42,7 @@ function menuCallback(cls, spec) {
   currentSpec = spec
   menu.up()
   wrapper.style.display = 'flex'
+  buttons.style.display = 'block'
 
   getTree()
 }
@@ -56,7 +58,7 @@ function getTree() {
     .then(res => res.json())
     .then(res => {
       if (!res) {
-        alert(`Where is currently no tree for ${currentClass} ${currentSpec}. You can start making it!`)
+        alert(`Where is currently no data for ${currentClass} ${currentSpec}. You can start making it!`)
 
         tree.class = currentClass
         tree.tree = currentSpec

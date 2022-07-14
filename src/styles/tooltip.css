@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  
+
   display: flex;
   flex-direction: column;
 
@@ -85,22 +85,24 @@
 }
 
 .types {
-  position: absolute;
-  top: -24px;
-  left: 0x;
+  /* position: absolute; */
+  /* top: 0px;
+  right: 0x; */
   color: white;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
   background-color: #010721CC;
   padding: 4px;
+  padding-top: 0;
 }
 
 .type {
   display: inline-block;
 }
 
-input, textarea {
+input,
+textarea {
   background: none;
   color: #ffd100;
   outline: none;
@@ -117,7 +119,7 @@ input, textarea {
   margin-bottom: 4px;
 }
 
-.ranks{
+.ranks {
   width: 30px;
 }
 
@@ -138,7 +140,8 @@ input, textarea {
   display: none;
 }
 
-.tooltip-rank-up, .tooltip-rank-down {
+.tooltip-rank-up,
+.tooltip-rank-down {
   width: 40px;
   height: 20px;
   font-weight: bold;

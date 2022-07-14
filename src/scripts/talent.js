@@ -240,24 +240,26 @@ export class EditorTalent extends BaseTalent {
   leftClick() {
     const selected = this.tree.selected
     if (selected) {
-      if (!selected.title && !selected.image) {
-        selected.el.classList.remove('round', 'octagon', 'fill')
-        selected.el.classList.add('empty')
-        selected.children = []
-        this.tree.redraw()
-      }
+      // if (!selected.title && !selected.image) {
+      //   selected.el.classList.remove('round', 'octagon', 'fill')
+      //   selected.el.classList.add('empty')
+      //   selected.children = []
+      //   this.tree.redraw()
+      // }
       selected.el.classList.remove('max')
     }
     if (selected == this) {
       this.tree.selected = null
-      this.tooltip.hide()
+      // this.tooltip.hide()
       return
     }
     this.el.classList.remove('empty')
     this.el.classList.add('max')
 
-    this.tooltip.show(this)
+    // this.tooltip.show(this)
     this.tree.selected = this
+
+    this.div.style.display = 'flex'
   }
 
   rightClick() {
@@ -275,6 +277,23 @@ export class EditorTalent extends BaseTalent {
     this.children = talent.children.map(child => this.tree.talents[child.col][child.row])
 
     this.update()
+
+    this.div.style.display = 'flex'
+    this.titleEl.value = this.title
+    this.imageEl.value = this.image
+    this.descrEl.value = this.descr
+    this.descrEl.style.height = `auto`
+    this.descrEl.style.height = `${this.descrEl.scrollHeight}px`
+
+    this.showSecond(this.type == 'octagon')
+
+    this.titleEl2.value = this.title2
+    this.imageEl2.value = this.image2
+    this.descrEl2.value = this.descr2
+    this.descrEl2.style.height = 'auto'
+    this.descrEl2.style.height = `${this.descrEl2.scrollHeight}px`
+
+    this.shiftRightEl.checked = this.shiftRight
   }
 
   update() {
@@ -296,6 +315,12 @@ export class EditorTalent extends BaseTalent {
     this.el.click()
     this.el.classList.add('empty')
     this.el.classList.remove('round', 'octagon')
+
+    this.div.style.display = 'none'
+    this.showSecond(false)
+    this.children = []
+    this.tree.selected = null
+    this.tree.redraw()
   }
 
   setRanks(ranks) {
@@ -334,6 +359,120 @@ export class EditorTalent extends BaseTalent {
 
     this.tree.redraw()
   }
+
+  createElements(container) {
+    super.createElements(container)
+
+    this.div = document.createElement('div')
+    this.div.classList.add('talent-div', 'tooltip-border')
+
+    this.setTypes()
+
+    this.titleEl = this.createInput('input', 'title', 'Title', 'title', this.div)
+    this.imageEl = this.createInput('input', 'image', 'Image', 'image', this.div)
+    this.descrEl = this.createInput('textarea', 'descr', 'Description', 'descr', this.div)
+
+    this.hr = document.createElement('hr')
+    this.div.appendChild(this.hr)
+
+    this.titleEl2 = this.createInput('input', 'title', 'Title', 'title2', this.div)
+    this.imageEl2 = this.createInput('input', 'image', 'Image', 'image2', this.div)
+    this.descrEl2 = this.createInput('textarea', 'descr', 'Description', 'descr2', this.div)
+
+    this.imageEl.addEventListener('input', () => {
+      this.setImage(this.imageEl.value, 1)
+    })
+    this.imageEl2.addEventListener('input', () => {
+      this.setImage(this.imageEl2.value, 2)
+    })
+
+    this.div.addEventListener('mouseenter', () => {
+      if (this != this.tree.selected)
+        this.el.classList.add('max')
+      this.el.classList.add('highlight')
+    })
+    this.div.addEventListener('mouseleave', () => {
+      if (this != this.tree.selected)
+        this.el.classList.remove('max')
+      this.el.classList.remove('highlight')
+    })
+    // console.log(this.div)
+
+    const label = document.createElement('label')
+    this.shiftRightEl = document.createElement('input')
+    this.shiftRightEl.type = 'checkbox'
+    this.shiftRightEl.checked = false
+    this.shiftRightEl.addEventListener('change', () => {
+      this.shiftRight = this.shiftRightEl.checked
+    })
+
+    label.appendChild(this.shiftRightEl)
+    label.appendChild(document.createTextNode('Shift right'))
+
+    this.div.appendChild(label)
+
+    const del = document.createElement('div')
+    del.classList.add('del')
+    del.innerHTML = '❌'
+    del.title = 'Delete'
+    del.addEventListener('click', () => {
+      this.clear()
+    })
+
+    this.div.appendChild(del)
+  }
+
+  createInput(type, cls, placeholder, field, parent) {
+    const el = document.createElement(type)
+    el.placeholder = placeholder
+    el.classList.add(cls)
+    el.addEventListener('input', () => {
+      this[field] = el.value
+      if (type == 'textarea') {
+        el.style.height = `auto`
+        el.style.height = `${el.scrollHeight}px`
+      }
+    })
+
+    parent.appendChild(el)
+
+    return el
+  }
+
+  setTypes() {
+    const typesEl = document.createElement('div')
+    typesEl.classList.add('types')
+
+    const types = ['', 'round', 'octagon']
+    const typesIcon = ['🟩', '🟡', '🛑']
+
+    types.forEach((type, i) => {
+      const el = document.createElement('div')
+      el.classList.add('type')
+      el.innerHTML = typesIcon[i]
+      el.addEventListener('click', () => {
+        this.setType(type)
+        this.showSecond(type == 'octagon')
+        if (type == 'octagon') {
+          this.ranks.style.display = 'none'
+          this.talent.setRanks(1)
+          this.ranks.value = 1
+        }
+        else this.ranks.style.display = 'block'
+      })
+      typesEl.appendChild(el)
+    })
+
+    this.div.appendChild(typesEl)
+  }
+
+  showSecond(show) {
+    this.titleEl2.style.display = show ? 'block' : 'none'
+    this.imageEl2.style.display = show ? 'block' : 'none'
+    this.descrEl2.style.display = show ? 'block' : 'none'
+    this.hr.style.display = show ? 'block' : 'none'
+    // this.ranks.style.display = show ? 'none' : 'block'
+  }
 }
 
 export class TranslateTalent extends BaseTalent {
@@ -358,14 +497,15 @@ export class TranslateTalent extends BaseTalent {
 
   createElements(container, localeTalent) {
     const row = document.createElement('div')
+    container.appendChild(row)
     row.classList.add('row')
 
-    if (this.type == 'octagon') {
-      container.appendChild(document.createElement('hr'))
-      const oct = document.createElement('div')
-      oct.innerHTML = 'Choose Node'
-      container.appendChild(oct)
-    }
+    // if (this.type == 'octagon') {
+    //   container.appendChild(document.createElement('hr'))
+    //   const oct = document.createElement('div')
+    //   oct.innerHTML = 'Choose Node'
+    //   container.appendChild(oct)
+    // }
 
     const div = document.createElement('div')
     div.classList.add('info', 'tooltip-border')
@@ -389,11 +529,10 @@ export class TranslateTalent extends BaseTalent {
 
     localeTalent.createInputs(row)
 
-    container.appendChild(row)
-
     if (this.type != 'octagon') return
 
     const row2 = document.createElement('div')
+    container.appendChild(row2)
     row2.classList.add('row')
 
     const div2 = document.createElement('div')
@@ -417,9 +556,6 @@ export class TranslateTalent extends BaseTalent {
     row2.appendChild(div2)
 
     localeTalent.createInputs(row2, 1)
-
-    container.appendChild(row2)
-    container.appendChild(document.createElement('hr'))
   }
 
   createInputs(container, el) {
@@ -442,11 +578,17 @@ export class TranslateTalent extends BaseTalent {
     descr.addEventListener('input', () => {
       if (!el) this.descr = descr.value
       else this.descr2 = descr.value
+
+      div.style.height = `auto`
+      div.style.height = `${descr.scrollHeight + 30}px`
     })
 
     div.appendChild(title)
     div.appendChild(descr)
     container.appendChild(div)
+
+    div.style.height = `auto`
+    div.style.height = `${descr.scrollHeight + 30}px`
   }
 
   clearTexts() {

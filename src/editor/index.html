@@ -19,22 +19,30 @@
 <body>
   <header></header>
 
-  <div class="editor-wrapper" style="padding-top: 24px;">
-    <div style="display: flex; flex-direction: column;">
-      <label>Title: <input id="title" class="title" type="text" placeholder="Title"></label>
-      <label>Color: <input id="color" type="color" name=""></label>
-      <label class="sizes">Columns: <input id="cols" type="number" min="5" max="15"></label>
+  <div class="editor-wrapper">
+    <div style="display: flex;flex-direction: row;width: 100%;align-items: stretch;">
+      <div style="flex: 1; text-align: center;">
+        <div style="display: inline-flex; flex-direction: column; width: 300px;text-align: left; margin-bottom: 12px;">
+          <label>Title: <input id="title" class="title" type="text" placeholder="Title"></label>
+          <label>Color: <input id="color" type="color" name=""></label>
+          <label class="sizes">Columns: <input id="cols" type="number" min="5" max="15"></label>
+          <label class="sizes">Rows: <input id="cols" type="number" min="5" max="15" value="10" disabled></label>
+        </div>
+        <div class="tree-wrapper">
+          <div class="editor-tree"></div>
+        </div>
+      </div>
+
     </div>
-    <div class="tree-wrapper">
-      <div class="editor-tree"></div>
-    </div>
+    <div class="editor-texts"></div>
     <!-- <div class="default-talents">
       <button class="default-add">Add default talent</button><br/>
     </div> -->
-    <div>
-      <button id="save-server" title="Upload to server">Upload</button>
-      <button id="save-json" title="Save as JSON file">Get JSON</button>
-    </div>
+
+  </div>
+  <div class="editor-buttons">
+    <button id="save-server" title="Upload to server">Upload</button>
+    <button id="save-json" title="Save as JSON file">Get JSON</button>
   </div>
 
   <div class="links">

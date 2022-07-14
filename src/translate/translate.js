@@ -17,6 +17,7 @@ let currentClass = ''
 let currentSpec = ''
 
 const wrapper = document.querySelector('.editor-wrapper')
+const buttons = document.querySelector('.editor-buttons')
 const langsWrapper = document.createElement('div')
 getLanguageList()
 
@@ -37,7 +38,7 @@ function getTree(lang = 'en') {
     exact: true
   }
   request('getTree', req)
-  // fetch(`../json/trees/${lang}/${currentClass}_${currentSpec}.json`)
+    // fetch(`../json/trees/${lang}/${currentClass}_${currentSpec}.json`)
     .then(res => res.json())
     .then(res => {
       if (!res) {
@@ -64,7 +65,18 @@ function createTable() {
   const list = document.querySelector('.talent-list')
   // console.log(en, loc)
 
+  let row = 0
+
   en.talents.forEach(talent => {
+    if (talent.row + 1 != row) {
+      row = talent.row + 1
+      const h4 = document.createElement('h4')
+      h4.innerHTML = `Row ${row}`
+      h4.style.textAlign = 'center'
+      h4.style.width = '100%'
+
+      list.appendChild(h4)
+    }
     const localeTalent = loc.talents.find(t => t.col == talent.col && t.row == talent.row)
     if (!localeTalent) return
 
@@ -102,7 +114,7 @@ function getLanguageList() {
   langsWrapper.appendChild(langs)
 
   request('getLocaleList')
-  // fetch('../json/langs/available.json')
+    // fetch('../json/langs/available.json')
     .then(res => res.json())
     .then(langList => {
 
@@ -119,6 +131,7 @@ function getLanguageList() {
 
           getTree(lang)
           wrapper.style.display = 'flex'
+          buttons.style.display = 'block'
 
         })
         langs.appendChild(el)
