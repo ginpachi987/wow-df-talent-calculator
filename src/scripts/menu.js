@@ -85,9 +85,12 @@ export class Menu {
   setClassButtons(onlyAvailable) {
     Object.entries(classes).forEach(([key, value]) => {
       this.classButtons[key] = document.createElement('div')
-      this.classButtons[key].classList.add('talent', 'inline-talent')
+      this.classButtons[key].classList.add('talent-wrapper', 'talent-inline')
       if (onlyAvailable) this.classButtons[key].classList.add('disabled')
-      this.classButtons[key].style.backgroundImage = `url(${imageServer}${images[key + '_class']}.jpg)`
+      const image = document.createElement('div')
+      image.classList.add('talent')
+      this.classButtons[key].appendChild(image)
+      image.style.backgroundImage = `url(${imageServer}${images[key + '_class']}.jpg)`
       this.classButtons[key].title = key
 
       this.classSelector.appendChild(this.classButtons[key])
@@ -121,8 +124,12 @@ export class Menu {
     if (this.showClassButton) specList.unshift('class')
     specList.forEach(sp => {
       this.specButtons[sp] = document.createElement('div')
-      this.specButtons[sp].classList.add('talent', 'inline-talent')
-      this.specButtons[sp].style.backgroundImage = `url(${imageServer}${images[this.class + '_' + sp]}.jpg)`
+      this.specButtons[sp].classList.add('talent-wrapper', 'talent-inline')
+      const image = document.createElement('div')
+      image.classList.add('talent')
+      this.specButtons[sp].appendChild(image)
+
+      image.style.backgroundImage = `url(${imageServer}${images[this.class + '_' + sp]}.jpg)`
       this.specButtons[sp].title = sp
 
       this.specSelector.appendChild(this.specButtons[sp])

@@ -1,8 +1,9 @@
 import '../style.css'
 import './style.css'
-import '../styles/arrows.css'
+// import '../styles/arrows.css'
+import '../styles/tooltip.css'
 import { EditorTree } from '../scripts/tree'
-import { EditorTooltip } from '../scripts/tooltip'
+// import { EditorTooltip } from '../scripts/tooltip'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
 import { request } from '../scripts/api'
@@ -20,8 +21,8 @@ colsEl.addEventListener('change', () => {
   cols = parseInt(colsEl.value)
 })
 
-const tooltip = new EditorTooltip()
-const tree = new EditorTree(cols, 10, '.editor-tree', tooltip)
+// const tooltip = new EditorTooltip()
+const tree = new EditorTree(cols, 10, '.editor-tree')
 
 document.querySelector('#save-json').addEventListener('click', () => {
   tree.saveAsFile()

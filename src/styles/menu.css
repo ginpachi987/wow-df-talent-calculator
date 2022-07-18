@@ -22,6 +22,7 @@ header {
 }
 
 .header-up {
+  flex: unset;
   flex-direction: row;
 }
 
@@ -38,7 +39,7 @@ header {
 
 .classes, .specs {
   text-align: center;
-  width: 330px;
+  width: 350px;
 }
 
 .specs {
@@ -56,10 +57,25 @@ header {
   position: relative;
 }
 
+.v-scroll .talent-inline {
+  width: 34px;
+  height: 34px;
+  margin: 4px 2px;
+}
+
+.v-scroll .talent-inline::after {
+  top: calc(var(--border));
+  left: calc(var(--border));
+  content: "";
+  width: 30px;
+  height: 30px;
+}
+
 .v-scroll .talent {
   width: 30px;
   height: 30px;
   display: inline-block;
+  position: relative;
 }
 
 .v-scroll::-webkit-scrollbar,

@@ -15,8 +15,8 @@ class BaseTooltip {
     this.talent = talent
     this.el.classList.add('tooltip-show')
 
-    const top = talent.el.getBoundingClientRect().top
-    const left = talent.el.getBoundingClientRect().left
+    const top = talent.wrapper.getBoundingClientRect().top
+    const left = talent.wrapper.getBoundingClientRect().left
 
     if (mobile) {
       this.el.style.left = `${(window.innerWidth - this.el.clientWidth) / 2}px`
@@ -60,209 +60,209 @@ class BaseTooltip {
   }
 }
 
-export class EditorTooltip extends BaseTooltip {
-  constructor() {
-    super()
+// export class EditorTooltip extends BaseTooltip {
+//   constructor() {
+//     super()
 
-    const header = document.createElement('div')
-    header.classList.add('tooltip-header')
+//     const header = document.createElement('div')
+//     header.classList.add('tooltip-header')
 
-    this.title = document.createElement('input')
-    this.title.classList.add('title')
-    this.title.type = 'text'
-    this.title.placeholder = 'Title'
-    this.title.style.flex = '1'
-    this.title.addEventListener('input', () => {
-      this.talent.title = this.title.value
-    })
+//     this.title = document.createElement('input')
+//     this.title.classList.add('title')
+//     this.title.type = 'text'
+//     this.title.placeholder = 'Title'
+//     this.title.style.flex = '1'
+//     this.title.addEventListener('input', () => {
+//       this.talent.title = this.title.value
+//     })
 
-    this.ranks = document.createElement('input')
-    this.ranks.classList.add('ranks')
-    this.ranks.type = 'number'
-    this.ranks.min = 1
-    this.ranks.max = 5
-    this.ranks.value = 1
-    this.ranks.addEventListener('input', () => {
-      this.talent.setRanks(this.ranks.value)
-    })
+//     this.ranks = document.createElement('input')
+//     this.ranks.classList.add('ranks')
+//     this.ranks.type = 'number'
+//     this.ranks.min = 1
+//     this.ranks.max = 5
+//     this.ranks.value = 1
+//     this.ranks.addEventListener('input', () => {
+//       this.talent.setRanks(this.ranks.value)
+//     })
 
-    header.appendChild(this.title)
-    header.appendChild(this.ranks)
-    this.el.appendChild(header)
+//     header.appendChild(this.title)
+//     header.appendChild(this.ranks)
+//     this.el.appendChild(header)
 
-    this.image = document.createElement('input')
-    this.image.type = 'text'
-    this.image.placeholder = 'Image'
-    this.el.appendChild(this.image)
-    this.image.addEventListener('input', () => {
-      this.talent.setImage(this.image.value, 1)
-    })
+//     this.image = document.createElement('input')
+//     this.image.type = 'text'
+//     this.image.placeholder = 'Image'
+//     this.el.appendChild(this.image)
+//     this.image.addEventListener('input', () => {
+//       this.talent.setImage(this.image.value, 1)
+//     })
 
-    this.descr = document.createElement('textarea')
-    this.descr.placeholder = 'Description'
-    this.descr.rows = 7
-    this.el.appendChild(this.descr)
-    this.descr.addEventListener('input', () => {
-      this.talent.descr = this.descr.value
-    })
+//     this.descr = document.createElement('textarea')
+//     this.descr.placeholder = 'Description'
+//     this.descr.rows = 7
+//     this.el.appendChild(this.descr)
+//     this.descr.addEventListener('input', () => {
+//       this.talent.descr = this.descr.value
+//     })
 
-    // Talent 2
-    this.title2 = document.createElement('input')
-    this.title2.classList.add('title')
-    this.title2.type = 'text'
-    this.title2.placeholder = 'Title'
-    this.title2.style.display = 'none'
-    this.el.appendChild(this.title2)
-    this.title2.addEventListener('input', () => {
-      this.talent.title2 = this.title2.value
-    })
+//     // Talent 2
+//     this.title2 = document.createElement('input')
+//     this.title2.classList.add('title')
+//     this.title2.type = 'text'
+//     this.title2.placeholder = 'Title'
+//     this.title2.style.display = 'none'
+//     this.el.appendChild(this.title2)
+//     this.title2.addEventListener('input', () => {
+//       this.talent.title2 = this.title2.value
+//     })
 
-    this.image2 = document.createElement('input')
-    this.image2.type = 'text'
-    this.image2.placeholder = 'Image'
-    this.image2.style.display = 'none'
-    this.el.appendChild(this.image2)
-    this.image2.addEventListener('input', () => {
-      this.talent.setImage(this.image2.value, 2)
-    })
+//     this.image2 = document.createElement('input')
+//     this.image2.type = 'text'
+//     this.image2.placeholder = 'Image'
+//     this.image2.style.display = 'none'
+//     this.el.appendChild(this.image2)
+//     this.image2.addEventListener('input', () => {
+//       this.talent.setImage(this.image2.value, 2)
+//     })
 
-    this.descr2 = document.createElement('textarea')
-    this.descr2.placeholder = 'Description'
-    this.descr2.rows = 7
-    this.descr2.style.display = 'none'
-    this.el.appendChild(this.descr2)
-    this.descr2.addEventListener('input', () => {
-      this.talent.descr2 = this.descr2.value
-    })
+//     this.descr2 = document.createElement('textarea')
+//     this.descr2.placeholder = 'Description'
+//     this.descr2.rows = 7
+//     this.descr2.style.display = 'none'
+//     this.el.appendChild(this.descr2)
+//     this.descr2.addEventListener('input', () => {
+//       this.talent.descr2 = this.descr2.value
+//     })
 
-    const label = document.createElement('label')
-    this.shiftRight = document.createElement('input')
-    this.shiftRight.type = 'checkbox'
-    this.shiftRight.checked = false
-    this.shiftRight.addEventListener('change', () => {
-      console.log(this.shiftRight.checked)
-      this.talent.shiftRight = this.shiftRight.checked
-    })
+//     const label = document.createElement('label')
+//     this.shiftRight = document.createElement('input')
+//     this.shiftRight.type = 'checkbox'
+//     this.shiftRight.checked = false
+//     this.shiftRight.addEventListener('change', () => {
+//       console.log(this.shiftRight.checked)
+//       this.talent.shiftRight = this.shiftRight.checked
+//     })
 
-    label.appendChild(this.shiftRight)
-    label.appendChild(document.createTextNode('Shift right'))
+//     label.appendChild(this.shiftRight)
+//     label.appendChild(document.createTextNode('Shift right'))
 
-    this.el.appendChild(label)
+//     this.el.appendChild(label)
 
-    this.setTypes()
-    // this.createArrows()
-  }
+//     this.setTypes()
+//     // this.createArrows()
+//   }
 
-  setTypes() {
-    const typesEl = document.createElement('div')
-    typesEl.classList.add('types')
+//   setTypes() {
+//     const typesEl = document.createElement('div')
+//     typesEl.classList.add('types')
 
-    const types = ['', 'round', 'octagon']
-    const typesIcon = ['🟩', '🟡', '🛑']
+//     const types = ['', 'round', 'octagon']
+//     const typesIcon = ['🟩', '🟡', '🛑']
 
-    types.forEach((type, i) => {
-      const el = document.createElement('div')
-      el.classList.add('type')
-      el.innerHTML = typesIcon[i]
-      el.addEventListener('click', () => {
-        this.talent.setType(type)
-        this.showSecond(type == 'octagon')
-        if (type == 'octagon') {
-          this.ranks.style.display = 'none'
-          this.talent.setRanks(1)
-          this.ranks.value = 1
-        }
-        else this.ranks.style.display = 'block'
-      })
-      typesEl.appendChild(el)
-    })
+//     types.forEach((type, i) => {
+//       const el = document.createElement('div')
+//       el.classList.add('type')
+//       el.innerHTML = typesIcon[i]
+//       el.addEventListener('click', () => {
+//         this.talent.setType(type)
+//         this.showSecond(type == 'octagon')
+//         if (type == 'octagon') {
+//           this.ranks.style.display = 'none'
+//           this.talent.setRanks(1)
+//           this.ranks.value = 1
+//         }
+//         else this.ranks.style.display = 'block'
+//       })
+//       typesEl.appendChild(el)
+//     })
 
-    this.el.appendChild(typesEl)
-  }
+//     this.el.appendChild(typesEl)
+//   }
 
-  showSecond(show, talent) {
-    this.title2.style.display = show ? 'block' : 'none'
-    this.image2.style.display = show ? 'block' : 'none'
-    this.descr2.style.display = show ? 'block' : 'none'
-    this.ranks.style.display = show ? 'none' : 'block'
+//   showSecond(show, talent) {
+//     this.title2.style.display = show ? 'block' : 'none'
+//     this.image2.style.display = show ? 'block' : 'none'
+//     this.descr2.style.display = show ? 'block' : 'none'
+//     this.ranks.style.display = show ? 'none' : 'block'
 
-    if (show) {
-      this.title2.value = talent.title2
-      this.image2.value = talent.image2
-      this.descr2.value = talent.descr2
-    }
-  }
+//     if (show) {
+//       this.title2.value = talent.title2
+//       this.image2.value = talent.image2
+//       this.descr2.value = talent.descr2
+//     }
+//   }
 
-  show(talent) {
-    if (talent.type == 'octagon') this.showSecond(true, talent)
-    else this.showSecond(false)
+//   show(talent) {
+//     if (talent.type == 'octagon') this.showSecond(true, talent)
+//     else this.showSecond(false)
 
-    this.title.value = talent.title
-    this.ranks.value = talent.ranks
-    this.image.value = talent.image
-    this.descr.value = talent.descr
+//     this.title.value = talent.title
+//     this.ranks.value = talent.ranks
+//     this.image.value = talent.image
+//     this.descr.value = talent.descr
 
-    // const top = talent.el.getBoundingClientRect().top
-    // const left = talent.el.getBoundingClientRect().left
+//     // const top = talent.el.getBoundingClientRect().top
+//     // const left = talent.el.getBoundingClientRect().left
 
-    // this.arrows.style.top = `${top}px`
-    // this.arrows.style.left = `${left}px`
-    // this.arrows.style.pointerEvents = 'all'
-    // this.arrows.style.opacity = 1
+//     // this.arrows.style.top = `${top}px`
+//     // this.arrows.style.left = `${left}px`
+//     // this.arrows.style.pointerEvents = 'all'
+//     // this.arrows.style.opacity = 1
 
-    this.shiftRight.checked = talent.shiftRight
+//     this.shiftRight.checked = talent.shiftRight
 
-    super.show(talent, false, true)
-    setTimeout(() => this.image.focus(),100)
-  }
+//     super.show(talent, false, true)
+//     setTimeout(() => this.image.focus(),100)
+//   }
 
-  // createArrows() {
-  //   this.arrows = document.createElement('div')
-  //   this.arrows.classList.add('arrows')
-  //   const directions = ['↙️', '↘️', '⬇️', '↙️', '↘️', '⬇️']
-  //   const classes = ['left', 'right', 'down', 'doubleleft', 'doubleright', 'doubledown']
-  //   const connections = [[-1, 1], [1, 1], [0, 1], [-2, 1], [2, 1], [0, 2]]
+//   // createArrows() {
+//   //   this.arrows = document.createElement('div')
+//   //   this.arrows.classList.add('arrows')
+//   //   const directions = ['↙️', '↘️', '⬇️', '↙️', '↘️', '⬇️']
+//   //   const classes = ['left', 'right', 'down', 'doubleleft', 'doubleright', 'doubledown']
+//   //   const connections = [[-1, 1], [1, 1], [0, 1], [-2, 1], [2, 1], [0, 2]]
 
-  //   directions.forEach((direction, i) => {
-  //     const arrow = document.createElement('div')
-  //     arrow.innerHTML = direction
-  //     arrow.classList.add(classes[i])
-  //     const conn = connections[i]
-  //     arrow.addEventListener('click', () => {
-  //       this.talent.toggleConnection(conn[0], conn[1])
-  //     })
+//   //   directions.forEach((direction, i) => {
+//   //     const arrow = document.createElement('div')
+//   //     arrow.innerHTML = direction
+//   //     arrow.classList.add(classes[i])
+//   //     const conn = connections[i]
+//   //     arrow.addEventListener('click', () => {
+//   //       this.talent.toggleConnection(conn[0], conn[1])
+//   //     })
 
-  //     this.arrows.appendChild(arrow)
-  //   })
+//   //     this.arrows.appendChild(arrow)
+//   //   })
 
-  //   const move = ['⬅️', '➡️']
-  //   const mClasses = ['left', 'right']
-  //   const mDir = [[-1, 0], [1, 0]]
+//   //   const move = ['⬅️', '➡️']
+//   //   const mClasses = ['left', 'right']
+//   //   const mDir = [[-1, 0], [1, 0]]
 
-  //   move.forEach((direction, i) => {
-  //     const arrow = document.createElement('div')
-  //     arrow.innerHTML = direction
-  //     arrow.classList.add(`move-${mClasses[i]}`)
-  //     const dir = mDir[i]
-  //     arrow.addEventListener('click', () => {
-  //       this.talent.move(dir)
-  //     })
+//   //   move.forEach((direction, i) => {
+//   //     const arrow = document.createElement('div')
+//   //     arrow.innerHTML = direction
+//   //     arrow.classList.add(`move-${mClasses[i]}`)
+//   //     const dir = mDir[i]
+//   //     arrow.addEventListener('click', () => {
+//   //       this.talent.move(dir)
+//   //     })
 
-  //     this.arrows.appendChild(arrow)
-  //   })
+//   //     this.arrows.appendChild(arrow)
+//   //   })
 
-  //   document.body.appendChild(this.arrows)
-  // }
+//   //   document.body.appendChild(this.arrows)
+//   // }
 
-  hide() {
-    super.hide()
-    if (!this.talent.title) this.talent.setType('')
-    this.showSecond(false)
+//   hide() {
+//     super.hide()
+//     if (!this.talent.title) this.talent.setType('')
+//     this.showSecond(false)
 
-    // this.arrows.style.pointerEvents = 'none'
-    // this.arrows.style.opacity = 0
-  }
-}
+//     // this.arrows.style.pointerEvents = 'none'
+//     // this.arrows.style.opacity = 0
+//   }
+// }
 
 export class CalculatorTooltip extends BaseTooltip {
   constructor() {

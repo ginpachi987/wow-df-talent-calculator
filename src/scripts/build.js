@@ -61,6 +61,7 @@ class Build {
       this.wrapper.style.bottom = '-38px'
       return
     }
+    if (this.class == 'evoker' && this.level < 59) this.level = 59 
     this.wrapper.style.bottom = '0'
     this.levelEl.innerHTML = this.level
   }

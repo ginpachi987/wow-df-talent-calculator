@@ -26,10 +26,13 @@ class BaseTalent {
 
   draw(ctx, addShift = false) {
     if (!this.children.length) return
+
     this.children.forEach(child => {
-      ctx.beginPath()
-      ctx.strokeStyle = '#a3a2a3'
-      ctx.lineWidth = 4
+      // ctx.beginPath()
+      // ctx.strokeStyle = '#a3a2a3'
+      // ctx.lineWidth = 2
+
+      let color = '#a3a2a3'
 
       let x1 = this.col * (this.size + this.space) + this.size / 2 + this.space + 2
       let x2 = child.col * (this.size + this.space) + this.size / 2 + this.space + 2
@@ -44,67 +47,102 @@ class BaseTalent {
           x2 += (this.size + this.space) / 2
         }
         if (this.rank == this.ranks || (this.type == 'octagon' && this.rank > 0)) {
-          if (child.rank == child.ranks || (child.type == 'octagon' && child.rank > 0)) ctx.strokeStyle = '#bb9a09'
-          else if ((child.row == 4 && child.tree.sectionPoints[0] < 8) || (child.row == 7 && child.tree.sectionPoints[0] + child.tree.sectionPoints[1] < 20) || child.grayout) ctx.strokeStyle = '#a3a2a3'
-          else ctx.strokeStyle = '#2f722e'
+          if (child.rank == child.ranks || (child.type == 'octagon' && child.rank > 0)) color = '#bb9a09'
+          else if ((child.row == 4 && child.tree.sectionPoints[0] < 8) || (child.row == 7 && child.tree.sectionPoints[0] + child.tree.sectionPoints[1] < 20) || child.grayout) color = '#a3a2a3'
+          else color = '#2f722e'
         }
       }
 
-      ctx.moveTo(x1, y1)
-      ctx.lineTo(x2, y2)
-      ctx.stroke()
+      const drawLine = (color = '#000') => {
+        ctx.save()
+        ctx.beginPath()
+        ctx.strokeStyle = color
+        ctx.lineWidth = 4
 
-      // Arrows on lines
+        ctx.translate(x1, y1)
+        const x = x2 - x1
+        const y = y2 - y1
+        const angle = Math.atan2(y, x)
+        ctx.rotate(angle)
+
+        const dist = Math.sqrt(x*x + y*y)
+
+        if (color == '#000') {
+          // ctx.lineWidth = 20
+          ctx.translate(3, 0)
+        }
+
+        ctx.moveTo(0, 0)
+        ctx.lineTo(dist, 0)
+
+        // ctx.translate(dist-cellSize, 0)
+        // ctx.lineTo(3,4)
+        // ctx.lineTo(3,-4)
+        // ctx.lineTo(0,0)
+
+        // const angle = Math.atan(-y / x)
+        // ctx.translate(x, y)
+        // ctx.moveTo(0, 0)
+        // console.log(angle)
+        // ctx.rotate(angle)
+        // ctx.lineTo(100, 100)
+
+        ctx.stroke()
+        ctx.restore()
+      }
+
+      // drawLine()
+      drawLine(color)
+
+      // ctx.moveTo(x1, y1)
+      // ctx.lineTo(x2, y2)
+      // ctx.stroke()
+
+      // // // Arrows on lines
+
       // ctx.save()
-      // ctx.translate((x1+x2)/2, (y1+y2)/2)
+      // ctx.translate((x1 + x2) / 2, (y1 + y2) / 2)
       // let angle = 0
-      // if (x1 < x2) angle = Math.atan2( y1 - y2, x2 - x1 )
-      // if (x1 > x2) angle = Math.PI*2 - Math.atan2( y1 - y2, x1 - x2 )
+      // if (x1 < x2) angle = Math.atan2(y1 - y2, x2 - x1)
+      // if (x1 > x2) angle = Math.PI * 2 - Math.atan2(y1 - y2, x1 - x2)
+
       // ctx.rotate(angle)
       // ctx.moveTo(0, 2)
-      // ctx.lineTo(-3,-4)
+      // ctx.lineTo(-4, -4)
       // ctx.moveTo(0, 2)
-      // ctx.lineTo(3,-4)
+      // ctx.lineTo(4, -4)
       // ctx.stroke()
       // ctx.restore()
     })
   }
 
-  // drawHexagon(ctx, color) {
-  //   ctx.save()
-  //   ctx.fillStyle = color
-  //   ctx.translate(this.col * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1, this.row * (cellSize + cellSpace) + cellSize / 2 + cellSpace + 1)
-  //   ctx.beginPath()
-  //   ctx.moveTo(cellSize / 2 + 6, 0)
-  //   for (let i = 0; i < 6; i++) {
-  //     ctx.rotate(Math.PI / 3)
-  //     ctx.lineTo(cellSize / 2 + 6, 0)
-  //   }
-  //   ctx.closePath()
-  //   ctx.fill()
-  //   ctx.restore()
-  // }
-
   createElements(container) {
-    this.el = document.createElement('div')
-    this.el.classList.add('talent')
+    this.wrapper = document.createElement('div')
+    this.wrapper.classList.add('talent-wrapper')
+    container.appendChild(this.wrapper)
     this.placeEl()
 
-    this.rankEl = document.createElement('div')
-    this.rankEl.classList.add('level')
-    this.el.appendChild(this.rankEl)
+    this.el1 = document.createElement('div')
+    this.el1.classList.add('talent')
+    this.wrapper.appendChild(this.el1)
 
-    container.appendChild(this.el)
+    this.rankEl = document.createElement('div')
+    this.rankEl.classList.add('rank')
+    this.wrapper.appendChild(this.rankEl)
   }
 
   createSplit() {
-    this.el1 = document.createElement('div')
+    // this.el1 = document.createElement('div')
     this.el1.classList.add('first')
-    this.el.appendChild(this.el1)
+    // this.el.appendChild(this.el1)
 
     this.el2 = document.createElement('div')
-    this.el2.classList.add('second')
-    this.el.appendChild(this.el2)
+    this.el2.classList.add('talent', 'second')
+    this.wrapper.appendChild(this.el2)
+
+    this.divider = document.createElement('div')
+    this.divider.classList.add('talent-divider')
+    this.wrapper.appendChild(this.divider)
   }
 
   setInfo(talent, update = true, images = true) {
@@ -146,7 +184,7 @@ class BaseTalent {
   }
 
   delete() {
-    this.el.remove()
+    this.wrapper.remove()
   }
 
   saveAsFile() {
@@ -175,15 +213,16 @@ class BaseTalent {
 
   setType(type, check = true) {
     if (type == this.type && check) return
-    const types = ['round', 'octagon', 'fill']
+    // const types = ['round', 'octagon', 'fill']
+    const types = ['round', 'octagon']
     this.type = type
-    this.el.classList.remove(...types)
+    this.wrapper.classList.remove(...types)
     if (!this.type) return
-    this.el.classList.add(type)
-    if (this.type == 'octagon') {
-      this.el.style.backgroundImage = 'none'
-      this.el.classList.add('fill')
-    }
+    this.wrapper.classList.add(type)
+    // if (this.type == 'octagon') {
+    //   this.el.style.backgroundImage = 'none'
+    //   this.el.classList.add('fill')
+    // }
   }
 
   setImage(image, el) {
@@ -202,37 +241,38 @@ class BaseTalent {
       }
       return
     }
-    this.el.style.backgroundImage = link
+    this.el1.style.backgroundImage = link
     this.image = image
   }
 
   placeEl(addShift = false) {
     const left = this.col * (this.size + this.space) + this.space + (addShift ? (this.size + this.space) / 2 : 0)
-    this.el.style.left = `${left}px`
-    this.el.style.top = `${this.row * (this.size + this.space) + this.space}px`
+    this.wrapper.style.left = `${left}px`
+    this.wrapper.style.top = `${this.row * (this.size + this.space) + this.space}px`
   }
 }
 
 export class EditorTalent extends BaseTalent {
-  constructor(col, row, tree, tooltip) {
+  constructor(col, row, tree) {
     super(col, row, tree)
     this.size = editorCellSize
     this.space = editorCellSpace
     this.tree = tree
-    this.tooltip = tooltip
+    // this.tooltip = tooltip
     this.createElements(this.tree.container)
     this.createSplit()
-    this.el.classList.add('empty')
+    this.showSecond(false)
+    this.wrapper.classList.add('empty')
     this.setPointerHanlers()
   }
 
   setPointerHanlers() {
-    this.el.addEventListener('pointerdown', (e) => {
+    this.wrapper.addEventListener('pointerdown', (e) => {
       if (e.button == 0) this.leftClick()
       if (e.button == 2) this.rightClick()
     })
 
-    this.el.addEventListener('contextmenu', (e) => {
+    this.wrapper.addEventListener('contextmenu', (e) => {
       e.preventDefault()
     })
   }
@@ -246,15 +286,15 @@ export class EditorTalent extends BaseTalent {
       //   selected.children = []
       //   this.tree.redraw()
       // }
-      selected.el.classList.remove('max')
+      selected.div.classList.remove('max')
     }
     if (selected == this) {
       this.tree.selected = null
       // this.tooltip.hide()
       return
     }
-    this.el.classList.remove('empty')
-    this.el.classList.add('max')
+    this.wrapper.classList.remove('empty')
+    this.wrapper.classList.add('max')
 
     // this.tooltip.show(this)
     this.tree.selected = this
@@ -303,7 +343,7 @@ export class EditorTalent extends BaseTalent {
 
     this.setRanks(this.ranks)
 
-    if (this.title) this.el.classList.remove('empty')
+    if (this.title) this.wrapper.classList.remove('empty')
   }
 
   clear() {
@@ -311,10 +351,10 @@ export class EditorTalent extends BaseTalent {
     this.update()
     this.el1.style.backgroundImage = 'none'
     this.el2.style.backgroundImage = 'none'
-    this.el.click()
-    this.el.click()
-    this.el.classList.add('empty')
-    this.el.classList.remove('round', 'octagon')
+    this.wrapper.click()
+    this.wrapper.click()
+    this.wrapper.classList.add('empty')
+    this.wrapper.classList.remove('round', 'octagon')
 
     this.div.style.display = 'none'
     this.showSecond(false)
@@ -388,13 +428,13 @@ export class EditorTalent extends BaseTalent {
 
     this.div.addEventListener('mouseenter', () => {
       if (this != this.tree.selected)
-        this.el.classList.add('max')
-      this.el.classList.add('highlight')
+        this.wrapper.classList.add('max')
+      this.wrapper.classList.add('highlight')
     })
     this.div.addEventListener('mouseleave', () => {
       if (this != this.tree.selected)
-        this.el.classList.remove('max')
-      this.el.classList.remove('highlight')
+        this.wrapper.classList.remove('max')
+      this.wrapper.classList.remove('highlight')
     })
     // console.log(this.div)
 
@@ -420,8 +460,6 @@ export class EditorTalent extends BaseTalent {
     })
 
     this.div.appendChild(del)
-
-    this.showSecond(false)
   }
 
   createInput(type, cls, placeholder, field, parent) {
@@ -473,6 +511,7 @@ export class EditorTalent extends BaseTalent {
     this.imageEl2.style.display = show ? 'block' : 'none'
     this.descrEl2.style.display = show ? 'block' : 'none'
     this.hr.style.display = show ? 'block' : 'none'
+    this.divider.style.display = show ? 'block' : 'none'
     // this.ranks.style.display = show ? 'none' : 'block'
   }
 }
@@ -618,23 +657,23 @@ export class CalculatorTalent extends BaseTalent {
   }
 
   setPointerHanlers() {
-    this.el.addEventListener('pointerenter', (e) => {
+    this.wrapper.addEventListener('pointerenter', (e) => {
       if (e.pointerType == 'mouse') {
         this.tooltip.show(this)
       }
     })
 
-    this.el.addEventListener('pointerleave', (e) => {
+    this.wrapper.addEventListener('pointerleave', (e) => {
       if (e.pointerType == 'mouse') {
         this.tooltip.hide()
       }
     })
 
-    this.el.addEventListener('contextmenu', (e) => {
+    this.wrapper.addEventListener('contextmenu', (e) => {
       e.preventDefault()
     })
 
-    this.el.addEventListener('pointerup', (e) => {
+    this.wrapper.addEventListener('pointerup', (e) => {
       if (e.pointerType == 'mouse') {
         this.mouseHandler(e.button)
         if (this.type == 'octagon') this.tooltip.show(this, navigator.userAgentData.mobile)
@@ -676,7 +715,7 @@ export class CalculatorTalent extends BaseTalent {
 
   createElements(container) {
     super.createElements(container)
-    this.el.classList.add('disabled')
+    this.wrapper.classList.add('disabled')
     if (this.type == 'hexagon') this.type = 'octagon'
     this.setType(this.type, false)
 
@@ -705,9 +744,9 @@ export class CalculatorTalent extends BaseTalent {
     this.rank = rank
     if (this.ranks > 1 && this.type != 'octagon') this.rankEl.innerHTML = `${this.rank}/${this.ranks}`
 
-    this.el.classList.remove('max')
+    this.wrapper.classList.remove('max')
     if (this.rank == this.ranks || (this.rank > 0 && this.type == 'octagon')) {
-      this.el.classList.add('max')
+      this.wrapper.classList.add('max')
 
       this.children.forEach(child => {
         child.enable()
@@ -724,22 +763,21 @@ export class CalculatorTalent extends BaseTalent {
     this.tree.addPoints(diff, section)
 
     if (this.type != 'octagon') return
-    this.el1.classList.remove('octagon')
-    this.el2.classList.remove('octagon')
+    this.el1.classList.remove('talent-hide', 'first')
+    this.el2.classList.remove('talent-hide', 'second')
     switch (this.rank) {
       case 1:
-        this.el1.classList.add('octagon')
-        this.el1.style.display = 'block'
-        this.el2.style.display = 'none'
+        this.el2.classList.add('talent-hide')
+        this.divider.classList.add('talent-hide')
         break;
       case 2:
-        this.el2.classList.add('octagon')
-        this.el1.style.display = 'none'
-        this.el2.style.display = 'block'
+        this.el1.classList.add('talent-hide')
+        this.divider.classList.add('talent-hide')
         break;
       default:
-        this.el1.style.display = 'block'
-        this.el2.style.display = 'block'
+        this.el1.classList.add('first')
+        this.el2.classList.add('second')
+        this.divider.classList.remove('talent-hide')
         break;
     }
   }
@@ -750,7 +788,7 @@ export class CalculatorTalent extends BaseTalent {
     if (this.row == 7 && this.tree.pointsSpent < 20) return
 
     this.enabled = true
-    this.el.classList.remove('disabled')
+    this.wrapper.classList.remove('disabled')
   }
 
   disable(skipChecks = false) {
@@ -759,7 +797,7 @@ export class CalculatorTalent extends BaseTalent {
       if (!this.parents.length || this.parents.some(parent => (parent.rank == parent.ranks && parent.type != 'octagon') || (parent.rank > 0 && parent.type == 'octagon'))) return
 
     this.enabled = false
-    this.el.classList.add('disabled')
+    this.wrapper.classList.add('disabled')
 
     this.setRank(0)
   }
@@ -779,7 +817,7 @@ export class CalculatorTalent extends BaseTalent {
 
   setGray(state) {
     this.grayout = state
-    this.el.classList.toggle('disabled', state)
+    this.wrapper.classList.toggle('disabled', state)
   }
 
   reset() {

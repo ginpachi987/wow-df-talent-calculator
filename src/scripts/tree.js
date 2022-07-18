@@ -79,16 +79,16 @@ class BaseTree {
 }
 
 export class EditorTree extends BaseTree {
-  constructor(cols, rows = 10, selector, tooltip) {
+  constructor(cols, rows = 10, selector) {
     super(cols, rows)
     this.size = editorCellSize
     this.space = editorCellSpace
     this.createElement(selector)
     this.selected
 
-    this.tooltip = tooltip
+    // this.tooltip = tooltip
 
-    this.talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new EditorTalent(j, i, this, tooltip)))
+    this.talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new EditorTalent(j, i, this)))
     this.texts = document.querySelector('.editor-texts')
 
     this.resize()

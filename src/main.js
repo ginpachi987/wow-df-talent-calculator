@@ -77,6 +77,6 @@ async function getTree(buffer = false, spec = currentSpec) {
 
   if (tree.defaultTalents) classTree.setDefaultTalents(tree.defaultTalents)
 
-  trees.style.backgroundColor = tree.color || '#212121'
+  trees.style.backgroundColor = specTree.color || '#212121'
   document.querySelector('.trees').style.backgroundImage = `url(https://projects.yoro.dev/df-talents/img/bg/${currentClass}-${currentSpec}.webp)`
 }

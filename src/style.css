@@ -54,10 +54,9 @@ body {
   position: relative;
 }
 
-.talent {
+/* .talent {
   width: 42px;
   height: 42px;
-  /* border: 2px solid goldenrod; */
   border: 2px solid #42a841;
   position: absolute;
   cursor: pointer;
@@ -66,9 +65,9 @@ body {
   background-size: cover;
 
   transition: all 0.2s ease-in-out;
-}
+} */
 
-.talent:hover,
+/* .talent:hover, */
 .class:hover,
 .spec:hover {
   filter: brightness(1.2);
@@ -191,7 +190,7 @@ body {
   display: inline-block;
 }
 
-.level {
+/* .level {
   position: absolute;
   bottom: -2px;
   right: -2px;
@@ -201,7 +200,7 @@ body {
   background-color: #212121;
 
   pointer-events: none;
-}
+} */
 
 .spec-selector {
   display: flex;

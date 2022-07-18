@@ -19,6 +19,7 @@
 
   transition: opacity 0.2s ease-in-out;
   color: #ffd100;
+  z-index: 2;
 }
 
 .tooltip-header {

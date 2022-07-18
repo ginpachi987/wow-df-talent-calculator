@@ -1,100 +1,95 @@
-.talent {
-  width: 42px;
-  height: 42px;
-  /* border: 2px solid #d8b30b; */
-  border: 2px solid #42a841;
+:root {
+  --cell-size: 46px;
+  --proc-one: 15%;
+  --proc-two: calc(100% - var(--proc-one));
+  --border: 2px;
+}
+
+.talent-wrapper, .talent-wrapper::after, .talent {
+  clip-path: polygon(var(--proc-one) 0%, var(--proc-two) 0%, 100% var(--proc-one), 100% var(--proc-two), var(--proc-two) 100%, var(--proc-one) 100%, 0% var(--proc-two), 0% var(--proc-one));
+
+  /* transition: all .2s ease-in-out; */
+}
+
+.talent-wrapper {
+  /* display: inline-block; */
   position: absolute;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: #508852;
+  box-sizing: border-box;
+  padding: calc(var(--border));
   cursor: pointer;
-  border-radius: 8px;
-  background-color: black;
-  background-size: cover;
-
-  clip-path: polygon(50% 0, 50% 0, 100% 0, 100% 100%, 50% 100%, 50% 100%, 0 100%, 0 0);
-
-  transition: all .2s ease-in-out;
 }
 
-.inline-talent {
-  position: relative;
-  display: inline-block;
-  margin: 2px;
-  width: 34px;
-  height: 34px;
-  /* border-width: 1px; */
-}
-
-.max.inline-talent {
-  border-width: 2px;
-}
-
-.inline-talent:hover {
-  border-width: 2px;
-}
-
-.talent:hover {
+.talent-wrapper:hover, .highlight {
   filter: brightness(1.2);
 }
 
-.round {
-  border-radius: 50%;
-}
-
-.rank {
+.talent-wrapper::after {
+  display: block;
   position: absolute;
-  bottom: -2px;
-  right: -2px;
-  color: white;
-  border-radius: 4px;
-  font-size: 12px;
-  background-color: #212121;
-
-  pointer-events: none;
+  top: calc(var(--border));
+  left: calc(var(--border));
+  content: "";
+  width: calc(var(--cell-size) - var(--border) * 2);
+  height: calc(var(--cell-size) - var(--border) * 2);
+  background: radial-gradient(circle, transparent 0%, transparent 50%, #000000b0 90%);
 }
 
-.max {
-  /* border-color: #42a841; */
-  border-color: #d8b30b;
-}
-
-.disabled,
-.disabled:hover {
-  filter: grayscale(100%);
-}
-
-.first,
-.second {
-  /* background-color: black; */
-  width: 41px;
-  height: 41px;
+.talent {
+  width: calc(var(--cell-size) - var(--border) * 2);
+  height: calc(var(--cell-size) - var(--border) * 2);
   background-size: cover;
+
   position: absolute;
-  top: 0.5px;
-  left: 0.5px;
-  margin: 0;
-  padding: 0;
-  border: none;
 }
 
-.first {
-  clip-path: polygon(30% 0, 50% 0, 50% 0, 50% 100%, 50% 100%, 30% 100%, 0 70%, 0 30%);
-}
-
-.second {
-  clip-path: polygon(70% 0, 100% 30%, 100% 70%, 70% 100%, 50% 100%, 50% 100%, 50% 0, 50% 0);
-}
-
-.octagon {
+.octagon, .octagon::after, .octagon .talent {
   clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 }
 
-.fill {
-  /* background-color: #d8b30b; */
-  background-color: #42a841;
+.octagon .first {
+  clip-path: polygon(30% 0, 50% 0, 50% 0, 50% 100%, 50% 100%, 30% 100%, 0 70%, 0 30%);
 }
 
-.fill.max {
-  /* background-color: #42a841; */
-  background-color: #d8b30b
+.octagon .second {
+  clip-path: polygon(70% 0, 100% 30%, 100% 70%, 70% 100%, 50% 100%, 50% 100%, 50% 0, 50% 0);
+}
+
+.round, .round::after, .round .talent {
+  /* clip-path: polygon(50% 0, 50% 0, 100% 0, 100% 100%, 50% 100%, 50% 100%, 0 100%, 0 0); */
+  clip-path: none;
+  border-radius: 50%;
+}
+
+.max {
+  background-color: #c0b162;
+}
+
+.disabled, .disabled:hover {
+  filter: grayscale(1);
+}
+
+.talent-divider {
+  position: absolute;
+  left: calc(50% - 2px);
+  width: 3px;
+  top: 5%;
+  height: 90%;
+  background-color: inherit;
+  transform: rotateZ(3deg);
+  filter: brightness(1.2);
+}
+
+.talent-hide {
+  display: none;
+}
+
+.talent-inline {
+  position: relative;
+  display: inline-block;
+  margin: 2px;
 }
 
 .empty {
@@ -104,6 +99,12 @@
   border-width: 1px;
   margin-top: 1px;
   margin-left: 1px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  clip-path: none;
+}
+
+.empty::after {
+  display: none;
 }
 
 .talent-div {
@@ -135,4 +136,17 @@ hr {
   top: 2px;
   right: 2px;
   cursor: pointer;
+}
+
+.rank {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: #212121;
+
+  pointer-events: none;
+  z-index: 1;
 }
