@@ -1,9 +1,7 @@
 import '../style.css'
 import './style.css'
-// import '../styles/arrows.css'
 import '../styles/tooltip.css'
 import { EditorTree } from '../scripts/tree'
-// import { EditorTooltip } from '../scripts/tooltip'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
 import { request } from '../scripts/api'
@@ -21,7 +19,6 @@ colsEl.addEventListener('change', () => {
   cols = parseInt(colsEl.value)
 })
 
-// const tooltip = new EditorTooltip()
 const tree = new EditorTree(cols, 10, '.editor-tree')
 
 document.querySelector('#save-json').addEventListener('click', () => {
@@ -50,12 +47,10 @@ function menuCallback(cls, spec) {
 
 function getTree() {
   const req = {
-    // lang: 'en',
     class: currentClass,
     spec: currentSpec
   }
   request('getTree', req)
-    // fetch(`../json/trees/en/${currentClass}_${currentSpec}.json`)
     .then(res => res.json())
     .then(res => {
       if (!res) {
@@ -88,4 +83,16 @@ document.querySelector('#color').addEventListener('input', (e) => {
 })
 document.querySelector('#title').addEventListener('input', (e) => {
   tree.title = e.target.value
+})
+
+document.body.addEventListener('mouseup', (e) => {
+  if (e.button != 0) return
+  const el = e.target
+  if (!el.classList.contains('talent-wrapper') || !el.dataset.col) return
+  const talent = tree.talents[el.dataset.col][el.dataset.row]
+  if (talent == tree.selected || !tree.selected) return
+  
+  tree.selected.swap(talent)
+  tree.resize(0,0)
+  tree.redraw()
 })

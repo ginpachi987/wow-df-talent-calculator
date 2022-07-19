@@ -7,12 +7,9 @@
 
 .talent-wrapper, .talent-wrapper::after, .talent {
   clip-path: polygon(var(--proc-one) 0%, var(--proc-two) 0%, 100% var(--proc-one), 100% var(--proc-two), var(--proc-two) 100%, var(--proc-one) 100%, 0% var(--proc-two), 0% var(--proc-one));
-
-  /* transition: all .2s ease-in-out; */
 }
 
 .talent-wrapper {
-  /* display: inline-block; */
   position: absolute;
   width: var(--cell-size);
   height: var(--cell-size);
@@ -20,6 +17,8 @@
   box-sizing: border-box;
   padding: calc(var(--border));
   cursor: pointer;
+
+  transition: all .2s ease-in-out;
 }
 
 .talent-wrapper:hover, .highlight {
@@ -58,7 +57,6 @@
 }
 
 .round, .round::after, .round .talent {
-  /* clip-path: polygon(50% 0, 50% 0, 100% 0, 100% 100%, 50% 100%, 50% 100%, 0 100%, 0 0); */
   clip-path: none;
   border-radius: 50%;
 }
@@ -109,8 +107,6 @@
 
 .talent-div {
   width: 100%;
-  /* height: 100px; */
-  /* border: 1px solid white; */
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -121,6 +117,10 @@
 .highlight {
   filter: brightness(1.2);
   transform: translateY(-4px);
+}
+
+.talent-div.highlight {
+  filter: brightness(1.5);
 }
 
 h4 {
@@ -148,5 +148,11 @@ hr {
   background-color: #212121;
 
   pointer-events: none;
+  user-select: none;
   z-index: 1;
+}
+
+.first, .second {
+  pointer-events: none;
+  user-select: none;
 }

@@ -5,7 +5,6 @@ export function request(method, data, auth = false) {
   if (data) body.body = data
   if (auth) {
     body.password = prompt('Enter your password:')
-    // console.log(body)
     if (!body.password) return
   }
   return fetch(server, {

@@ -1,5 +1,4 @@
 import { cellSize, cellSpace, editorCellSize, editorCellSpace, imageServer } from "./const"
-// import { tooltip } from "./tooltip"
 
 import '../styles/talent.css'
 
@@ -21,17 +20,12 @@ class BaseTalent {
     this.shiftRight = false
 
     this.children = []
-    // this.tree = tree
   }
 
   draw(ctx, addShift = false) {
     if (!this.children.length) return
 
     this.children.forEach(child => {
-      // ctx.beginPath()
-      // ctx.strokeStyle = '#a3a2a3'
-      // ctx.lineWidth = 2
-
       let color = '#a3a2a3'
 
       let x1 = this.col * (this.size + this.space) + this.size / 2 + this.space + 2
@@ -65,10 +59,9 @@ class BaseTalent {
         const angle = Math.atan2(y, x)
         ctx.rotate(angle)
 
-        const dist = Math.sqrt(x*x + y*y)
+        const dist = Math.sqrt(x * x + y * y)
 
         if (color == '#000') {
-          // ctx.lineWidth = 20
           ctx.translate(3, 0)
         }
 
@@ -93,26 +86,6 @@ class BaseTalent {
 
       // drawLine()
       drawLine(color)
-
-      // ctx.moveTo(x1, y1)
-      // ctx.lineTo(x2, y2)
-      // ctx.stroke()
-
-      // // // Arrows on lines
-
-      // ctx.save()
-      // ctx.translate((x1 + x2) / 2, (y1 + y2) / 2)
-      // let angle = 0
-      // if (x1 < x2) angle = Math.atan2(y1 - y2, x2 - x1)
-      // if (x1 > x2) angle = Math.PI * 2 - Math.atan2(y1 - y2, x1 - x2)
-
-      // ctx.rotate(angle)
-      // ctx.moveTo(0, 2)
-      // ctx.lineTo(-4, -4)
-      // ctx.moveTo(0, 2)
-      // ctx.lineTo(4, -4)
-      // ctx.stroke()
-      // ctx.restore()
     })
   }
 
@@ -132,9 +105,7 @@ class BaseTalent {
   }
 
   createSplit() {
-    // this.el1 = document.createElement('div')
     this.el1.classList.add('first')
-    // this.el.appendChild(this.el1)
 
     this.el2 = document.createElement('div')
     this.el2.classList.add('talent', 'second')
@@ -160,11 +131,6 @@ class BaseTalent {
 
       this.ranks = parseInt(talent.ranks || talent.levels)
     }
-
-    // this.type = talent.type
-    // this.children = talent.children || talent.connections.map(conn => {
-    //   return { col: conn.x, row: conn.y }
-    // })
 
     if (update) this.update()
   }
@@ -213,16 +179,11 @@ class BaseTalent {
 
   setType(type, check = true) {
     if (type == this.type && check) return
-    // const types = ['round', 'octagon', 'fill']
     const types = ['round', 'octagon']
     this.type = type
     this.wrapper.classList.remove(...types)
     if (!this.type) return
     this.wrapper.classList.add(type)
-    // if (this.type == 'octagon') {
-    //   this.el.style.backgroundImage = 'none'
-    //   this.el.classList.add('fill')
-    // }
   }
 
   setImage(image, el) {
@@ -258,7 +219,6 @@ export class EditorTalent extends BaseTalent {
     this.size = editorCellSize
     this.space = editorCellSpace
     this.tree = tree
-    // this.tooltip = tooltip
     this.createElements(this.tree.container)
     this.createSplit()
     this.showSecond(false)
@@ -280,13 +240,7 @@ export class EditorTalent extends BaseTalent {
   leftClick() {
     const selected = this.tree.selected
     if (selected) {
-      // if (!selected.title && !selected.image) {
-      //   selected.el.classList.remove('round', 'octagon', 'fill')
-      //   selected.el.classList.add('empty')
-      //   selected.children = []
-      //   this.tree.redraw()
-      // }
-      selected.div.classList.remove('max')
+      selected.wrapper.classList.remove('max')
     }
     if (selected == this) {
       this.tree.selected = null
@@ -366,13 +320,7 @@ export class EditorTalent extends BaseTalent {
   setRanks(ranks) {
     this.ranks = ranks
     if (this.type != 'octagon') this.rankEl.innerText = ranks > 1 ? `0/${ranks}` : ''
-    // this.rankEl.innerText = this.title ? `0/${ranks}` : ''
   }
-
-  // draw(ctx) {
-  //   super.draw(ctx)
-  //   if (this.type == 'hexagon') this.drawHexagon(ctx, '#daa520')
-  // }
 
   toggleConnection(col, row) {
     if (col < 0 || row < 0 || col > this.tree.cols || row > this.tree.rows) return
@@ -406,6 +354,9 @@ export class EditorTalent extends BaseTalent {
     this.div = document.createElement('div')
     this.div.classList.add('talent-div', 'tooltip-border')
 
+    this.wrapper.dataset.col = this.col
+    this.wrapper.dataset.row = this.row
+
     this.setTypes()
 
     this.titleEl = this.createInput('input', 'title', 'Title', 'title', this.div)
@@ -426,6 +377,13 @@ export class EditorTalent extends BaseTalent {
       this.setImage(this.imageEl2.value, 2)
     })
 
+    this.wrapper.addEventListener('mouseenter', () => {
+      this.div.classList.add('highlight')
+    })
+    this.wrapper.addEventListener('mouseleave', () => {
+      this.div.classList.remove('highlight')
+    })
+
     this.div.addEventListener('mouseenter', () => {
       if (this != this.tree.selected)
         this.wrapper.classList.add('max')
@@ -436,7 +394,6 @@ export class EditorTalent extends BaseTalent {
         this.wrapper.classList.remove('max')
       this.wrapper.classList.remove('highlight')
     })
-    // console.log(this.div)
 
     const label = document.createElement('label')
     this.shiftRightEl = document.createElement('input')
@@ -460,6 +417,28 @@ export class EditorTalent extends BaseTalent {
     })
 
     this.div.appendChild(del)
+  }
+
+  swap(other) {
+    const buffer = { col: this.col, row: this.row }
+
+    this.tree.talents[this.col][this.row] = other
+    this.tree.talents[other.col][other.row] = this
+
+    this.changePos(other.col, other.row)
+    other.changePos(buffer.col, buffer.row)
+
+    this.children = []
+    other.children = []
+  }
+
+  changePos(col, row) {
+    this.col = col
+    this.row = row
+    this.wrapper.dataset.col = this.col
+    this.wrapper.dataset.row = this.row
+
+    this.placeEl()
   }
 
   createInput(type, cls, placeholder, field, parent) {
@@ -512,7 +491,6 @@ export class EditorTalent extends BaseTalent {
     this.descrEl2.style.display = show ? 'block' : 'none'
     this.hr.style.display = show ? 'block' : 'none'
     this.divider.style.display = show ? 'block' : 'none'
-    // this.ranks.style.display = show ? 'none' : 'block'
   }
 }
 
@@ -524,8 +502,6 @@ export class TranslateTalent extends BaseTalent {
     this.setInfo(talent)
 
     this.type = talent.type == 'hexagon' ? 'octagon' : talent.type
-    // if (inputs) this.createInputs(container)
-    // else this.createElements(container)
   }
 
   setInfo(talent, images = true) {
@@ -540,13 +516,6 @@ export class TranslateTalent extends BaseTalent {
     const row = document.createElement('div')
     container.appendChild(row)
     row.classList.add('row')
-
-    // if (this.type == 'octagon') {
-    //   container.appendChild(document.createElement('hr'))
-    //   const oct = document.createElement('div')
-    //   oct.innerHTML = 'Choose Node'
-    //   container.appendChild(oct)
-    // }
 
     const div = document.createElement('div')
     div.classList.add('info', 'tooltip-border')
@@ -651,7 +620,6 @@ export class CalculatorTalent extends BaseTalent {
     this.enabled = false
     this.grayout = false
     this.countable = true
-    // this.createElements(this.tree.container)
 
     this.parents = []
   }
@@ -726,7 +694,6 @@ export class CalculatorTalent extends BaseTalent {
 
     this.setImage(this.image, 1)
 
-    // this.setRank(0, true)
     if (this.ranks > 1 && this.type != 'octagon') this.rankEl.innerHTML = `${this.rank}/${this.ranks}`
     this.setPointerHanlers()
   }
@@ -821,7 +788,6 @@ export class CalculatorTalent extends BaseTalent {
   }
 
   reset() {
-    // if (!this.enabled) return
     if (this.countable) {
       this.setRank(0)
       return

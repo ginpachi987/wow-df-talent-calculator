@@ -86,9 +86,6 @@
 }
 
 .types {
-  /* position: absolute; */
-  /* top: 0px;
-  right: 0x; */
   color: white;
   border-radius: 4px;
   font-size: 16px;
@@ -151,27 +148,16 @@ textarea {
   font-size: 20px;
   line-height: 20px;
   border-radius: 8px;
-  /* background-color: #ffd100; */
   border: 1px solid white;
   margin-right: 8px;
   cursor: pointer;
 }
 
-/* .tooltip-rank-up {
-  border-color: green;
-}
-
-.tooltip-rank-down {
-  border-color: crimson;
-} */
-
 .tooltip-rank-up:hover {
-  /* border-color: green; */
   background-color: rgba(0, 128, 0, 0.5);
 }
 
 .tooltip-rank-down:hover {
-  /* border-color: crimson; */
   background-color: rgba(220, 20, 60, 0.5);
 }
 
@@ -182,7 +168,6 @@ textarea {
   color: white;
   border: none;
   border-bottom: 1px solid #a7a7a7;
-  /* background-color: #a7a7a7; */
   margin: 16px 0;
 }
 

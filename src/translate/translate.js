@@ -38,7 +38,6 @@ function getTree(lang = 'en') {
     exact: true
   }
   request('getTree', req)
-    // fetch(`../json/trees/${lang}/${currentClass}_${currentSpec}.json`)
     .then(res => res.json())
     .then(res => {
       if (!res) {
@@ -56,14 +55,12 @@ function getTree(lang = 'en') {
     })
     .catch(err => {
       console.log(err)
-      // if (err) alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
       if (lang != 'en') loc.setClear(createTable)
     })
 }
 
 function createTable() {
   const list = document.querySelector('.talent-list')
-  // console.log(en, loc)
 
   let row = 0
 
@@ -114,14 +111,12 @@ function getLanguageList() {
   langsWrapper.appendChild(langs)
 
   request('getLocaleList')
-    // fetch('../json/langs/available.json')
     .then(res => res.json())
     .then(langList => {
 
       langList.sort().forEach(l => {
         const el = document.createElement('div')
         el.classList.add('lang', 'big')
-        // el.innerHTML = l
         el.style.backgroundImage = `url(../img/${l}.png)`
         el.addEventListener('click', () => {
           menu.up()

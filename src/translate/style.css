@@ -32,11 +32,6 @@ textarea {
   font-family: 'Montserrat', sans-serif;
 }
 
-/* input {
-  padding-bottom: 8px;
-  border-bottom: 1px solid #a7a7a7;
-} */
-
 textarea {
   min-height: 80px;
   resize: none;
@@ -51,7 +46,6 @@ textarea {
 
 .descr {
   font-size: 14px;
-  /* margin: 8px; */
   color: #d8b30b;
 }
 

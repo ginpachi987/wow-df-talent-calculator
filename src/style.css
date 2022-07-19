@@ -54,20 +54,6 @@ body {
   position: relative;
 }
 
-/* .talent {
-  width: 42px;
-  height: 42px;
-  border: 2px solid #42a841;
-  position: absolute;
-  cursor: pointer;
-  border-radius: 8px;
-  background-color: black;
-  background-size: cover;
-
-  transition: all 0.2s ease-in-out;
-} */
-
-/* .talent:hover, */
 .class:hover,
 .spec:hover {
   filter: brightness(1.2);
@@ -75,14 +61,6 @@ body {
 
 .round {
   border-radius: 50%;
-}
-
-#links {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .class-selector {
@@ -112,13 +90,14 @@ body {
 .links {
   position: fixed;
   bottom: 0;
-  right: 0;
+  left: 0;
   padding: 8px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-start;
   height: 36px;
+  gap: 4px;
 }
 
 .links a {
@@ -190,33 +169,13 @@ body {
   display: inline-block;
 }
 
-/* .level {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  color: white;
-  border-radius: 4px;
-  font-size: 12px;
-  background-color: #212121;
-
-  pointer-events: none;
-} */
-
 .spec-selector {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* width: 650px;
-  height: 717px; */
-
   vertical-align: top;
 }
-
-/* 
-#spec-tree {
-  display: none;
-} */
 
 .spec-name {
   display: flex;
@@ -241,7 +200,6 @@ body {
 }
 
 .max {
-  /* border-color: #42a841; */
   border-color: #d8b30b;
 }
 

@@ -6,15 +6,10 @@ import { build } from './scripts/build'
 import { setLanguage, lang } from './scripts/language'
 import { Menu } from './scripts/menu'
 import { request } from './scripts/api'
-// import { Summary } from './scripts/summary'
-// import { setMinigames } from './scripts/minigames'
-
-
 
 const menu = new Menu('Talent Calculator', getTrees, true, false)
 setLanguage()
 setVersion()
-// setMinigames()
 
 const tooltip = new CalculatorTooltip()
 
@@ -58,9 +53,7 @@ async function getTree(buffer = false, spec = currentSpec) {
     class: currentClass,
     spec: spec
   }
-  // console.log(req)
   const tree = await (await (request('getTree', req))).json()
-  // console.log(tree)
   
   if (!tree) {
     alert(`Something went wrong. Please try to reload the page.`)

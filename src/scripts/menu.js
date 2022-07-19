@@ -14,7 +14,6 @@ export class Menu {
     this.showClassButton = showClassButton
 
     this.header = document.querySelector('header')
-    // this.header.innerHTML = title
 
     const a = document.createElement('a')
     a.href = '/df-talents/'
@@ -62,7 +61,6 @@ export class Menu {
 
   getAvailable() {
     request('getClasses')
-      // fetch('/df-talents/json/classes.json')
       .then(res => res.json())
       .then(res => {
         this.availableClasses = res
@@ -75,7 +73,6 @@ export class Menu {
       })
 
     request('getSpecs')
-    // fetch('/df-talents/json/specs.json')
       .then(res => res.json())
       .then(res => {
         this.availableSpecs = res
@@ -94,11 +91,6 @@ export class Menu {
       this.classButtons[key].title = key
 
       this.classSelector.appendChild(this.classButtons[key])
-
-      // if (!availableClasses.includes(key)) {
-      //   this.classButtons[key].classList.add('disabled')
-      //   return
-      // }
 
       this.classButtons[key].addEventListener('click', () => {
         if (this.class == key || (this.availableClasses && !this.availableClasses.includes(key))) return

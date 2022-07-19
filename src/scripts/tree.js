@@ -1,7 +1,6 @@
 import { EditorTalent, TranslateTalent, CalculatorTalent } from "./talent";
 import { cellSize, cellSpace, editorCellSize, editorCellSpace } from "./const"
-import { request } from "./api";
-// import { build } from "./build"
+import { request } from "./api"
 
 import '../styles/tree.css'
 
@@ -86,8 +85,6 @@ export class EditorTree extends BaseTree {
     this.createElement(selector)
     this.selected
 
-    // this.tooltip = tooltip
-
     this.talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new EditorTalent(j, i, this)))
     this.texts = document.querySelector('.editor-texts')
 
@@ -168,8 +165,6 @@ export class EditorTree extends BaseTree {
     document.querySelector('#color').value = this.color
     document.querySelector('#title').value = this.title
 
-    // document.body.style.backgroundColor = this.color
-
     this.redraw()
   }
 
@@ -200,9 +195,6 @@ export class TranslateTree extends BaseTree {
 
     this.defaultTalents = tree.defaultTalents
     document.querySelector('#title-en').innerHTML = this.title
-
-
-    // document.body.style.backgroundColor = this.color
   }
 
   copyTranslation(tree, callback) {
@@ -253,7 +245,6 @@ export class CalculatorTree extends BaseTree {
     const title = document.createElement('div')
     title.classList.add('spec-name')
     this.titleEl = document.createElement('div')
-    // this.titleEl.classList.add('spec-name')
     title.appendChild(this.titleEl)
     const reset = document.createElement('div')
     reset.classList.add('reset-tree')
@@ -312,8 +303,6 @@ export class CalculatorTree extends BaseTree {
     this.redraw()
 
     if (build) this.setTalents(build)
-
-    // document.querySelector('.trees').style.backgroundColor = this.color
   }
 
   addPoints(points, section) {
@@ -390,24 +379,13 @@ export class CalculatorTree extends BaseTree {
     })
 
     const points = res.split('').map(el => parseInt(el))
-    for (let i = 0; i < Math.min(/*this.talents.length,*/ points.length); i++) {
+    for (let i = 0; i < Math.min(points.length); i++) {
       if (points[i] == 0) continue
 
-      // this.talents[i].rank = points[i]
       this.talents[i].activate(points[i])
     }
 
     this.addPoints(0, 0)
-
-    // this.talents.filter(el => el.learned > 0).forEach(tal => {
-    //   tal.activate()
-    // })
-
-    // this.talents.filter(el => el.learned > 0).forEach(tal => {
-    //   tal.childAvailable()
-    // })
-
-    // this.recalcPoints()
   }
 
   setDefaultTalents(talents) {
@@ -429,8 +407,6 @@ export class CalculatorTree extends BaseTree {
   redraw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.ctx.beginPath()
-    // this.ctx.fillStyle = '#FFF'
-    // this.ctx.lineWidth = 2
     this.talents.forEach(talent => talent.draw(this.ctx))
     this.ctx.stroke()
   }

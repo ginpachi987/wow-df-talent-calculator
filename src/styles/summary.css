@@ -4,7 +4,6 @@
   left: calc(50% - 180px);
   border: 2px solid #a7a7a7;
   background-color: #212121;
-  /* box-sizing: border-box; */
   padding: 8px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
