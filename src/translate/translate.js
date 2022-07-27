@@ -1,5 +1,5 @@
-import '../style.css'
-import './style.css'
+import '../style.scss'
+import './style.scss'
 import { TranslateTree } from '../scripts/tree'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
@@ -27,12 +27,13 @@ function menuCallback(cls, spec) {
   currentSpec = spec
   if (!lang) langsWrapper.style.display = 'flex'
 
-  getTree()
+  // getTree()
 }
 
 function getTree(lang = 'en') {
   const req = {
-    lang: lang,
+    lang: 'en',
+    lang2: lang,
     class: currentClass,
     spec: currentSpec,
     exact: true
@@ -40,18 +41,30 @@ function getTree(lang = 'en') {
   request('getTree', req)
     .then(res => res.json())
     .then(res => {
-      if (!res) {
-        loc.setClear(createTable)
-        alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
-        return
-      }
-      if (lang == 'en') {
-        en.setTree(res)
-        loc.setTree(res)
+      const tree = res.tree
+      const texts = res.texts
 
-        wrapper.style.backgroundColor = res.color || '#212121'
+      tree.title = texts.title
+      tree.talents.forEach(tal => {
+        const text = texts.talents.filter(t => t.id == tal.id)[0]
+        if (text) {
+          tal.title = text.title
+          tal.descr = text.descr
+          tal.title2 = text.title2
+          tal.descr2 = text.descr2
+        }
+      })
+
+      en.setTree(tree)
+      loc.setTree(tree)
+
+      wrapper.style.backgroundColor = res.tree.color || '#212121'
+
+      if (res.translation) loc.copyTranslation(res.translation, createTable)
+      else {
+        alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
+        loc.setClear(createTable)
       }
-      else loc.copyTranslation(res, createTable)
     })
     .catch(err => {
       console.log(err)

@@ -1,4 +1,4 @@
-import '../styles/minigames.css';
+import '../styles/minigames.scss';
 
 export function setMinigames() {
   let show = true

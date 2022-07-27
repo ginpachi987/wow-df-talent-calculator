@@ -1,9 +1,10 @@
 import { cellSize, cellSpace, editorCellSize, editorCellSpace, imageServer } from "./const"
 
-import '../styles/talent.css'
+import '../styles/talent.scss'
 
 class BaseTalent {
-  constructor(col, row) {
+  constructor(col, row, id = 0) {
+    this.id = id
     this.col = col
     this.row = row
     this.ranks = 1
@@ -68,18 +69,6 @@ class BaseTalent {
         ctx.moveTo(0, 0)
         ctx.lineTo(dist, 0)
 
-        // ctx.translate(dist-cellSize, 0)
-        // ctx.lineTo(3,4)
-        // ctx.lineTo(3,-4)
-        // ctx.lineTo(0,0)
-
-        // const angle = Math.atan(-y / x)
-        // ctx.translate(x, y)
-        // ctx.moveTo(0, 0)
-        // console.log(angle)
-        // ctx.rotate(angle)
-        // ctx.lineTo(100, 100)
-
         ctx.stroke()
         ctx.restore()
       }
@@ -117,6 +106,8 @@ class BaseTalent {
   }
 
   setInfo(talent, update = true, images = true) {
+    this.id = talent.id
+
     this.title = talent.title
     this.descr = talent.descr
 
@@ -153,23 +144,37 @@ class BaseTalent {
     this.wrapper.remove()
   }
 
-  saveAsFile() {
+  saveTree() {
+    const tr = this instanceof TranslateTalent
     const talent = {
+      id: this.id,
       col: this.col,
       row: this.row,
       type: this.type,
       ranks: this.ranks,
       image: this.image,
-      title: this.title,
-      descr: this.descr,
-      children: this.children.map(child => {
-        return { col: child.col, row: child.row }
-      })
+      // title: this.title,
+      // descr: this.descr,
+      children: tr ? this.children : this.children.map(child => child.id)
     }
     if (this.shiftRight) talent.shiftRight = true
     if (this.type == 'octagon') {
       talent.ranks = 2
       talent.image2 = this.image2
+      // talent.title2 = this.title2
+      // talent.descr2 = this.descr2
+    }
+
+    return talent
+  }
+
+  saveTranslation() {
+    const talent = {
+      id: this.id,
+      title: this.title,
+      descr: this.descr
+    }
+    if (this.type == 'octagon') {
       talent.title2 = this.title2
       talent.descr2 = this.descr2
     }
@@ -187,7 +192,7 @@ class BaseTalent {
   }
 
   setImage(image, el) {
-    const link = image ? `url(${imageServer}/${image}.jpg)` : 'none'
+    const link = image ? `url(${imageServer}${image}.jpg)` : 'none'
 
     if (this.type == 'octagon') {
       switch (el) {
@@ -215,7 +220,7 @@ class BaseTalent {
 
 export class EditorTalent extends BaseTalent {
   constructor(col, row, tree) {
-    super(col, row, tree)
+    super(col, row)
     this.size = editorCellSize
     this.space = editorCellSpace
     this.tree = tree
@@ -254,6 +259,7 @@ export class EditorTalent extends BaseTalent {
     this.tree.selected = this
 
     this.div.style.display = 'flex'
+    if (!this.id) this.id = ++this.tree.maxid
   }
 
   rightClick() {
@@ -268,7 +274,8 @@ export class EditorTalent extends BaseTalent {
     const type = talent.type == 'hexagon' ? 'octagon' : talent.type
     this.setType(type)
 
-    this.children = talent.children.map(child => this.tree.talents[child.col][child.row])
+    this.children = talent.children
+    // this.children = talent.children.map(child => this.tree.talents[child.col][child.row])
 
     this.update()
 
@@ -315,6 +322,7 @@ export class EditorTalent extends BaseTalent {
     this.children = []
     this.tree.selected = null
     this.tree.redraw()
+    this.id = undefined
   }
 
   setRanks(ranks) {
@@ -498,7 +506,7 @@ export class TranslateTalent extends BaseTalent {
   constructor(talent) {
     const col = talent.col || talent.x || 0
     const row = talent.row || talent.y || 0
-    super(col, row)
+    super(col, row, talent.id)
     this.setInfo(talent)
 
     this.type = talent.type == 'hexagon' ? 'octagon' : talent.type
@@ -507,9 +515,10 @@ export class TranslateTalent extends BaseTalent {
   setInfo(talent, images = true) {
     super.setInfo(talent, false, images)
 
-    this.children = talent.children || talent.connections.map(conn => {
-      return { col: conn.x, row: conn.y }
-    })
+    this.children = talent.children
+    // || talent.connections.map(conn => {
+    //   return { col: conn.x, row: conn.y }
+    // })
   }
 
   createElements(container, localeTalent) {
@@ -610,12 +619,12 @@ export class TranslateTalent extends BaseTalent {
 }
 
 export class CalculatorTalent extends BaseTalent {
-  constructor(col, row, tree, tooltip) {
+  constructor(col, row, tree) {
     super(col, row, tree)
     this.size = cellSize
     this.space = cellSpace
     this.tree = tree
-    this.tooltip = tooltip
+    this.tooltip = tree.tooltip
     this.rank = 0
     this.enabled = false
     this.grayout = false
@@ -799,5 +808,196 @@ export class CalculatorTalent extends BaseTalent {
 
   update() {
 
+  }
+}
+
+export class ProfessionTalent {
+  constructor(container) {
+    this.id = 0
+    this.x = 60
+    this.y = 410
+    this.rank = 0
+    this.ranks = 0
+    this.children = []
+    this.title = ""
+    this.descr = ""
+    this.bonuses = ""
+    this.container = container
+    this.image = ""
+
+    this.el = document.createElement('div')
+    this.container.appendChild(this.el)
+    this.el.classList.add('prof-talent')
+    this.el.style.left = `${this.x}px`
+    this.el.style.top = `${this.y}px`
+  }
+
+  set(talent, tooltip, details) {
+    this.id = talent.id
+    this.el.dataset.id = this.id
+    this.x = talent.x
+    this.y = talent.y
+    this.rank = 0
+    this.ranks = talent.ranks
+    this.children = talent.children || []
+    this.title = talent.title
+    this.descr = talent.descr
+    this.bonuses = talent.bonuses
+    this.tooltip = tooltip
+    this.image = talent.image
+
+    this.el.style.left = `${this.x}px`
+    this.el.style.top = `${this.y}px`
+    this.el.style.backgroundImage = `url(${imageServer + talent.image}.jpg)`
+
+    this.setHandlers(details)
+  }
+
+  drawConnections() {
+    this.children.forEach(child => {
+      const conn = document.createElement('div')
+      conn.classList.add('connection')
+      const dist = Math.hypot(-this.x + child.x, -this.y + child.y)
+      const angle = Math.atan2(-this.y + child.y, -this.x + child.x)
+      conn.style.width = `${dist}px`
+      conn.style.top = `${this.y + 16}px`
+      conn.style.left = `${this.x + 24}px`
+      conn.style.transform = `rotateZ(${angle}rad)`
+
+      this.container.appendChild(conn)
+    })
+  }
+
+  setHandlers(details) {
+    this.el.addEventListener('mouseenter', () => {
+      this.tooltip.show(this)
+    })
+
+    this.el.addEventListener('mouseleave', () => {
+      this.tooltip.hide()
+    })
+
+    this.el.addEventListener('mousedown', () => {
+      details.show(this)
+    })
+  }
+
+  translate(talent) {
+    this.title = talent.title
+    this.descr = talent.descr
+    this.bonuses = talent.bonuses
+  }
+}
+
+export class ProfessionTalentEdit extends ProfessionTalent {
+  constructor(container, details) {
+    super(container)
+    this.image = 'inv_7xp_inscription_talenttome01'
+    this.el.style.backgroundImage = `url(${imageServer + this.image}.jpg)`
+
+    this.connections = []
+    this.details = details
+    this.setHandlers()
+  }
+
+  setImage(image) {
+    this.image = image
+    this.el.style.backgroundImage = `url(${imageServer + this.image}.jpg)`
+  }
+
+  setID(id) {
+    this.id = id
+    this.el.dataset.id = id
+  }
+
+  move(x, y) {
+    this.x = x
+    this.y = y
+
+    this.el.style.left = `${this.x}px`
+    this.el.style.top = `${this.y}px`
+
+    this.drawConnections()
+  }
+
+  setHandlers() {
+    this.el.addEventListener('mousedown', () => {
+      this.details.show(this)
+    })
+  }
+
+  toggleChild(other) {
+
+    const pos = this.children.indexOf(other)
+    console.log(pos)
+    if (pos === -1) {
+      const div = document.createElement('div')
+      div.classList.add('connection')
+      this.children.push(other)
+      this.connections.push({ el: div, child: other })
+      this.container.appendChild(div)
+
+      this.drawConnections()
+      return
+    }
+    const rem = this.connections.splice(pos, 1)[0]
+    rem.el.remove()
+    this.children.splice(pos, 1)
+
+    this.drawConnections()
+  }
+
+  createConnections() {
+    this.children.forEach(child => {
+      const conn = document.createElement('div')
+      conn.classList.add('connection')
+      this.container.appendChild(conn)
+
+      this.connections.push({ el: conn, child: child })
+    })
+
+    this.drawConnections()
+  }
+
+  drawConnections() {
+    this.connections.forEach(conn => {
+      const dist = Math.hypot(-this.x + conn.child.x, -this.y + conn.child.y)
+      const angle = Math.atan2(-this.y + conn.child.y, -this.x + conn.child.x)
+      conn.el.style.width = `${dist}px`
+      conn.el.style.top = `${this.y + 25}px`
+      conn.el.style.left = `${this.x + 25}px`
+      conn.el.style.transform = `rotateZ(${angle}rad)`
+    })
+  }
+
+  getFile() {
+    const talent = {}
+    talent.title = this.title
+    talent.descr = this.descr
+    talent.ranks = this.ranks
+    talent.id = this.id
+    talent.x = this.x
+    talent.y = this.y
+    talent.image = this.image
+    talent.bonuses = this.bonuses
+    talent.children = this.children.map(child => child.id)
+
+    return talent
+  }
+
+  getTranslation() {
+    const talent = {}
+    talent.title = this.title
+    talent.descr = this.descr
+    talent.id = this.id
+    talent.bonuses = this.bonuses
+
+    return talent
+  }
+
+  translate(talent) {
+    this.title = talent.title
+    this.descr = talent.descr
+    this.bonuses = talent.bonuses
   }
 }

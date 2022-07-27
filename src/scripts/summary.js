@@ -1,4 +1,4 @@
-import '../styles/summary.css'
+import '../styles/summary.scss'
 
 export class Summary {
   constructor(classTree, specTree) {

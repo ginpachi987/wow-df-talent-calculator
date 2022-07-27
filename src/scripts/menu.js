@@ -1,4 +1,4 @@
-import '../styles/menu.css'
+import '../styles/menu.scss'
 import { classes } from './classes'
 import { imageServer } from './const'
 import { images } from './images'
@@ -165,3 +165,81 @@ export class Menu {
     this.specButtons[spec].click()
   }
 }
+
+export class ProfessionMenu {
+  constructor(callback, edit = false) {
+    this.el = document.querySelector('header')
+
+    const list = {
+      "Alchemy": "ui_profession_alchemy",
+      "Blacksmithing": "ui_profession_blacksmithing",
+      "Enchanting": "ui_profession_enchanting",
+      "Engineering": "ui_profession_engineering",
+      "Herbalism": "ui_profession_herbalism",
+      "Inscription": "ui_profession_inscription",
+      "Jewelcrafting": "ui_profession_jewelcrafting",
+      "Leatherworking": "ui_profession_leatherworking",
+      "Mining": "ui_profession_mining",
+      "Skinning": "ui_profession_skinning",
+      "Tailoring": "ui_profession_tailoring",
+      // "Archaeology": "trade_archaeology",
+      // "Cooking": "ui_profession_cooking",
+      // "Fishing": "ui_profession_fishing",
+      // "Dragon Riding": "ability_dragonriding_forwardflap01"
+    }
+    const buttons = {}
+    for (let prof in list) {
+      const el = document.createElement('div')
+      el.classList.add('profession-icon')
+      if (!edit) el.classList.add('profession-disabled')
+      this.el.appendChild(el)
+      el.dataset.title = prof
+      el.style.backgroundImage = `url(${imageServer}${list[prof]}.jpg)`
+
+      el.addEventListener('click', () => {
+        if (el.classList.contains('profession-disabled')) return
+        callback(prof)
+      })
+      buttons[prof.toLowerCase()] = el
+    }
+    if (!edit)
+    request('getProfessions')
+      .then(res => res.json())
+      .then(res => {
+        res.forEach(prof => {
+          buttons[prof].classList.remove('profession-disabled')
+        })
+      })
+  }
+}
+
+// ui_profession_alchemy
+// ui_profession_blacksmithing
+// ui_profession_enchanting
+// ui_profession_engineering
+// ui_profession_herbalism
+// ui_profession_inscription
+// ui_profession_jewelcrafting
+// ui_profession_leatherworking
+// ui_profession_mining
+// ui_profession_skinning
+// ui_profession_tailoring
+
+// ui_profession_cooking
+// ui_profession_fishing
+
+
+// trade_alchemy
+// trade_blacksmithing
+// trade_engraving
+// trade_engineering
+// spell_nature_naturetouchgrow
+// inv_inscription_tradeskill01
+// inv_misc_gem_01
+// inv_misc_armorkit_17
+// trade_mining
+// inv_misc_pelt_wolf_01
+// trade_tailoring
+
+// inv_misc_food_15
+// trade_fishing

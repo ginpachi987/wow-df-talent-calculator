@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dragonflight Talent Calculator - Professions</title>
+  <script src="./professions.js" type="module"></script>
+
+  <style>
+    body {
+      background-color: #212121;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+
+  <div class="prof-wrapper">
+    <div class="prof-spec-tabs">
+      <div class="prof-tab prof-tab-selected">Potion Mastery</div>
+      <div class="prof-tab">Phial Mastery</div>
+      <div class="prof-tab">Alchemical Theory</div>
+    </div>
+    <div class="prof-tree-wrapper">
+      <div class="prof-tree-info">
+        <div class="prof-tree">
+
+        </div>
+        <div class="prof-spec-title">Potion Mastery</div>
+        <div class="prof-spec-descr">Specialize in crafting potions, increasing your ability to craft at a higher quality. In addition, learn new recipes and ways to improve the efficiency of your craft!</div>
+        
+      </div>
+      <div class="prof-circle">
+        <div class="prof-talent-title"></div>
+        <div class="prof-talent-circle"></div>
+        <div class="prof-talent-descr"></div>
+      </div>
+    </div>
+    <div class="prof-points"><profession></profession> knowledge spent: <knowledge></knowledge></div>
+
+    <div class="talant-details">
+      <!-- <div class="details-title"></div> -->
+      <div class="details-image"></div>
+      <div class="bonuses">
+        <div class="details-progressbar">
+          <div class="details-current"></div>
+          <div class="details-rank">Phial Mastery: 10/30</div>
+        </div>
+        <div class="bonus-wrapper">
+          <div class="bonus"></div>
+          <div class="bonus disabled"></div>
+          <div class="bonus disabled"></div>
+          <div class="bonus disabled"></div>
+          <div class="bonus disabled"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="links">
+    <version></version>
+    <a href="/df-talents/professions/?mode=edit">Editor</a>
+    <a href="/df-talents/">Classes</a>
+    <a href="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">GitHub</a>
+  </div>
+</body>
+</html>

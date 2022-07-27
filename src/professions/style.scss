@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Literata:opsz@7..72&display=swap');
+
+.prof-wrapper {
+  position: relative;
+  font-family: 'Literata', serif;
+  // font-family: 'Montserrat', sans-serif;
+  display: none;
+}
+
+.prof-spec-title {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  font-size: 15px;
+  letter-spacing: 1.2px;
+}
+
+.prof-spec-descr {
+  position: absolute;
+  left: 20px;
+  top: 36px;
+  width: 260px;
+  font-size: 9px;
+  color: #b6a54e;
+}
+
+.prof-tree-info {
+  width: 720px;
+  height: 480px;
+  position: relative;
+  display: none;
+}
+
+.prof-tab {
+  display: inline-block;
+  margin: 0 8px;
+  padding: 2px 12px 8px;
+  font-size: 11px;
+  // background-color: black;
+  background-color: #271f17;
+  border: 2px solid #080202;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: none;
+  cursor: pointer;
+  color: #b6a54e;
+
+  transition: box-shadow .2s ease;
+}
+
+.prof-tab-selected {
+  // background-color: black;
+  background-color: #271f17;
+  box-shadow: inset 0 0 2px 2px gold;
+  color: white;
+  position: relative;
+
+  &:before {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 2px;
+    right: 2px;
+    height: 6px;
+    background-color: #271f17;
+    content: "";
+  }
+}
+
+.prof-tree-wrapper {
+  background-image: url('https://projects.yoro.dev/df-talents/img/bg/profession.webp');
+  width: 720px;
+  height: 480px;
+}
+
+.prof-tree {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.prof-talent {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin: 2px;
+  border: 2px solid green;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background-size: cover;
+  z-index: 2;
+  cursor: pointer;
+}
+
+header {
+  flex-direction: row !important;
+}
+
+.profession-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  display: inline-block;
+  margin: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid green;
+  transition: filter .5s ease-out;
+
+  &:hover::after {
+    display: block;
+    content: attr(data-title);
+    position: absolute;
+    top: -24px;
+    left: -2px;
+    width: 200px;
+  }
+}
+
+.profession-disabled {
+  filter: grayscale(1);
+  cursor: default;
+}
+
+.profession-selected {
+  border-color: gold;
+}
+
+.prof-points {
+  position: absolute;
+  top: 34px;
+  right: 20px;
+  font-size: 13px;
+}
+
+.prof-points {
+  text-transform: uppercase;
+}
+
+knowledge {
+  color: rgb(29, 182, 29);
+  font-size: 120%;
+}
+
+.connection {
+  position: absolute;
+  height: 3px;
+  border: 1px solid gray;
+  background-color: green;
+  transform-origin: center left;
+
+  &:after {
+    display: block;
+    position: absolute;
+    content: "";
+    top: -8px;
+    right: 5px;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: green;
+    width: 10px;
+  }
+}
+
+.prof-ranks {
+  color: white;
+  margin: 0 0 12px;
+}
+
+// .grid {
+//   background-size: 10px 10px;
+//   background-image:
+//     linear-gradient(to right, grey 1px, transparent 1px),
+//     linear-gradient(to bottom, grey 1px, transparent 1px);
+// }
+
+.talant-details {
+  position: absolute;
+  bottom: 0;
+  left: calc(360px - 230px);
+  width: 100%;
+  padding: 4px;
+  width: 460px;
+
+  display: none;
+  gap: 8px;
+}
+
+.details-progressbar {
+  position: relative;
+  width: 400px;
+  height: 20px;
+  background-color: #5c5c5c;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 20px;
+}
+
+.details-current {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 20px;
+  border-radius: 4px;
+  background-color: green;
+
+  transition: width .5s ease;
+}
+
+.details-rank {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+}
+
+.details-image {
+  margin-top: 2px;
+  width: 46px;
+  height: 46px;
+  border: 2px solid green;
+  border-radius: 4px;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+.bonuses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bonus-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.bonus {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border: 2px solid green;
+  border-radius: 4px;
+  background-image: url("https://wow.zamimg.com/images/wow/icons/medium/spell_chargepositive.jpg");
+  background-size: cover;
+
+  &::after {
+    display: block;
+    position: absolute;
+    top: -12px;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 12px;
+    content: "";
+    background-color: green;
+  }
+
+  &:first-child::after {
+    left: -2px;
+  }
+
+  &:last-child::after {
+    left: unset;
+    right: -2px;
+  }
+}
+
+input.prof-tab {
+  width: 100px;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+.add-talent {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-image: url("https://wow.zamimg.com/images/wow/icons/medium/spell_chargepositive.jpg");
+  background-size: cover;
+  border: 2px solid gray;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
+
+.details-edit {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+}

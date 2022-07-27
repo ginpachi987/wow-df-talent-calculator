@@ -2,7 +2,7 @@ import { EditorTalent, TranslateTalent, CalculatorTalent } from "./talent";
 import { cellSize, cellSpace, editorCellSize, editorCellSpace } from "./const"
 import { request } from "./api"
 
-import '../styles/tree.css'
+import '../styles/tree.scss'
 
 class BaseTree {
   constructor(cols, rows) {
@@ -14,6 +14,7 @@ class BaseTree {
     this.defaultTalents = []
     this.title = ''
     this.color = ''
+    this.maxid = 0
   }
 
   setTree(tree) {
@@ -23,6 +24,7 @@ class BaseTree {
     this.tree = tree.tree || tree.spec
     this.title = tree.title || ''
     this.color = tree.color || '#212121'
+    this.maxid = tree.maxid || 0
   }
 
   createElement(selector) {
@@ -50,9 +52,14 @@ class BaseTree {
       tree: this.tree,
       cols: this.cols,
       rows: this.rows,
-      talents: talents.map(tal => tal.saveAsFile()),
+      talents: talents.map(tal => tal.saveTree()),
       defaultTalents: this.defaultTalents,
-      title: this.title
+      maxid: this.maxid
+      // title: this.title
+    }
+    const translation = {
+      title: this.title,
+      talents: talents.map(tal => tal.saveTranslation())
     }
     if (this.color != '' && this.color != '#212121') treeToSave.color = this.color
     if (upload) {
@@ -60,7 +67,8 @@ class BaseTree {
         lang: lang,
         class: this.class,
         spec: this.tree,
-        tree: treeToSave
+        tree: treeToSave,
+        translation: translation
       }
       request('saveTree', req, true)
         .then(res => res.json())
@@ -158,6 +166,16 @@ export class EditorTree extends BaseTree {
       this.talents[talent.col || talent.x || 0][talent.row || talent.y || 0].setInfo(talent)
     })
 
+    this.talents.forEach(col => {
+      col.forEach(tal => {
+        tal.children = tal.children.map(child => {
+          const t = tree.talents.filter(c => c.id == child)[0]
+          
+          return this.talents[t.col][t.row]
+        })
+      })
+    })
+
     if (tree.defaultTalents) this.defaultTalents = tree.defaultTalents.map(tal => {
       return { col: tal.col || tal.x || 0, row: tal.row || tal.y || 0 }
     })
@@ -201,7 +219,7 @@ export class TranslateTree extends BaseTree {
     const talents = tree.talents
 
     this.talents.forEach(tal => {
-      const talent = talents.find(t => (t.col == tal.col && t.row == tal.row) || (t.x == tal.col && t.y == tal.row))
+      const talent = talents.find(t => t.id == tal.id)
       if (talent) {
         tal.setInfo(talent, false)
       }
@@ -276,24 +294,39 @@ export class CalculatorTree extends BaseTree {
 
     this.resize()
 
-    let talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new CalculatorTalent(j, i, this, this.tooltip)))
+    this.talents = tree.talents.map(tal => {
+      const talent = new CalculatorTalent(tal.col, tal.row, this)
+      talent.setInfo(tal)
+      talent.children = tal.children
+      return talent
+    })
 
-    tree.talents.forEach(talent => {
-      const col = talent.col || talent.x || 0
-      const row = talent.row || talent.y || 0
-      talents[col][row].setInfo(talent)
-
-      const children = talent.children || talent.connections
-
-      children.forEach(child => {
-        talents[col][row].children.push(talents[child.col || child.x || 0][child.row || child.y || 0])
-        talents[child.col || child.x || 0][child.row || child.y || 0].parents.push(talents[col][row])
+    this.talents.forEach(talent => {
+      talent.children = talent.children.map(child => {
+        const tal = this.talents.filter(t => t.id == child)[0]
+        tal.parents.push(talent)
+        return tal
       })
     })
 
-    talents = talents[0].map((_, i) => talents.map(row => row[i])).flat().filter(tal => tal.title)
+    // let talents = [...Array(this.cols)].map((_, j) => [...Array(this.rows)].map((_, i) => new CalculatorTalent(j, i, this)))
 
-    this.talents = talents.flat().filter(talent => talent.title)
+    // tree.talents.forEach(talent => {
+    //   const col = talent.col || talent.x || 0
+    //   const row = talent.row || talent.y || 0
+    //   talents[col][row].setInfo(talent)
+
+    //   const children = talent.children || talent.connections
+
+    //   children.forEach(child => {
+    //     talents[col][row].children.push(talents[child.col || child.x || 0][child.row || child.y || 0])
+    //     talents[child.col || child.x || 0][child.row || child.y || 0].parents.push(talents[col][row])
+    //   })
+    // })
+
+    // talents = talents[0].map((_, i) => talents.map(row => row[i])).flat().filter(tal => tal.title)
+
+    // this.talents = talents.flat().filter(talent => talent.title)
     this.talents.forEach(talent => talent.createElements(this.talentsContainer))
 
     this.talents.filter(talent => talent.row == 0).forEach(talent => {

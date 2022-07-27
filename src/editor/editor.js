@@ -1,6 +1,6 @@
-import '../style.css'
-import './style.css'
-import '../styles/tooltip.css'
+import '../style.scss'
+import './style.scss'
+import '../styles/tooltip.scss'
 import { EditorTree } from '../scripts/tree'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
@@ -48,13 +48,15 @@ function menuCallback(cls, spec) {
 function getTree() {
   const req = {
     class: currentClass,
-    spec: currentSpec
+    spec: currentSpec,
+    lang: 'en',
+    exact: true
   }
   request('getTree', req)
     .then(res => res.json())
     .then(res => {
       if (!res) {
-        alert(`Where is currently no data for ${currentClass} ${currentSpec}. You can start making it!`)
+        alert(`Where is currently no data for ${currentClass.toUpperCase()} ${currentSpec.toUpperCase()}. You can start making it!`)
 
         tree.class = currentClass
         tree.tree = currentSpec
@@ -65,7 +67,21 @@ function getTree() {
 
         return
       }
-      tree.setTree(res)
+      const rawTree = res.tree
+      const texts = res.texts
+
+      rawTree.title = texts.title
+      rawTree.talents.forEach(tal => {
+        const text = texts.talents.filter(t => t.id == tal.id)[0]
+        if (text) {
+          tal.title = text.title
+          tal.descr = text.descr
+          tal.title2 = text.title2
+          tal.descr2 = text.descr2
+        }
+      })
+
+      tree.setTree(rawTree)
       colsEl.value = tree.cols
       cols = tree.cols
 
@@ -91,8 +107,8 @@ document.body.addEventListener('mouseup', (e) => {
   if (!el.classList.contains('talent-wrapper') || !el.dataset.col) return
   const talent = tree.talents[el.dataset.col][el.dataset.row]
   if (talent == tree.selected || !tree.selected) return
-  
+
   tree.selected.swap(talent)
-  tree.resize(0,0)
+  tree.resize(0, 0)
   tree.redraw()
 })

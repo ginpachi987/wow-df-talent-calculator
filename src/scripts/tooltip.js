@@ -1,6 +1,6 @@
 import { editorCellSize } from './const'
 import { langTexts } from './language'
-import '../styles/tooltip.css'
+import '../styles/tooltip.scss'
 
 class BaseTooltip {
   constructor() {
@@ -46,7 +46,7 @@ class BaseTooltip {
     }
     else {
       if (left - this.el.clientWidth - 20 < 0) {
-        
+
         this.el.style.left = left + editorCellSize + 20 + 'px'
       }
       else {
@@ -258,5 +258,54 @@ export class CalculatorTooltip extends BaseTooltip {
     this.title2.style.display = show ? 'block' : 'none'
     this.image2.style.display = show ? 'block' : 'none'
     this.descr2.style.display = show ? 'block' : 'none'
+  }
+}
+
+export class ProfessionTooltip extends BaseTooltip {
+  constructor() {
+    super()
+
+    this.title = document.createElement('div')
+    this.title.classList.add('title')
+    this.el.appendChild(this.title)
+
+    this.ranks = document.createElement('div')
+    this.ranks.classList.add('prof-ranks')
+    this.el.appendChild(this.ranks)
+
+    this.descr = document.createElement('div')
+    this.el.appendChild(this.descr)
+  }
+
+  show(talent) {
+    this.talent = talent
+    this.el.classList.add('tooltip-show')
+
+    this.title.innerHTML = this.talent.title
+    this.descr.innerHTML = this.talent.descr
+    if (talent.ranks) {
+      this.ranks.style.display = 'block'
+      this.ranks.innerHTML = `Rank: ${talent.rank}/${talent.ranks}`
+    }
+    else {
+      this.ranks.style.display = 'none'
+    }
+
+    const top = talent.el.getBoundingClientRect().top
+    const left = talent.el.getBoundingClientRect().left
+
+    if (top + this.el.clientHeight > window.innerHeight) {
+      this.el.style.top = top + talent.size - 8 - this.el.clientHeight + 'px'
+    }
+    else {
+      this.el.style.top = top - 4 + 'px'
+    }
+
+    if (left + this.el.clientWidth + editorCellSize + 20 > window.innerWidth) {
+      this.el.style.left = left - this.el.clientWidth - 30 + 'px'
+    }
+    else {
+      this.el.style.left = left + editorCellSize + 20 + 'px'
+    }
   }
 }

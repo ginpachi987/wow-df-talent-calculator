@@ -1,4 +1,4 @@
-import './style.css'
+import './style.scss'
 import { CalculatorTree } from './scripts/tree'
 import { CalculatorTooltip } from './scripts/tooltip'
 import { setVersion } from './scripts/version'
@@ -23,7 +23,7 @@ let currentSpec = ''
 const trees = document.querySelector('.trees')
 
 let path = window.location.pathname.split('/')
-setTimeout(setPath,100)
+setTimeout(setPath, 100)
 
 function setPath() {
   if (path[2]) menu.setClass(path[2])
@@ -53,13 +53,26 @@ async function getTree(buffer = false, spec = currentSpec) {
     class: currentClass,
     spec: spec
   }
-  const tree = await (await (request('getTree', req))).json()
-  
-  if (!tree) {
+  const json = await (await (request('getTree', req))).json()
+
+  if (!json) {
     alert(`Something went wrong. Please try to reload the page.`)
     return
   }
 
+  const tree = json.tree
+  const texts = json.texts
+
+  tree.title = texts.title
+  tree.talents.forEach(tal => {
+    const text = texts.talents.filter(t => t.id == tal.id)[0]
+    if (text) {
+      tal.title = text.title
+      tal.descr = text.descr
+      tal.title2 = text.title2
+      tal.descr2 = text.descr2
+    }
+  })
   if (buffer) {
     bufferTree = tree
     return
