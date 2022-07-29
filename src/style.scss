@@ -359,3 +359,24 @@ button:hover {
     background-color: goldenrod;
   }
 }
+
+body {
+  background-image: url('./img/bg.webp');
+  background-size: cover;
+  background-position: center center;
+  // backdrop-filter: blur(10px) brightness(0.6);
+  // backdrop-filter: brightness(0.6);
+}
+
+select {
+  background-color: transparent;
+  text-shadow: 1px 1px 4px black;
+
+  @media (max-width: 800px) {
+    background-color: #212121;
+  }
+}
+
+option {
+  background-color: #212121;
+}

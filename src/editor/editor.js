@@ -112,3 +112,11 @@ document.body.addEventListener('mouseup', (e) => {
   tree.resize(0, 0)
   tree.redraw()
 })
+
+document.body.addEventListener('keydown', (e) => {
+  if (e.key != '`') return
+  tree.talents.forEach(col => {
+    col.forEach(tal => tal.children = [])
+  })
+  tree.redraw()
+})

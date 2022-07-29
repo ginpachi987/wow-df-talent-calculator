@@ -240,6 +240,10 @@ export class EditorTalent extends BaseTalent {
     this.wrapper.addEventListener('contextmenu', (e) => {
       e.preventDefault()
     })
+
+    this.wrapper.addEventListener('pointerenter', () => {
+      this.div.scrollIntoView({behavior: "smooth", block:"center"})
+    })
   }
 
   leftClick() {
@@ -295,6 +299,8 @@ export class EditorTalent extends BaseTalent {
     this.descrEl2.style.height = `${this.descrEl2.scrollHeight}px`
 
     this.shiftRightEl.checked = this.shiftRight
+
+    this.ranksEl.value = this.ranks
   }
 
   update() {
@@ -425,6 +431,18 @@ export class EditorTalent extends BaseTalent {
     })
 
     this.div.appendChild(del)
+
+    this.ranksEl = document.createElement('input')
+    this.ranksEl.classList.add('ranks-t')
+    this.ranksEl.type = 'number'
+    this.ranksEl.min = 1
+    this.ranksEl.max = 5
+    this.ranksEl.addEventListener('change', () => {
+      this.ranks = this.ranksEl.value
+      this.setRanks(this.ranks)
+    })
+
+    this.div.appendChild(this.ranksEl)
   }
 
   swap(other) {
@@ -681,7 +699,7 @@ export class CalculatorTalent extends BaseTalent {
     super.setInfo(talent, false)
     this.type = talent.type
 
-    if (this.ranks > 1 && this.type !== 'octagon') {
+    if (this.ranks > 1 && this.type !== 'octagon' && this.title) {
       const vars = this.descr.match(/\[[^\]]*\]/g)
       if (!vars) return
 

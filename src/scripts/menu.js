@@ -12,6 +12,7 @@ export class Menu {
     this.specButtons = {}
     this.callback = callback
     this.showClassButton = showClassButton
+    this.onlyAvailable = onlyAvailable
 
     this.header = document.querySelector('header')
 
@@ -19,7 +20,7 @@ export class Menu {
     a.href = '/df-talents/'
 
     this.logo = document.createElement('img')
-    this.logo.src = 'https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt563e16b3504e5808/62545b180afb5024ae74b677/rc-logo-na.png?auto=webp'
+    this.logo.src = '/img/df-logo.webp'
     this.logo.alt = 'World of Warcraft: Dragonflight'
     this.logo.id = 'logo'
     a.appendChild(this.logo)
@@ -54,9 +55,9 @@ export class Menu {
     this.specSelector.style.display = 'none'
     wrapper.appendChild(this.specSelector)
 
-    this.setClassButtons(onlyAvailable)
+    this.setClassButtons()
 
-    if (onlyAvailable) this.getAvailable()
+    if (this.onlyAvailable) this.getAvailable()
   }
 
   getAvailable() {
@@ -79,11 +80,11 @@ export class Menu {
       })
   }
 
-  setClassButtons(onlyAvailable) {
+  setClassButtons() {
     Object.entries(classes).forEach(([key, value]) => {
       this.classButtons[key] = document.createElement('div')
       this.classButtons[key].classList.add('talent-wrapper', 'talent-inline')
-      if (onlyAvailable) this.classButtons[key].classList.add('disabled')
+      if (this.onlyAvailable) this.classButtons[key].classList.add('disabled')
       const image = document.createElement('div')
       image.classList.add('talent')
       this.classButtons[key].appendChild(image)
