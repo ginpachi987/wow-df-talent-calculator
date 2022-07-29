@@ -4,6 +4,8 @@ import { imageServer } from './const'
 import { images } from './images'
 import { request } from './api'
 
+import logo from '../img/df-logo.webp'
+
 export class Menu {
   constructor(title, callback, onlyAvailable = true, showClassButton = false) {
     this.class = ''
@@ -20,7 +22,7 @@ export class Menu {
     a.href = '/df-talents/'
 
     this.logo = document.createElement('img')
-    this.logo.src = '/img/df-logo.webp'
+    this.logo.src = logo
     this.logo.alt = 'World of Warcraft: Dragonflight'
     this.logo.id = 'logo'
     a.appendChild(this.logo)
@@ -204,13 +206,13 @@ export class ProfessionMenu {
       buttons[prof.toLowerCase()] = el
     }
     if (!edit)
-    request('getProfessions')
-      .then(res => res.json())
-      .then(res => {
-        res.forEach(prof => {
-          buttons[prof].classList.remove('profession-disabled')
+      request('getProfessions')
+        .then(res => res.json())
+        .then(res => {
+          res.forEach(prof => {
+            buttons[prof].classList.remove('profession-disabled')
+          })
         })
-      })
   }
 }
 
