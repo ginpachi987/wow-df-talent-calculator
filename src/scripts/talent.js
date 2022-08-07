@@ -240,10 +240,6 @@ export class EditorTalent extends BaseTalent {
     this.wrapper.addEventListener('contextmenu', (e) => {
       e.preventDefault()
     })
-
-    this.wrapper.addEventListener('pointerenter', () => {
-      this.div.scrollIntoView({behavior: "smooth", block:"center"})
-    })
   }
 
   leftClick() {
@@ -264,6 +260,10 @@ export class EditorTalent extends BaseTalent {
 
     this.div.style.display = 'flex'
     if (!this.id) this.id = ++this.tree.maxid
+
+    this.div.scrollIntoView({behavior: "smooth", block:"center"})
+    console.log(this.titleEl)
+    this.titleEl.focus()
   }
 
   rightClick() {
@@ -878,8 +878,8 @@ export class ProfessionTalent {
       const dist = Math.hypot(-this.x + child.x, -this.y + child.y)
       const angle = Math.atan2(-this.y + child.y, -this.x + child.x)
       conn.style.width = `${dist}px`
-      conn.style.top = `${this.y + 16}px`
-      conn.style.left = `${this.x + 24}px`
+      conn.style.top = `${this.y + 24}px`
+      conn.style.left = `${this.x + 26}px`
       conn.style.transform = `rotateZ(${angle}rad)`
 
       this.container.appendChild(conn)

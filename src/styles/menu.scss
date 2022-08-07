@@ -8,10 +8,25 @@ header {
   transition: all 0.2s ease-in-out;
 }
 
+.header-title, .choose-text {
+  font-weight: bold;
+  // margin-bottom: 16px;
+  text-transform: uppercase;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: -webkit-linear-gradient(top,#555554,  #a7a5a8 10%,#cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
+  filter: drop-shadow(0 0 2px rgb(54, 54, 54))
+}
+
 .header-title {
   font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
+}
+
+.choose-text {
+  width: 400px;
+  text-align: center;
+  margin-top: 16px;
 }
 
 #logo {
@@ -36,7 +51,8 @@ header {
   max-width: calc(100% - 170px);
 }
 
-.classes, .specs {
+.classes,
+.specs {
   text-align: center;
   width: 350px;
 }

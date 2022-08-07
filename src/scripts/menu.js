@@ -49,7 +49,7 @@ export class Menu {
     this.chooseSpec = document.createElement('div')
     this.chooseSpec.classList.add('choose-text')
     this.chooseSpec.style.display = 'none'
-    this.chooseSpec.innerHTML = 'Choose a spec'
+    this.chooseSpec.innerHTML = 'Choose a specialization'
     wrapper.appendChild(this.chooseSpec)
 
     this.specSelector = document.createElement('div')
@@ -186,8 +186,8 @@ export class ProfessionMenu {
       "Skinning": "ui_profession_skinning",
       "Tailoring": "ui_profession_tailoring",
       // "Archaeology": "trade_archaeology",
-      // "Cooking": "ui_profession_cooking",
-      // "Fishing": "ui_profession_fishing",
+      "Cooking": "ui_profession_cooking",
+      "Fishing": "ui_profession_fishing",
       // "Dragon Riding": "ability_dragonriding_forwardflap01"
     }
     const buttons = {}
