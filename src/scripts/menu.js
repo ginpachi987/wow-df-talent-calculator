@@ -4,7 +4,7 @@ import { imageServer } from './const'
 import { images } from './images'
 import { request } from './api'
 
-import logo from '../img/df-logo.webp'
+import logo from '../img/logo.webp'
 
 export class Menu {
   constructor(title, callback, onlyAvailable = true, showClassButton = false) {
@@ -30,6 +30,7 @@ export class Menu {
 
     this.title = document.createElement('div')
     this.title.classList.add('header-title')
+    this.title.id = 'page-title'
     this.title.innerHTML = title
     this.header.appendChild(this.title)
 
@@ -39,6 +40,7 @@ export class Menu {
 
     this.chooseClass = document.createElement('div')
     this.chooseClass.classList.add('choose-text')
+    this.chooseClass.id = 'choose-class'
     this.chooseClass.innerHTML = 'Choose a class'
     wrapper.appendChild(this.chooseClass)
 
@@ -48,6 +50,7 @@ export class Menu {
 
     this.chooseSpec = document.createElement('div')
     this.chooseSpec.classList.add('choose-text')
+    this.chooseSpec.id = 'choose-spec'
     this.chooseSpec.style.display = 'none'
     this.chooseSpec.innerHTML = 'Choose a specialization'
     wrapper.appendChild(this.chooseSpec)

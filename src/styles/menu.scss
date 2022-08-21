@@ -8,15 +8,16 @@ header {
   transition: all 0.2s ease-in-out;
 }
 
-.header-title, .choose-text {
+.header-title,
+.choose-text {
   font-weight: bold;
   // margin-bottom: 16px;
   text-transform: uppercase;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-image: -webkit-linear-gradient(top,#555554,  #a7a5a8 10%,#cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
-  filter: drop-shadow(0 0 2px rgb(54, 54, 54))
+  background-image: -webkit-linear-gradient(top, #555554, #a7a5a8 10%, #cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
+  filter: drop-shadow(1px 1px .5px rgb(0, 0, 0));
 }
 
 .header-title {
@@ -32,7 +33,6 @@ header {
 #logo {
   width: 300px;
   padding: 8px;
-
   transition: all 0.2s ease-in-out;
 }
 

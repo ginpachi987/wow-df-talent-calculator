@@ -12,7 +12,10 @@ class Build {
 
     this.wrapper = document.createElement('div')
     this.wrapper.classList.add('level-required')
-    this.wrapper.innerHTML = 'Character level: '
+    const lvl = document.createElement('span')
+    lvl.id = 'level'
+    lvl.innerHTML = 'Character level: '
+    this.wrapper.appendChild(lvl)
     this.levelEl = document.createElement('level')
     this.levelEl.innerHTML = this.level
 

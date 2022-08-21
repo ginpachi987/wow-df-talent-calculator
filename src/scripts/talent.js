@@ -252,6 +252,7 @@ export class EditorTalent extends BaseTalent {
       // this.tooltip.hide()
       return
     }
+    if (!this.ranks) this.setRanks(1)
     this.wrapper.classList.remove('empty')
     this.wrapper.classList.add('max')
 
@@ -261,8 +262,7 @@ export class EditorTalent extends BaseTalent {
     this.div.style.display = 'flex'
     if (!this.id) this.id = ++this.tree.maxid
 
-    this.div.scrollIntoView({behavior: "smooth", block:"center"})
-    console.log(this.titleEl)
+    this.div.scrollIntoView({ behavior: "smooth", block: "center" })
     this.titleEl.focus()
   }
 
@@ -333,7 +333,10 @@ export class EditorTalent extends BaseTalent {
 
   setRanks(ranks) {
     this.ranks = ranks
-    if (this.type != 'octagon') this.rankEl.innerText = ranks > 1 ? `0/${ranks}` : ''
+    if (this.type != 'octagon') {
+      this.ranksEl.value = ranks
+      this.rankEl.innerText = ranks > 1 ? `0/${ranks}` : ''
+    }
   }
 
   toggleConnection(col, row) {

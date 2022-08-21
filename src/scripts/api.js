@@ -1,3 +1,6 @@
+import nProgress from "nprogress"
+import '../../node_modules/nprogress/nprogress.css'
+
 const server = 'https://projects.yoro.dev/df-talents/api/'
 
 export function request(method, data, auth = false) {
@@ -7,6 +10,7 @@ export function request(method, data, auth = false) {
     body.password = prompt('Enter your password:')
     if (!body.password) return
   }
+  nProgress.start()
   return fetch(server, {
     method: 'POST',
     headers: {
@@ -14,4 +18,7 @@ export function request(method, data, auth = false) {
     },
     body: JSON.stringify(body)
   })
+    .finally(() => {
+      nProgress.done()
+    })
 }

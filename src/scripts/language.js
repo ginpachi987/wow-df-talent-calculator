@@ -1,10 +1,15 @@
 import { request } from "./api"
+import logoZh from '../img/logo-zh.webp'
 
 export let lang
 export let langTexts
 
 export async function setLanguage() {
   lang = localStorage.getItem('lang') || navigator.language.split('-')[0]
+
+  if (lang == 'zh') {
+    document.querySelector('#logo').src = logoZh
+  }
 
   const langList = await (await request('getLangList')).json()
   if (!Object.keys(langList).includes(lang)) lang = 'en'
@@ -13,6 +18,11 @@ export async function setLanguage() {
     lang: lang
   }
   langTexts = await (await request('getTexts', l)).json()
+
+  document.querySelector('#page-title').innerHTML = langTexts["Talent Calculator"]
+  document.querySelector('#choose-class').innerHTML = langTexts["Choose a class"]
+  document.querySelector('#choose-spec').innerHTML = langTexts["Choose a spec"]
+  document.querySelector('#level').innerHTML = `${langTexts["Character level"]}: `
 
   const wrapper = document.createElement('div')
   wrapper.classList.add('lang-select-wrapper')
