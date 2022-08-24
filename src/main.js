@@ -69,8 +69,11 @@ async function getTree(buffer = false, spec = currentSpec) {
     if (text) {
       tal.title = text.title
       tal.descr = text.descr
-      tal.title2 = text.title2
-      tal.descr2 = text.descr2
+    }
+    const text2 = texts.talents.filter(t => t.id == tal.id2)[0]
+    if (text2) {
+      tal.title2 = text2.title
+      tal.descr2 = text2.descr
     }
   })
   if (buffer) {

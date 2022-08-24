@@ -205,7 +205,20 @@ export class EditorTree extends BaseTree {
   }
 }
 
-export class TranslateTree extends BaseTree {
+export class TranslateTree /*extends BaseTree*/ {
+  constructor() {
+    this.title = ''
+    this.talents = []
+  }
+
+  setTitle(title) {
+    this.title = title
+  }
+
+  addTalent(talent) {
+    this.talents.push(talent)
+  }
+
   setTree(tree) {
     super.setTree(tree)
 
@@ -249,6 +262,45 @@ export class TranslateTree extends BaseTree {
     })
 
     callback()
+  }
+
+  saveAsFile(talents = this.talents, lang = 'en', upload = false, cls, spec) {
+    // const treeToSave = {
+    //   class: this.class,
+    //   tree: this.tree,
+    //   cols: this.cols,
+    //   rows: this.rows,
+    //   talents: talents.map(tal => tal.saveTree()),
+    //   defaultTalents: this.defaultTalents,
+    //   maxid: this.maxid
+    //   // title: this.title
+    // }
+    const translation = {
+      title: this.title,
+      talents: talents
+    }
+    // if (this.color != '' && this.color != '#212121') treeToSave.color = this.color
+    if (upload) {
+      const req = {
+        lang: lang,
+        class: cls,
+        spec: spec,
+        // tree: treeToSave,
+        translation: translation
+      }
+      console.log(req)
+      request('saveTree', req, true)
+        .then(res => res.json())
+        .then(res => {
+          if (res == true) alert('Tree is saved successfully')
+          else alert(res.error)
+        })
+      return
+    }
+    const a = document.createElement('a')
+    a.href = window.URL.createObjectURL(new Blob([JSON.stringify(treeToSave)], { type: 'text/plain' }))
+    a.download = `${this.class}_${this.tree}${lang ? '.' + lang : ''}.json`
+    a.click()
   }
 }
 

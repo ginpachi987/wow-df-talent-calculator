@@ -4,6 +4,7 @@ import { TranslateTree } from '../scripts/tree'
 import { setVersion } from '../scripts/version'
 import { Menu } from '../scripts/menu'
 import { request } from '../scripts/api'
+import { TranslateTalent } from '../scripts/talent'
 
 let lang
 
@@ -41,34 +42,63 @@ function getTree(lang = 'en') {
   request('getTree', req)
     .then(res => res.json())
     .then(res => {
-      const tree = res.tree
-      const texts = res.texts
+      console.log(res)
+      const enTexts = res.texts
+      const locTexts = res.translation || { talents: [] }
 
-      tree.title = texts.title
-      tree.talents.forEach(tal => {
-        const text = texts.talents.filter(t => t.id == tal.id)[0]
-        if (text) {
-          tal.title = text.title
-          tal.descr = text.descr
-          tal.title2 = text.title2
-          tal.descr2 = text.descr2
-        }
+      const list = document.querySelector('.talent-list')
+
+      document.querySelector('#title-en').innerHTML = enTexts.title
+
+      const title = document.querySelector('#title-locale')
+      title.value = locTexts.title || ''
+      loc.setTitle(locTexts.title)
+      title.addEventListener('input', () => {
+        loc.title = title.value
+      })
+      
+
+      enTexts.talents.forEach(tal => {
+        const row = document.createElement('div')
+        list.appendChild(row)
+        row.classList.add('row')
+
+        const enTalent = new TranslateTalent(tal)
+        const imgEl = res.tree.talents.find(t => t.id == tal.id) || res.tree.talents.find(t => t.id2 == tal.id)
+        enTalent.image = imgEl.image || ''
+        en.addTalent(enTalent)
+        const locTalent = new TranslateTalent(locTexts.talents.find(t => t.id == tal.id) || { id: tal.id })
+        loc.addTalent(locTalent)
+
+        enTalent.createElements(row)
+        locTalent.createInputs(row)
       })
 
-      en.setTree(tree)
-      loc.setTree(tree)
+      // tree.title = texts.title
+      // tree.talents.forEach(tal => {
+      //   const text = texts.talents.find(t => t.id == tal.id)
+      //   if (text) {
+      //     tal.title = text.title
+      //     tal.descr = text.descr
+      //     tal.title2 = text.title2
+      //     tal.descr2 = text.descr2
+      //   }
+      // })
 
-      wrapper.style.backgroundColor = res.tree.color || '#212121'
+      // en.setTree(tree)
+      // loc.setTree(tree)
 
-      if (res.translation) loc.copyTranslation(res.translation, createTable)
-      else {
-        alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
-        loc.setClear(createTable)
-      }
+      // wrapper.style.backgroundColor = res.tree.color || '#212121'
+
+      // if (res.translation) loc.copyTranslation(res.translation, createTable)
+      // else {
+      //   alert(`Where is currently no ${lang} translation for ${currentClass} ${currentSpec}. You can start making it!`)
+      //   loc.setClear(createTable)
+      // }
     })
     .catch(err => {
       console.log(err)
-      if (lang != 'en') loc.setClear(createTable)
+      // if (lang != 'en') loc.setClear(createTable)
     })
 }
 
@@ -96,10 +126,10 @@ function createTable() {
 
 const save = document.querySelector('#save-json')
 save.addEventListener('click', () => {
-  loc.saveAsFile(undefined, lang)
+  loc.saveAsFile(undefined, lang, false, currentClass, currentSpec)
 })
 document.querySelector('#save-server').addEventListener('click', () => {
-  loc.saveAsFile(undefined, lang, true)
+  loc.saveAsFile(undefined, lang, true, currentClass, currentSpec)
 })
 
 document.addEventListener('keydown', e => {

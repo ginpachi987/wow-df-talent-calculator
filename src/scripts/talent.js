@@ -523,14 +523,19 @@ export class EditorTalent extends BaseTalent {
   }
 }
 
-export class TranslateTalent extends BaseTalent {
-  constructor(talent) {
-    const col = talent.col || talent.x || 0
-    const row = talent.row || talent.y || 0
-    super(col, row, talent.id)
-    this.setInfo(talent)
+export class TranslateTalent /*extends BaseTalent*/ {
+  // constructor(talent) {
+  //   const col = talent.col || talent.x || 0
+  //   const row = talent.row || talent.y || 0
+  //   super(col, row, talent.id)
+  //   this.setInfo(talent)
 
-    this.type = talent.type == 'hexagon' ? 'octagon' : talent.type
+  //   this.type = talent.type == 'hexagon' ? 'octagon' : talent.type
+  // }
+  constructor(talent) {
+    this.id = talent.id
+    this.title = talent.title || ''
+    this.descr = talent.descr || ''
   }
 
   setInfo(talent, images = true) {
@@ -543,9 +548,9 @@ export class TranslateTalent extends BaseTalent {
   }
 
   createElements(container, localeTalent) {
-    const row = document.createElement('div')
-    container.appendChild(row)
-    row.classList.add('row')
+    // const row = document.createElement('div')
+    // container.appendChild(row)
+    // row.classList.add('row')
 
     const div = document.createElement('div')
     div.classList.add('info', 'tooltip-border')
@@ -565,37 +570,37 @@ export class TranslateTalent extends BaseTalent {
 
     div.appendChild(title)
     div.appendChild(descr)
-    row.appendChild(div)
+    container.appendChild(div)
 
-    localeTalent.createInputs(row)
+    // localeTalent.createInputs(row)
 
-    if (this.type != 'octagon') return
+    // if (this.type != 'octagon') return
 
-    const row2 = document.createElement('div')
-    container.appendChild(row2)
-    row2.classList.add('row')
+    // const row2 = document.createElement('div')
+    // container.appendChild(row2)
+    // row2.classList.add('row')
 
-    const div2 = document.createElement('div')
-    div2.classList.add('info', 'tooltip-border')
+    // const div2 = document.createElement('div')
+    // div2.classList.add('info', 'tooltip-border')
 
-    const icon2 = document.createElement('div')
-    icon2.classList.add('small', 'talent', 'max')
-    icon2.style.backgroundImage = `url(${imageServer + this.image2}.jpg)`
-    div2.appendChild(icon2)
+    // const icon2 = document.createElement('div')
+    // icon2.classList.add('small', 'talent', 'max')
+    // icon2.style.backgroundImage = `url(${imageServer + this.image2}.jpg)`
+    // div2.appendChild(icon2)
 
-    const title2 = document.createElement('div')
-    title2.classList.add('title')
-    title2.innerHTML = this.title2
+    // const title2 = document.createElement('div')
+    // title2.classList.add('title')
+    // title2.innerHTML = this.title2
 
-    const descr2 = document.createElement('div')
-    descr2.classList.add('descr')
-    descr2.innerHTML = this.descr2.replace(/\n/g, '<br>')
+    // const descr2 = document.createElement('div')
+    // descr2.classList.add('descr')
+    // descr2.innerHTML = this.descr2.replace(/\n/g, '<br>')
 
-    div2.appendChild(title2)
-    div2.appendChild(descr2)
-    row2.appendChild(div2)
+    // div2.appendChild(title2)
+    // div2.appendChild(descr2)
+    // row2.appendChild(div2)
 
-    localeTalent.createInputs(row2, 1)
+    // localeTalent.createInputs(row2, 1)
   }
 
   createInputs(container, el) {
