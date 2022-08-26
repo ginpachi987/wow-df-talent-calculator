@@ -87,6 +87,7 @@ export class Menu {
 
   setClassButtons() {
     Object.entries(classes).forEach(([key, value]) => {
+      if (this.showClassButton) value.unshift('class')
       this.classButtons[key] = document.createElement('div')
       this.classButtons[key].classList.add('talent-wrapper', 'talent-inline')
       if (this.onlyAvailable) this.classButtons[key].classList.add('disabled')
@@ -119,7 +120,6 @@ export class Menu {
   setSpecButtons(specList) {
     this.specSelector.innerHTML = ''
     this.specButtons = {}
-    if (this.showClassButton) specList.unshift('class')
     specList.forEach(sp => {
       this.specButtons[sp] = document.createElement('div')
       this.specButtons[sp].classList.add('talent-wrapper', 'talent-inline')

@@ -1,6 +1,18 @@
-import { cellSize, cellSpace, editorCellSize, editorCellSpace, imageServer } from "./const"
-
+import { cellSize, cellSpace, editorCellSize, editorCellSpace, imageServer, imageRetail } from "./const"
 import '../styles/talent.scss'
+
+function checkServer(image) {
+  const retailImages = [
+    "spell_progenitor_orb2",
+    "ability_hunter_sentinelowl",
+    "ability_hunter_razorwire",
+    "ability_paladin_barrieroffaith",
+    "ability_priest_innerlightandshadow"
+  ]
+
+  if (retailImages.includes(image)) return imageRetail
+  else return imageServer
+}
 
 class BaseTalent {
   constructor(col, row, id = 0) {
@@ -192,7 +204,7 @@ class BaseTalent {
   }
 
   setImage(image, el) {
-    const link = image ? `url(${imageServer}${image}.jpg)` : 'none'
+    const link = image ? `url(${checkServer(image)}${image}.jpg)` : 'none'
 
     if (this.type == 'octagon') {
       switch (el) {
@@ -557,7 +569,7 @@ export class TranslateTalent /*extends BaseTalent*/ {
 
     const icon = document.createElement('div')
     icon.classList.add('small', 'talent', 'max')
-    icon.style.backgroundImage = `url(${imageServer + this.image}.jpg)`
+    icon.style.backgroundImage = `url(${checkServer(this.image) + this.image}.jpg)`
     div.appendChild(icon)
 
     const title = document.createElement('div')
@@ -874,7 +886,7 @@ export class ProfessionTalent {
 
     this.el.style.left = `${this.x}px`
     this.el.style.top = `${this.y}px`
-    this.el.style.backgroundImage = `url(${imageServer + talent.image}.jpg)`
+    this.el.style.backgroundImage = `url(${checkServer(talent.image) + talent.image}.jpg)`
 
     this.setHandlers(details)
   }
@@ -919,7 +931,7 @@ export class ProfessionTalentEdit extends ProfessionTalent {
   constructor(container, details) {
     super(container)
     this.image = 'inv_7xp_inscription_talenttome01'
-    this.el.style.backgroundImage = `url(${imageServer + this.image}.jpg)`
+    this.el.style.backgroundImage = `url(${checkServer(this.image) + this.image}.jpg)`
 
     this.connections = []
     this.details = details
@@ -928,7 +940,7 @@ export class ProfessionTalentEdit extends ProfessionTalent {
 
   setImage(image) {
     this.image = image
-    this.el.style.backgroundImage = `url(${imageServer + this.image}.jpg)`
+    this.el.style.backgroundImage = `url(${checkServer(this.image) + this.image}.jpg)`
   }
 
   setID(id) {
