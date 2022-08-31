@@ -1,0 +1,8 @@
+<div class="tabs">
+  <div class="tab" *ngFor="let spec of profession.specs; index as i" (click)="currentTab = i" [class.tab-selected]="currentTab == i">
+    {{spec.title}}
+  </div>
+</div>
+<div class="spec" [style.backgroundImage]="profession.title | imagePipe : true">
+  <app-profession-tab *ngFor="let spec of profession.specs; index as i" [class.hidden]="currentTab !== i" [spec]="spec"></app-profession-tab>
+</div>

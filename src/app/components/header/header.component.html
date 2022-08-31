@@ -1,0 +1,6 @@
+<div class="header" [class.up]="service.show">
+  <a routerLink="/"><img id="logo" src="./assets/img/df-logo.webp" alt="World of Warcraft: Dragonflight"></a>
+  <h2 *ngIf="service.state == ''">Talent Calculator</h2>
+  <app-class-list *ngIf="service.show && service.state=='classes'" [short]="true" [currentClass]="service.class" [currentSpec]="service.spec"></app-class-list>
+  <app-profession-list *ngIf="service.show && service.state=='professions'" [short]="true" [currentProf]="service.profession"></app-profession-list>
+</div>

@@ -1,0 +1,4 @@
+<h2 *ngIf="!short">Choose a profession</h2>
+<div class="classes">
+  <div class="prof" *ngFor="let prof of professions" [title]="prof | capitalize" [style.backgroundImage]="images[prof] | imagePipe" (click)="getProf(prof.toLowerCase())" [class.disabled]="!available.includes(prof.toLowerCase())" [title]="prof"></div>
+</div>

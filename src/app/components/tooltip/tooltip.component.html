@@ -1,0 +1,9 @@
+<div class="tooltip" *ngIf="tooltip.show" #t>
+  <div class="choose" *ngIf="tooltip.choose">Choose node</div>
+  <div class="title">{{tooltip.title}}</div>
+  <div class="descr">{{tooltip.descr}}</div>
+  <hr *ngIf="tooltip.title2">
+  <div class="title" *ngIf="tooltip.title2">{{tooltip.title2}}</div>
+  <div class="descr" *ngIf="tooltip.descr2">{{tooltip.descr2}}</div>
+  <div class="spend" *ngIf="tooltip.spend">Spend 8 more points to unlock</div>
+</div>

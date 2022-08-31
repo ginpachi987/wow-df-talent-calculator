@@ -1,0 +1,20 @@
+.spec {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  background-color: green;
+  background-size: cover;
+  margin: 2px;
+
+  cursor: pointer;
+}
+
+.short {
+  display: flex;
+  flex-direction: column;
+
+  .spec {
+    width: 30px;
+    height: 30px;
+  }
+}
