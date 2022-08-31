@@ -1,4 +1,4 @@
-import { EditorTalent, TranslateTalent, CalculatorTalent } from "./talent";
+import { EditorTalent, TranslateTalent, CalculatorTalent, pvpTalent } from "./talent";
 import { cellSize, cellSpace, editorCellSize, editorCellSpace } from "./const"
 import { request } from "./api"
 
@@ -288,7 +288,6 @@ export class TranslateTree /*extends BaseTree*/ {
         // tree: treeToSave,
         translation: translation
       }
-      console.log(req)
       request('saveTree', req, true)
         .then(res => res.json())
         .then(res => {
@@ -388,6 +387,34 @@ export class CalculatorTree extends BaseTree {
     this.redraw()
 
     if (build) this.setTalents(build)
+
+    if (tree.tree !== 'class') {
+      this.pvpTalents = []
+      tree.pvpTalents.forEach(tal => {
+        this.pvpTalents.push(new pvpTalent(tal, this.tooltip))
+      })
+      this.createPvpElement()
+    }
+  }
+
+  createPvpElement() {
+    if (!this.pvpElement) {
+      this.pvpElement = document.createElement('div')
+      this.pvpElement.classList.add('pvp-list')
+      this.container.appendChild(this.pvpElement)
+      this.pvpTitle = document.createElement('div')
+      this.pvpTitle.classList.add('pvp-title')
+      this.pvpTitle.innerHTML = 'PvP Talents (WIP):'
+      this.pvpElement.appendChild(this.pvpTitle)
+    }
+    else {
+      this.pvpElement.innerHTML = ''
+      this.pvpElement.appendChild(this.pvpTitle)
+    }
+
+    this.pvpTalents.forEach(tal => {
+      tal.createElement(this.pvpElement)
+    })
   }
 
   addPoints(points, section) {

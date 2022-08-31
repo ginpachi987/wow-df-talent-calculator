@@ -177,7 +177,6 @@ export class CalculatorTooltip extends BaseTooltip {
       this.descr2.innerHTML = talent.descr2.replace(/\n/g, '<br>')
     }
 
-
     this.choose.innerHTML = langTexts["Choose node"]
     this.next.innerHTML = langTexts['Next rank'] + ':'
 

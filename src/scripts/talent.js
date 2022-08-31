@@ -7,7 +7,16 @@ function checkServer(image) {
     "ability_hunter_sentinelowl",
     "ability_hunter_razorwire",
     "ability_paladin_barrieroffaith",
-    "ability_priest_innerlightandshadow"
+    "ability_priest_innerlightandshadow",
+    "ability_mage_arcanosphere",
+    "ability_deathknight_shroudofwinter",
+    "ability_druid_protectionofthegrove",
+    "ability_druid_serenefocus",
+    "ability_mage_scorchedearth",
+    "ability_mage_icewall",
+    "ability_monk_dematerialize",
+    "ability_warlock_voidzone",
+    "ability_warrior_deepcuts"
   ]
 
   if (retailImages.includes(image)) return imageRetail
@@ -849,6 +858,35 @@ export class CalculatorTalent extends BaseTalent {
   }
 }
 
+export class pvpTalent {
+  constructor(talent, tooltip) {
+    this.selected = false
+    this.id = talent.id
+    this.image = talent.image
+    this.title = talent.title
+    this.descr = talent.descr
+    this.tooltip = tooltip
+  }
+
+  createElement(container) {
+    this.wrapper = document.createElement('div')
+    this.wrapper.classList.add('talent-wrapper')
+    container.appendChild(this.wrapper)
+
+    this.el = document.createElement('div')
+    this.el.classList.add('talent')
+    this.wrapper.appendChild(this.el)
+    this.el.style.backgroundImage = `url(${checkServer(this.image) + this.image}.jpg)`
+
+    this.wrapper.addEventListener('mouseenter', () => {
+      this.tooltip.show(this)
+    })
+    this.wrapper.addEventListener('mouseleave', () => {
+      this.tooltip.hide()
+    })
+  }
+}
+
 export class ProfessionTalent {
   constructor(container) {
     this.id = 0
@@ -967,7 +1005,6 @@ export class ProfessionTalentEdit extends ProfessionTalent {
   toggleChild(other) {
 
     const pos = this.children.indexOf(other)
-    console.log(pos)
     if (pos === -1) {
       const div = document.createElement('div')
       div.classList.add('connection')

@@ -14,7 +14,6 @@ const colsEl = document.querySelector('#cols')
 colsEl.value = cols
 colsEl.addEventListener('change', () => {
   tree.cols = parseInt(colsEl.value)
-  console.log(parseInt(colsEl.value))
   tree.resize(parseInt(colsEl.value) - cols, 0)
   cols = parseInt(colsEl.value)
 })

@@ -220,6 +220,10 @@ canvas {
   border-bottom: none;
 
   transition: bottom 0.5s ease-in-out;
+
+  @media (min-width: 1301px) {
+    left: 400px;
+  }
 }
 
 @media (max-width: 800px) {

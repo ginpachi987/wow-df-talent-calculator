@@ -42,7 +42,6 @@ function getTree(lang = 'en') {
   request('getTree', req)
     .then(res => res.json())
     .then(res => {
-      console.log(res)
       const enTexts = res.texts
       const locTexts = res.translation || { talents: [] }
 
@@ -56,7 +55,7 @@ function getTree(lang = 'en') {
       title.addEventListener('input', () => {
         loc.title = title.value
       })
-      
+
 
       enTexts.talents.forEach(tal => {
         const row = document.createElement('div')
@@ -64,8 +63,8 @@ function getTree(lang = 'en') {
         row.classList.add('row')
 
         const enTalent = new TranslateTalent(tal)
-        const imgEl = res.tree.talents.find(t => t.id == tal.id) || res.tree.talents.find(t => t.id2 == tal.id)
-        enTalent.image = imgEl.image || ''
+        const imgEl = res.tree.talents.find(t => t.id == tal.id) || res.tree.talents.find(t => t.id2 == tal.id) || res.tree.pvpTalents.find(t => t.id == tal.id)
+        enTalent.image = imgEl ? imgEl.image : ''
         en.addTalent(enTalent)
         const locTalent = new TranslateTalent(locTexts.talents.find(t => t.id == tal.id) || { id: tal.id })
         loc.addTalent(locTalent)

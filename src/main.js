@@ -7,6 +7,12 @@ import { setLanguage, lang } from './scripts/language'
 import { Menu } from './scripts/menu'
 import { request } from './scripts/api'
 
+start()
+
+async function start() {
+  await setLanguage()
+}
+
 const menu = new Menu('Talent Calculator', getTrees, true, false)
 setLanguage()
 setVersion()
@@ -80,6 +86,13 @@ async function getTree(buffer = false, spec = currentSpec) {
     bufferTree = tree
     return
   }
+  tree.pvpTalents.forEach(tal => {
+    const text = texts.talents.filter(t => t.id == tal.id)[0]
+    if (text) {
+      tal.title = text.title
+      tal.descr = text.descr
+    }
+  })
   classTree.setTree(bufferTree, path[3] || '')
   specTree.setTree(tree, path[5] || '')
   path = []

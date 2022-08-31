@@ -18,3 +18,27 @@
   font-size: 1em;
   margin: 8px;
 }
+
+.pvp-list {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+
+  .talent-wrapper {
+    position: relative;
+    cursor: pointer;
+  }
+
+  @media (max-width: 1300px) {
+    padding-bottom: 60px;
+  }
+}
+
+.pvp-title {
+  position: absolute;
+  left: 0;
+  top: -22px;
+  font-size: 0.9rem;
+}
