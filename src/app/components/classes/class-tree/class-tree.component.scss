@@ -1,0 +1,32 @@
+:host {
+  position: relative;
+  width: 648px;
+  height: 750px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tree {
+  height: 717px;
+  position: relative;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  gap: 8px;
+  width: 340px;
+  // position: absolute;
+  // top: -16px;
+  left: calc(50% - 170px);
+  text-shadow: 1px 1px 2px black, -1px -1px 2px black,
+    -1px 1px 2px black, 1px -1px 2px black;
+}
+
+.pvp-wrapper {
+  height: 30px;
+  width: 100%;
+}

@@ -1,0 +1,71 @@
+:host {
+  --cell-size: 46px;
+  --proc-one: 15%;
+  --proc-two: calc(100% - var(--proc-one));
+  --border: 2px;
+}
+
+.wrapper, .wrapper::after, .talent {
+  clip-path: polygon(var(--proc-one) 0%, var(--proc-two) 0%, 100% var(--proc-one), 100% var(--proc-two), var(--proc-two) 100%, var(--proc-one) 100%, 0% var(--proc-two), 0% var(--proc-one));
+}
+
+.wrapper {
+  position: absolute;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: #508852;
+  box-sizing: border-box;
+  padding: calc(var(--border));
+  cursor: pointer;
+
+  transition: all .2s ease-in-out;
+}
+
+.talent {
+  width: calc(var(--cell-size) - var(--border) * 2);
+  height: calc(var(--cell-size) - var(--border) * 2);
+  background-size: cover;
+
+  position: absolute;
+}
+
+.octagon, .octagon::after, .octagon .talent {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.octagon .first {
+  clip-path: polygon(30% 0, 50% 0, 50% 0, 50% 100%, 50% 100%, 30% 100%, 0 70%, 0 30%);
+}
+
+.octagon .second {
+  clip-path: polygon(70% 0, 100% 30%, 100% 70%, 70% 100%, 50% 100%, 50% 100%, 50% 0, 50% 0);
+}
+
+.round, .round::after, .round .talent {
+  clip-path: none;
+  border-radius: 50%;
+}
+
+.max {
+  background-color: #c0b162;
+}
+
+.disabled, .disabled:hover {
+  filter: grayscale(1);
+}
+
+.divider {
+  position: absolute;
+  left: calc(50% - 2px);
+  width: 3px;
+  top: 5%;
+  height: 90%;
+  background-color: inherit;
+  transform: rotateZ(3deg);
+  filter: brightness(1.2);
+}
+
+.first, .second {
+  pointer-events: none;
+  user-select: none;
+}

@@ -1,0 +1,10 @@
+<div class="title">{{tree.title}}</div>
+<div class="tree" [style.width]="cellSize * tree.cols + cellSpace * (tree.cols + 1) + 'px'">
+  <ng-container *ngFor="let tal of tree.talents">
+    <app-class-connector *ngFor="let child of tal.children" [parent]="tal" [child]="child"></app-class-connector>
+  </ng-container>
+  <app-class-talent *ngFor="let tal of tree.talents" [talent]="tal"></app-class-talent>
+</div>
+<div class="pvp-wrapper">
+  <div class="pvp" *ngIf="tree.pvpTalents.length">PvP Talents:</div>
+</div>
