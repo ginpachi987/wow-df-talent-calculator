@@ -26,6 +26,7 @@ export class ImagePipePipe implements PipeTransform {
 
   transform(value: string, backround: boolean = false): string {
     if (!value) return ''
+    value = value.toLowerCase()
     if (backround) return `url(${this.yoroServer}${value}.webp)`
     const server = this.retailImages.includes(value) ? this.retailServer : this.betaServer
     return `url(${server}${value}.jpg)`

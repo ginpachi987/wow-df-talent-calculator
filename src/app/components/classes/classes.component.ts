@@ -1,6 +1,7 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tree } from 'src/app/models/tree.model';
+import { ImagePipePipe } from 'src/app/pipes/image-pipe.pipe';
 import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
@@ -9,12 +10,15 @@ import { MenuService } from 'src/app/services/menu.service';
   styleUrls: ['./classes.component.scss']
 })
 export class ClassesComponent implements OnInit {
+  @HostBinding('style.backgroundColor') bgColor: string = '#212121'
+  @HostBinding('style.backgroundImage') bgImage: string = ''
   classTree: Tree
   specTree: Tree
 
   constructor(
     private route: ActivatedRoute,
-    private menu: MenuService
+    private menu: MenuService,
+    private pipe: ImagePipePipe
   ) {
     this.classTree = new Tree()
     this.specTree = new Tree()
@@ -30,6 +34,8 @@ export class ClassesComponent implements OnInit {
     const spec = this.route.snapshot.paramMap.get('spec') || ""
     this.classTree.set(await this.getTree(cls, 'class'))
     this.specTree.set(await this.getTree(cls, spec))
+    this.bgColor = this.specTree.color || '#212121'
+    this.bgImage = this.pipe.transform(`${cls}-${spec}`, true)
   }
 
   async getTree(cls: String, spec: String) {

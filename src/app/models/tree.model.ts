@@ -3,17 +3,17 @@ import { defaultTalent, pvpTalent, rawTalent, rawTalentFull, rawText, Talent } f
 export class Tree {
   cols: number
   rows: number
-  class: String
-  tree: String
+  class: string
+  tree: string
   talents: Talent[]
   pvpTalents: {
     id: number,
-    title: String,
-    descr: String
+    title: string,
+    descr: string
   }[]
   defaultTalents: defaultTalent[]
-  title: String
-  color: String
+  title: string
+  color: string
   // maxid: number
   constructor() {
     this.cols = 0
@@ -66,18 +66,18 @@ export class Tree {
 
 interface rawTree {
   texts: {
-    title: String
+    title: string
     talents: rawText[]
   }
   tree: {
     cols: number
     rows: number
-    class: String
-    tree: String
+    class: string
+    tree: string
     maxid: number
     talents: rawTalentFull[]
     pvpTalents: rawTalent[]
     defaultTalents: defaultTalent[]
-    color: String
+    color: string
   }
 }

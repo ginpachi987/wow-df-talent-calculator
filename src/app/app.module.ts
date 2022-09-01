@@ -19,6 +19,7 @@ import { ClassConnectorComponent } from './components/classes/class-connector/cl
 import { ProfessionTabComponent } from './components/professions/profession-tab/profession-tab.component';
 import { ProfessionTalentComponent } from './components/professions/profession-talent/profession-talent.component';
 import { ProfessionConnectorComponent } from './components/professions/profession-connector/profession-connector.component';
+import { PvpListComponent } from './components/classes/pvp-list/pvp-list.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +39,14 @@ import { ProfessionConnectorComponent } from './components/professions/professio
     ClassConnectorComponent,
     ProfessionTabComponent,
     ProfessionTalentComponent,
-    ProfessionConnectorComponent
+    ProfessionConnectorComponent,
+    PvpListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ImagePipePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

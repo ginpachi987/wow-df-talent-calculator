@@ -6,6 +6,17 @@
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   color: white;
+
+  -ms-overflow-style: none;
+    scrollbar-width: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  // .editor-wrapper {
+    
+  // }
 }
 
 body {
@@ -13,7 +24,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   overflow: hidden;
 

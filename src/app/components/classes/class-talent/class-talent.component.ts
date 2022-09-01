@@ -4,7 +4,7 @@ import { Talent } from 'src/app/models/talent.model';
 @Component({
   selector: 'app-class-talent',
   templateUrl: './class-talent.component.html',
-  styleUrls: ['./class-talent.component.scss']
+  styleUrls: ['../../../styles/talent.scss', './class-talent.component.scss']
 })
 export class ClassTalentComponent implements OnInit {
   @Input() talent: Talent = new Talent()

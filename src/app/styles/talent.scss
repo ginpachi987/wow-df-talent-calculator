@@ -1,0 +1,55 @@
+.wrapper {
+  --cell-size: 46px;
+  --proc-one: 15%;
+  --proc-two: calc(100% - var(--proc-one));
+  --border: 2px;
+}
+
+.wrapper, .wrapper::after, .talent {
+  clip-path: polygon(var(--proc-one) 0%, var(--proc-two) 0%, 100% var(--proc-one), 100% var(--proc-two), var(--proc-two) 100%, var(--proc-one) 100%, 0% var(--proc-two), 0% var(--proc-one));
+}
+
+.wrapper {
+  position: absolute;
+  display: inline-block;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: #508852;
+  box-sizing: border-box;
+  padding: calc(var(--border));
+  cursor: pointer;
+  margin: 2px;
+
+  transition: all .2s ease-in-out;
+}
+
+.relative {
+  position: relative;
+}
+
+.wrapper::after {
+  display: block;
+  position: absolute;
+  top: calc(var(--border));
+  left: calc(var(--border));
+  content: "";
+  width: calc(var(--cell-size) - var(--border) * 2);
+  height: calc(var(--cell-size) - var(--border) * 2);
+  background: radial-gradient(circle,transparent 0%,transparent 50%,rgba(0,0,0,.69) 90%);
+}
+
+.talent {
+  width: calc(var(--cell-size) - var(--border) * 2);
+  height: calc(var(--cell-size) - var(--border) * 2);
+  background-size: cover;
+  position: absolute;
+}
+
+.short .wrapper {
+  --cell-size: 32px;
+}
+
+.round, .round::after, .round .talent {
+  clip-path: none;
+  border-radius: 50%;
+}
