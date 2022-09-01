@@ -1,10 +1,14 @@
 <div [class.short]="short">
   <h2 *ngIf="!short">Choose a class</h2>
   <div class="classes">
-    <div class="spec" *ngFor="let cls of classList" (click)="setClass(cls)" [title]="cls | capitalize" [style.backgroundImage]="specImages[cls+'_class'] | imagePipe"></div>
+    <div class="wrapper relative" *ngFor="let cls of classList" (click)="setClass(cls)">
+      <div class="talent" [title]="cls | capitalize" [style.backgroundImage]="specImages[cls+'_class'] | imagePipe"></div>
+    </div>
   </div>
   <h2 *ngIf="!short && currentClass">Choose a specialization</h2>
   <div class="specs">
-    <div class="spec" *ngFor="let spec of specList" [title]="spec | capitalize" [style.backgroundImage]="specImages[currentClass + '_' + spec] | imagePipe" (click)="getTrees(spec)" [class.disabled]="spec == 'vengeance'"></div>
+    <div class="wrapper relative" *ngFor="let spec of specList" [class.disabled]="spec == 'vengeance'" (click)="getTrees(spec)">
+      <div class="talent" [title]="spec | capitalize" [style.backgroundImage]="specImages[currentClass + '_' + spec] | imagePipe"></div>
+    </div>
   </div>
 </div>

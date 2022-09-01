@@ -2,4 +2,5 @@
   <div class="talent" [class.first]="talent.type=='octagon'" [style.backgroundImage]="talent.image | imagePipe"></div>
   <div *ngIf="talent.type=='octagon'" class="talent" [class.second]="talent.type=='octagon'" [style.backgroundImage]="talent.image2 | imagePipe"></div>
   <div class="divider" *ngIf="talent.type=='octagon'"></div>
+  <div class="rank" *ngIf="talent.type == 'round' && talent.ranks > 1">{{talent.rank}}/{{talent.ranks}}</div>
 </div>

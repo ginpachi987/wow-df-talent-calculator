@@ -1,7 +1,7 @@
 :host {
   position: relative;
   width: 648px;
-  height: 750px;
+  height: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,6 +27,20 @@
 }
 
 .pvp-wrapper {
-  height: 30px;
+  height: 60px;
   width: 100%;
+}
+
+.divider {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px dashed rgba(0, 128, 0, 0.5);
+}
+
+.eight {
+  top: 315px;
+}
+.twenty {
+  top: 523px;
 }

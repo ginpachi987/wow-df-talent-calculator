@@ -7,6 +7,7 @@ export class Talent {
   row: number
   type: string
   ranks: number
+  rank: number
   title: string
   title2: string
   descr: string
@@ -22,6 +23,7 @@ export class Talent {
     this.row = 0
     this.type = ''
     this.ranks = 0
+    this.rank = 0
     this.title = ''
     this.title2 = ''
     this.descr = ''

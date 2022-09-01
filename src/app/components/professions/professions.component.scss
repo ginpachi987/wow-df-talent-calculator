@@ -2,11 +2,13 @@
 
 :host {
   flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+  background-color: #2121219a;
+
   * {
     font-family: 'Literata', serif;
   }
@@ -16,8 +18,9 @@
   width: 720px;
   height: 480px;
   background-color: #282018;
+  border: 2px solid #080202;
   position: relative;
-  cursor: pointer;
+  background: radial-gradient(rgba(37, 29, 20, 1) 0%, rgba(38, 28, 20, 1) 50%, rgba(20, 14, 9, 1) 100%);
 }
 
 .hidden {
@@ -33,7 +36,7 @@
   margin: 0 8px;
   padding: 4px 12px 8px;
   font-size: 11px;
-  
+
   // background-color: black;
   background-color: #271f17;
   border: 2px solid #080202;

@@ -6,7 +6,7 @@ import { classes, images } from './class-list';
 @Component({
   selector: 'app-class-list',
   templateUrl: './class-list.component.html',
-  styleUrls: ['./class-list.component.scss']
+  styleUrls: ['../../styles/talent.scss', './class-list.component.scss']
 })
 export class ClassListComponent implements OnInit {
   @Input() short: boolean = false
@@ -25,6 +25,9 @@ export class ClassListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.currentClass) {
+      this.setClass(this.currentClass)
+    }
   }
   
   setClass(cls: string) {

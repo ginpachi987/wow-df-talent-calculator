@@ -6,7 +6,7 @@ import { professions } from './profession-list';
 @Component({
   selector: 'app-profession-list',
   templateUrl: './profession-list.component.html',
-  styleUrls: ['./profession-list.component.scss']
+  styleUrls: ['../../styles/talent.scss', './profession-list.component.scss']
 })
 export class ProfessionListComponent implements OnInit {
   @Input() short: boolean = false
