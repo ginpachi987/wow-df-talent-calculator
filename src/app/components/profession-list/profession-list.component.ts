@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LanguageService } from 'src/app/services/language.service';
 import { MenuService } from 'src/app/services/menu.service';
 import { professions } from './profession-list';
 
@@ -25,7 +26,8 @@ export class ProfessionListComponent implements OnInit {
 
   constructor(
     private menu: MenuService,
-    private router: Router
+    private router: Router,
+    public language: LanguageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false
   }

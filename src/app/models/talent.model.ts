@@ -44,11 +44,13 @@ export class pvpTalent {
   id: number
   title: string
   descr: string
-  constructor(talent: rawTalent, text: rawText | undefined) {
+  image: string
+  constructor(talent?: rawTalent, text?: rawText) {
     this.selected = false
-    this.id = talent.id
+    this.id = talent?.id || 0
     this.title = text?.title || ''
     this.descr = text?.descr || ''
+    this.image = ''
     Object.assign(this, talent)
   }
 }

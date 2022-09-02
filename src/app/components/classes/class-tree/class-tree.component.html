@@ -1,4 +1,4 @@
-<div class="title">{{tree.title}}</div>
+<div class="title">{{tree.title}} ({{tree.pointsSpent}}/{{tree.pointsTotal}}) <span class="reset" (click)="reset()" title="Reset Tree">❌</span></div>
 <div class="divider eight"></div>
 <div class="divider twenty"></div>
 <div class="tree" [style.width]="cellSize * tree.cols + cellSpace * (tree.cols + 1) + 'px'">
@@ -8,5 +8,5 @@
   <app-class-talent *ngFor="let tal of tree.talents" [talent]="tal"></app-class-talent>
 </div>
 <div class="pvp-wrapper">
-  <app-pvp-list *ngIf="tree.pvpTalents.length"></app-pvp-list>
+  <app-pvp-list *ngIf="tree.pvpTalents.length" [talents]="tree.pvpTalents"></app-pvp-list>
 </div>

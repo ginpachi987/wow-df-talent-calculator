@@ -38,7 +38,7 @@ export class ClassesComponent implements OnInit {
     this.bgImage = this.pipe.transform(`${cls}-${spec}`, true)
   }
 
-  async getTree(cls: String, spec: String) {
+  async getTree(cls: string, spec: string) {
     const req = {
       lang: 'en',
       class: cls,

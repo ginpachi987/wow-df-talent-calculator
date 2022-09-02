@@ -53,3 +53,11 @@
   clip-path: none;
   border-radius: 50%;
 }
+
+.octagon, .octagon::after, .octagon .talent {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.max {
+  background-color: #c0b162;
+}

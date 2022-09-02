@@ -20,6 +20,11 @@ import { ProfessionTabComponent } from './components/professions/profession-tab/
 import { ProfessionTalentComponent } from './components/professions/profession-talent/profession-talent.component';
 import { ProfessionConnectorComponent } from './components/professions/profession-connector/profession-connector.component';
 import { PvpListComponent } from './components/classes/pvp-list/pvp-list.component';
+import { LanguagePipe } from './pipes/language.pipe';
+import { LevelComponent } from './components/classes/level/level.component';
+import { ToHtmlPipe } from './pipes/to-html.pipe';
+import { PvpTalentComponent } from './components/classes/pvp-talent/pvp-talent.component';
+import { LanguageComponent } from './components/language/language.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +45,12 @@ import { PvpListComponent } from './components/classes/pvp-list/pvp-list.compone
     ProfessionTabComponent,
     ProfessionTalentComponent,
     ProfessionConnectorComponent,
-    PvpListComponent
+    PvpListComponent,
+    LanguagePipe,
+    LevelComponent,
+    ToHtmlPipe,
+    PvpTalentComponent,
+    LanguageComponent
   ],
   imports: [
     BrowserModule,

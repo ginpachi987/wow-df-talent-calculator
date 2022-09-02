@@ -48,7 +48,8 @@ export class ProfessionTalent {
   y: number = 0
   ranks: number = 0
   children: ProfessionTalent[] = []
-  constructor(raw: rawTalentFull) {
+  constructor(raw?: rawTalentFull) {
+    if (!raw) return
     this.id = raw.id
     this.title = raw.title
     this.descr = raw.descr

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LanguageService } from 'src/app/services/language.service';
 import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
@@ -9,7 +10,8 @@ import { MenuService } from 'src/app/services/menu.service';
 export class ChoosePageComponent implements OnInit {
 
   constructor(
-    private menu: MenuService
+    private menu: MenuService,
+    public language: LanguageService
   ) { }
 
   ngOnInit(): void {
