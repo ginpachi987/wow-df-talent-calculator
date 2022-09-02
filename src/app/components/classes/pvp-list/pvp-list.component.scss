@@ -1,0 +1,44 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.pvp {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.title {
+  margin-right: 12px;
+}
+
+.list {
+  position: absolute;
+  bottom: 60px;
+  left: calc(50% - 150px);
+  width: 300px;
+  max-height: 650px;
+  overflow-y: scroll;
+  border: 1px solid gray;
+  border-radius: 8px;
+  background-color: #212121;
+  z-index: 3;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.hide {
+  display: none;
+}
+
+.mockups {
+  position: absolute;
+}

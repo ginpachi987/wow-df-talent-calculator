@@ -6,11 +6,14 @@ import { Injectable } from '@angular/core';
 export class TooltipService {
   show: boolean
   choose: boolean
-  title: String
-  descr: String
-  title2: String
-  descr2: String
+  title: string
+  descr: string
+  title2: string
+  descr2: string
   spend: boolean
+
+  left: number = 0
+  top: number = 0
 
   constructor() {
     this.show = false

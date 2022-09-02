@@ -5,20 +5,12 @@
   --border: 2px;
 }
 
-.octagon, .octagon::after, .octagon .talent {
-  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-}
-
 .octagon .first {
   clip-path: polygon(30% 0, 50% 0, 50% 0, 50% 100%, 50% 100%, 30% 100%, 0 70%, 0 30%);
 }
 
 .octagon .second {
   clip-path: polygon(70% 0, 100% 30%, 100% 70%, 70% 100%, 50% 100%, 50% 100%, 50% 0, 50% 0);
-}
-
-.max {
-  background-color: #c0b162;
 }
 
 .disabled, .disabled:hover {

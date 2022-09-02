@@ -6,14 +6,12 @@ export class Tree {
   class: string
   tree: string
   talents: Talent[]
-  pvpTalents: {
-    id: number,
-    title: string,
-    descr: string
-  }[]
+  pvpTalents: pvpTalent[]
   defaultTalents: defaultTalent[]
   title: string
   color: string
+  pointsTotal: number = 0
+  pointsSpent: number = 0
   // maxid: number
   constructor() {
     this.cols = 0
@@ -38,6 +36,7 @@ export class Tree {
     this.talents = []
     this.pvpTalents = []
     this.defaultTalents = tree.defaultTalents
+    this.pointsTotal = tree.tree == 'class' ? 31 : 30
 
     tree.talents.forEach(talent => {
       const text = texts.talents.find(t => t.id == talent.id)

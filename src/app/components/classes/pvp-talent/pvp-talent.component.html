@@ -1,0 +1,6 @@
+<div class="pvp-wrapper" [class.hightlight]="talent.selected" [appTooltip]="tooltip">
+  <div class="wrapper relative" [class.max]="talent.selected" #wrapper>
+    <div class="talent" [style.backgroundImage]="talent.image | imagePipe"></div>
+  </div>
+  <div class="title">{{talent.title}}</div>
+</div>

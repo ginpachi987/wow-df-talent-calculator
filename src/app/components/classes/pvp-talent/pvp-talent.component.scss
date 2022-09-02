@@ -1,0 +1,35 @@
+:host {
+  width: 100%;
+}
+
+.pvp-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  // margin: 2px 0;
+  width: 100%;
+  cursor: pointer;
+  padding: 2px 16px;
+}
+
+.wrapper {
+  --cell-size: 40px;
+  width: 40px;
+}
+
+.title {
+  font-size: 14px;
+  flex: 1;
+}
+
+.hightlight {
+  background-color: rgba(255, 255, 255, 0.2);
+
+  transition: all .2s ease-in;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+}

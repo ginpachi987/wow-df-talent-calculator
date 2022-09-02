@@ -16,4 +16,7 @@ export class ClassTreeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  reset() {
+    
+  }
 }

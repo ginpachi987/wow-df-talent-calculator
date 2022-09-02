@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LanguageService } from 'src/app/services/language.service';
 import { MenuService } from 'src/app/services/menu.service';
 import { classes, images } from './class-list';
 
@@ -19,14 +20,15 @@ export class ClassListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private menu: MenuService
+    private menu: MenuService,
+    public language: LanguageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false
   }
 
   ngOnInit(): void {
     if (this.currentClass) {
-      this.setClass(this.currentClass)
+      this.specList = classes[this.currentClass]
     }
   }
   
