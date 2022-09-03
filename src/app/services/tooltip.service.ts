@@ -11,6 +11,7 @@ export class TooltipService {
   title2: string
   descr2: string
   spend: boolean
+  height: number = 0
 
   left: number = 0
   top: number = 0

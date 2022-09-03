@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'classes/:cls/:spec', component: ClassesComponent },
   { path: 'classes/:cls/:clsbuild/:spec', component: ClassesComponent },
   { path: 'classes/:cls/:clsbuild/:spec/:specbuild', component: ClassesComponent },
+  { path: 'classes/:cls/:clsbuild/:spec/:specbuild/:pvpbuild', component: ClassesComponent },
   { path: 'professions', component: ProfessionListComponent },
   { path: 'professions/:prof', component: ProfessionsComponent },
 ];

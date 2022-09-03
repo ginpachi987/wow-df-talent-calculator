@@ -4,11 +4,12 @@ import { Talent } from 'src/app/models/talent.model';
 @Component({
   selector: 'app-class-connector',
   templateUrl: './class-connector.component.html',
-  styleUrls: ['./class-connector.component.scss']
+  styleUrls: ['./class-connector.component.scss', '../../../styles/talent.scss']
 })
 export class ClassConnectorComponent implements OnInit {
   @Input() parent: Talent = new Talent()
   @Input() child: Talent = new Talent()
+  @Input() available: boolean = false
   width: string = '100px'
   angle: string = ''
   angleNumber: number = 0
@@ -34,8 +35,17 @@ export class ClassConnectorComponent implements OnInit {
     this.width = `${Math.hypot(-x1 + x2, -y1 + y2)}px`
     this.angleNumber = Math.atan2(-y1 + y2, -x1 + x2)
     this.angle = `rotateZ(${this.angleNumber}rad)`
-    // console.log(this.angleNumber == 1.5707963267948966)
     this.shift = this.angleNumber !== 1.5707963267948966 && this.child.type==''
   }
 
+  gray() {
+    const parent = this.parent.type == 'octagon' ? this.parent.rank > 0 : this.parent.rank == this.parent.ranks
+    return !parent
+  }
+
+  max() {
+    const parent = this.parent.type == 'octagon' ? this.parent.rank > 0 : this.parent.rank == this.parent.ranks
+    const child = this.child.type == 'octagon' ? this.child.rank > 0 : this.child.rank == this.child.ranks
+    return parent && child
+  }
 }

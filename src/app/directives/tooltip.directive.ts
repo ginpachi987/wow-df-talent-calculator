@@ -9,7 +9,8 @@ import { TooltipService } from '../services/tooltip.service';
 })
 export class TooltipDirective {
   @Input() appTooltip: Tooltip
-  @HostListener('mouseover', ['$event']) onMouseHover(event: MouseEvent) {
+  @HostListener('mouseover', ['$event'])
+  async onMouseHover(event: MouseEvent) {
     const talent = this.appTooltip.talent
 
     this.tooltip.show = !!talent.title
@@ -35,7 +36,10 @@ export class TooltipDirective {
     }
     this.tooltip.top = rect.top - 2 
 
-    // console.log(this.tooltip.getSizes())
+    await new Promise(r => setTimeout(r, 50))
+    if (rect.top + this.tooltip.height + 20 > window.innerHeight) {
+      this.tooltip.top = rect.top + 22 - this.tooltip.height
+    }
   }
   @HostListener('mouseleave') hide() {
     this.tooltip.show = false
@@ -43,6 +47,7 @@ export class TooltipDirective {
 
   constructor(
     private tooltip: TooltipService
-  ) { }
+  ) {
+  }
 
 }

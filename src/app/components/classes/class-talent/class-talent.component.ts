@@ -9,7 +9,8 @@ import { Tooltip } from 'src/app/models/tooltip.model';
 })
 export class ClassTalentComponent implements OnInit, AfterViewInit {
   @Input() talent: Talent = new Talent()
-  @ViewChild('wrapper', {static: true}) wrapper: ElementRef<HTMLDivElement>
+  @Input() available: boolean = false
+  @ViewChild('wrapper', { static: true }) wrapper: ElementRef<HTMLDivElement>
   cellSize: number = 42
   cellSpace: number = 27
   left: string = ''
@@ -30,7 +31,7 @@ export class ClassTalentComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.left = this.talent.col * (this.cellSize + this.cellSpace) + this.cellSpace + (this.talent.shiftRight ? (this.cellSize + this.cellSpace) / 2 : 0) + 'px'
 
-    this.top = this.talent.row * (this.cellSize + this.cellSpace) + this.cellSpace +'px'
+    this.top = this.talent.row * (this.cellSize + this.cellSpace) + this.cellSpace + 'px'
 
     this.tooltip = {
       talent: this.talent,
@@ -38,11 +39,23 @@ export class ClassTalentComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // showTooltip() {
-  //   console.log('tooltip')
-  // }
+  max() {
+    if (this.talent.type !== 'octagon') {
+      if (this.talent.rank == this.talent.ranks)
+        return true
+      else return false
+    }
+    if (this.talent.rank > 0) return true
+    return false
+  }
 
-  // hideTooltip() {
-  //   console.log('tooltip')
-  // }
+  gray() {
+    if (!this.talent.parents.length)
+      return false
+    if (this.talent.parents.find(t => {
+      return t.type == 'octagon' ? t.rank > 0 : t.rank == t.ranks
+    }))
+      return false
+    return true
+  }
 }

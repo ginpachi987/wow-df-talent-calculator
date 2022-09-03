@@ -10,7 +10,6 @@ export class LanguagePipe implements PipeTransform {
   ) {}
 
   transform(value: string): string {
-    console.log(value)
     return this.language.texts[value] || value
   }
 
