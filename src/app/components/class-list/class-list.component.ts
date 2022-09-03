@@ -15,31 +15,29 @@ export class ClassListComponent implements OnInit {
   @Input() currentSpec: string = ''
 
   classList: string[] = Object.keys(classes)
-  specList: string[] = []
+  specs = classes
   specImages = images
 
   constructor(
     private router: Router,
-    private menu: MenuService,
+    public menu: MenuService,
     public language: LanguageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false
   }
 
   ngOnInit(): void {
-    if (this.currentClass) {
-      this.specList = classes[this.currentClass]
-    }
   }
   
   setClass(cls: string) {
-    this.currentClass = cls
-    this.specList = classes[cls]
+    this.menu.class = cls
+    // this.currentClass = cls
+    // this.specList = classes[cls]
   }
 
   getTrees(spec: string) {
     this.currentSpec = spec
     this.menu.setState('classes')
-    this.router.navigate(['classes', this.currentClass, this.currentSpec])
+    this.router.navigate(['classes', this.menu.class, spec])
   }
 }

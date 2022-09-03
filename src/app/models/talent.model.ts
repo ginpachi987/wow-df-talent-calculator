@@ -13,7 +13,9 @@ export class Talent {
   descr: string
   descr2: string
   shiftRight: boolean
+  countable: boolean = true
   children: Talent[]
+  parents: Talent[]
   constructor(tal?: rawTalent | undefined, text1?: rawText | undefined, text2?: rawText | undefined) {
     this.id = 0
     this.id2 = 0
@@ -30,6 +32,7 @@ export class Talent {
     this.descr2 = ''
     this.shiftRight = false
     this.children = []
+    this.parents = []
 
     Object.assign(this, tal)
     Object.assign(this, text1)
@@ -37,6 +40,35 @@ export class Talent {
       this.title2 = text2.title
       this.descr2 = text2.descr
     }
+  }
+  addRank(rank: number = 1) {
+    if (!this.countable) return
+    if (this.rank == this.ranks) return
+    if (this.parents.length && !this.parents.find(t => {
+      return (t.type == 'octagon' && t.rank > 0) || (t.type != 'octagon' && t.rank == t.ranks)
+    })) return
+    if (this.type !== 'octagon' || this.rank < 2) {
+      this.rank += rank
+    }
+  }
+
+  subRank(rank: number = 1) {
+    if (!this.countable) return
+    if (this.rank == 0) return
+    this.rank -= rank
+    if ((this.type !== 'octagon' && this.rank != this.ranks) || (this.rank == 0 && this.type == 'octagon')) {
+      this.children.forEach(tal => {
+        tal.reset()
+      })
+    }
+  }
+
+  private reset() {
+    if (!this.parents.length) return
+    if (this.parents.find(t => {
+      return (t.type == 'octagon' && t.rank > 0) || (t.type != 'octagon' && t.rank == t.ranks)
+    })) return
+    this.subRank(this.rank)
   }
 }
 export class pvpTalent {
@@ -75,4 +107,9 @@ export interface rawText {
 export interface defaultTalent {
   col: number
   row: number
+}
+export interface rawTranslation {
+  id: number
+  title: string
+  descr: string
 }

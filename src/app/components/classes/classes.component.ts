@@ -2,6 +2,8 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tree } from 'src/app/models/tree.model';
 import { ImagePipePipe } from 'src/app/pipes/image-pipe.pipe';
+import { BuildService } from 'src/app/services/build.service';
+import { LanguageService } from 'src/app/services/language.service';
 import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
@@ -18,10 +20,12 @@ export class ClassesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private menu: MenuService,
-    private pipe: ImagePipePipe
+    private pipe: ImagePipePipe,
+    private language: LanguageService,
+    private build: BuildService
   ) {
-    this.classTree = new Tree()
-    this.specTree = new Tree()
+    this.classTree = new Tree(this.build)
+    this.specTree = new Tree(this.build)
   }
 
   ngOnInit(): void {
@@ -32,15 +36,27 @@ export class ClassesComponent implements OnInit {
   async setTrees() {
     const cls = this.route.snapshot.paramMap.get('cls') || ""
     const spec = this.route.snapshot.paramMap.get('spec') || ""
+    const clsbuild = this.route.snapshot.paramMap.get('clsbuild') || ""
+    const specbuild = this.route.snapshot.paramMap.get('specbuild') || ""
+    const pvpbuild = this.route.snapshot.paramMap.get('pvpbuild') || ""
     this.classTree.set(await this.getTree(cls, 'class'))
     this.specTree.set(await this.getTree(cls, spec))
     this.bgColor = this.specTree.color || '#212121'
     this.bgImage = this.pipe.transform(`${cls}-${spec}`, true)
+
+    this.build.setClass(cls, spec)
+    this.menu.setClass(cls, spec)
+
+    this.classTree.setDefault(this.specTree.defaultTalents)
+    if (clsbuild) this.classTree.setBuild(clsbuild)
+    if (specbuild) this.specTree.setBuild(specbuild)
+    if (pvpbuild) this.specTree.setPvpBuild(pvpbuild)
   }
 
   async getTree(cls: string, spec: string) {
     const req = {
       lang: 'en',
+      lang2: this.language.lang,
       class: cls,
       spec: spec
     }

@@ -18,14 +18,13 @@ export class LanguageService {
   logo: string = `./assets/img/logo.webp`
 
   constructor() {
-    this.getTexts()
     this.langs = Object.keys(this.langList)
+    this.getTexts()
   }
   
   async getTexts() {
     const browserLang = navigator.language.split('-')[0]
     this.lang = localStorage.getItem('lang') || (this.langs.includes(browserLang) ? browserLang : 'en')
-    console.log(this.lang)
     const body = {method: 'getTexts', body: {lang: this.lang}}
     this.texts = await (await fetch('https://projects.yoro.dev/df-talents/api/', {
       method: 'POST',

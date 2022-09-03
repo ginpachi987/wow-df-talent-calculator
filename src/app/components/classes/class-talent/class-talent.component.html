@@ -1,6 +1,6 @@
-<div class="wrapper" [style.left]="left" [style.top]="top" [appTooltip]="tooltip" [class.round]="talent.type=='round'" [class.octagon]="talent.type=='octagon'" #wrapper>
-  <div class="talent" [class.first]="talent.type=='octagon'" [style.backgroundImage]="talent.image | imagePipe"></div>
-  <div *ngIf="talent.type=='octagon'" class="talent" [class.second]="talent.type=='octagon'" [style.backgroundImage]="talent.image2 | imagePipe"></div>
-  <div class="divider" *ngIf="talent.type=='octagon'"></div>
+<div class="wrapper" [style.left]="left" [style.top]="top" [appTooltip]="tooltip" [class.round]="talent.type=='round'" [class.octagon]="talent.type=='octagon'" [class.gray]="gray() || !available" [class.max]="max()" #wrapper>
+  <div class="talent" [class.first]="talent.type=='octagon' && talent.rank == 0" [style.backgroundImage]="talent.image | imagePipe"></div>
+  <div *ngIf="talent.type=='octagon' && (talent.rank == 0 || talent.rank == 2)" class="talent" [class.second]="talent.type=='octagon' && talent.rank == 0" [style.backgroundImage]="talent.image2 | imagePipe"></div>
+  <div class="divider" *ngIf="talent.type=='octagon' && talent.rank == 0"></div>
   <div class="rank" *ngIf="talent.type == 'round' && talent.ranks > 1">{{talent.rank}}/{{talent.ranks}}</div>
 </div>
