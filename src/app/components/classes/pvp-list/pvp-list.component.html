@@ -2,16 +2,16 @@
   <div class="title">{{language.texts['PvP Talents']}}: </div>
   <div style="width: 150px;height:60px;position:relative" #sel>
     <div class="mockups">
-      <div class="wrapper relative octagon" *ngFor="let _ of ['', '', '']">
+      <div class="wrapper relative octagon" *ngFor="let _ of blank">
         <div class="talent"></div>
       </div>
     </div>
-    <div class="wrapper relative octagon" *ngFor="let talent of selected; index as i" [appTooltip]="getTooltip(i)" #wrapper>
+    <div class="wrapper relative max octagon" *ngFor="let talent of selected; index as i" (contextmenu)="toggleTalent($event, talent)" [appTooltip]="getTooltip(i)" #wrapper>
       <div class="talent" [style.backgroundImage]="talent.image | imagePipe"></div>
     </div>
   </div>
   <div class="list" [class.hide]="!showList" #list>
-    <app-pvp-talent *ngFor="let talent of talents" [talent]="talent" (click)="toggleTalent(talent)"></app-pvp-talent>
+    <app-pvp-talent *ngFor="let talent of talents" [talent]="talent" (click)="toggleTalent($event, talent)"></app-pvp-talent>
   </div>
 </div>
 

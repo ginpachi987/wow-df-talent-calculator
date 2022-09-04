@@ -21,7 +21,10 @@ export class ClassTreeComponent implements OnInit {
   }
 
   reset() {
-
+    this.tree.talents.filter(t => t.row < 4 && t.countable).forEach(tal => {
+      tal.subRank(tal.rank)
+    })
+    this.tree.recount()
   }
 
   changeRank(e: PointerEvent | MouseEvent, talent: Talent) {

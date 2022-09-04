@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Profession } from 'src/app/models/profession.model';
+import { Profession, ProfessionTalent } from 'src/app/models/profession.model';
+import { Tooltip } from 'src/app/models/tooltip.model';
 import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
@@ -9,8 +10,10 @@ import { MenuService } from 'src/app/services/menu.service';
   styleUrls: ['./professions.component.scss']
 })
 export class ProfessionsComponent implements OnInit {
+  @ViewChildren('bonus') bonuses: QueryList<ElementRef<HTMLDivElement>>
   profession = new Profession()
   currentTab: number = 0
+  selected?: ProfessionTalent
 
   constructor(
     private route: ActivatedRoute,
@@ -40,4 +43,18 @@ export class ProfessionsComponent implements OnInit {
     this.profession.set(tree.profession)
   }
 
+  openTab(i: number) {
+    if (this.currentTab == i) return
+    this.currentTab = i
+    this.selected = undefined
+  }
+
+  getTooltip(i: number) {
+    if (!this.selected) return
+    const tooltip: Tooltip = {
+      talent: this.selected.bonuses[i],
+      wrapper: this.bonuses.get(i)
+    }
+    return tooltip
+  }
 }

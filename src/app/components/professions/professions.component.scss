@@ -67,3 +67,107 @@
     content: "";
   }
 }
+
+.details {
+  position: absolute;
+  display: flex;
+  height: 70px;
+  bottom: 0;
+  left: calc(360px - 230px);
+  width: 100%;
+  padding: 4px;
+  width: 460px;
+  gap: 8px;
+}
+
+.progressbar {
+  position: relative;
+  width: 400px;
+  height: 20px;
+  background-color: #5c5c5c;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 20px;
+}
+
+.current {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 20px;
+  border-radius: 4px;
+  background-color: green;
+
+  transition: width .5s ease;
+}
+
+.rank {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+}
+
+.image {
+  margin-top: 2px;
+  width: 46px;
+  height: 46px;
+  border: 2px solid green;
+  border-radius: 4px;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+.bonuses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bonus-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.bonus {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border: 2px solid green;
+  border-radius: 4px;
+  background-image: url("https://wow.zamimg.com/images/wow/icons/medium/spell_chargepositive.jpg");
+  background-size: cover;
+
+  &::after {
+    display: block;
+    position: absolute;
+    top: -12px;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 12px;
+    content: "";
+    background-color: green;
+  }
+
+  &:first-child::after {
+    left: -2px;
+  }
+
+  &:last-child::after {
+    left: unset;
+    right: -2px;
+  }
+}
+
+.gray {
+  filter: grayscale(1);
+}
+
+h2 {
+  font-family: sans-serif !important;
+}

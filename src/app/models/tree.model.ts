@@ -22,6 +22,7 @@ export class Tree {
       mid: 0,
       low: 0
     }
+  pvpBuild: string = ''
   // maxid: number
   constructor(
     private build?: BuildService
@@ -105,6 +106,7 @@ export class Tree {
       talent.countable = false
       talent.rank = talent.ranks
     })
+    this.recount()
   }
 
   recount() {
@@ -172,7 +174,7 @@ export class Tree {
     this.recount()
   }
   setPvpBuild(build: string) {
-
+    this.pvpBuild = build
   }
 }
 

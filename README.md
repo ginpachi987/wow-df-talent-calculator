@@ -12,7 +12,7 @@ Live version could be found at [yoro.dev](https://projects.yoro.dev/df-talents)
 ## Commands
 ### Installation
     npm install
-    npm run dev
+    ng serve
 
 ### Build
-    npm run build
+    ng build

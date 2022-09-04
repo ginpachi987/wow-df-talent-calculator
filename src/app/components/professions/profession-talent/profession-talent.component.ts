@@ -9,6 +9,7 @@ import { Tooltip } from 'src/app/models/tooltip.model';
 })
 export class ProfessionTalentComponent implements OnInit, AfterViewInit {
   @Input() talent: ProfessionTalent = new ProfessionTalent()
+  @Input() relative: boolean = false
   @ViewChild('wrapper', {static: true}) wrapper: ElementRef<HTMLDivElement>
   tooltip: Tooltip
 
@@ -16,6 +17,11 @@ export class ProfessionTalentComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.setTooltip()
+  }
+
+  async setTooltip() {
+    await new Promise(r => setTimeout(r, 100))
     this.tooltip = {
       talent: this.talent,
       wrapper: this.wrapper
