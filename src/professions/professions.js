@@ -557,7 +557,7 @@ let moving = false
 if (mode == 'edit') {
   const link = document.querySelector('#editor')
   link.innerHTML = 'Back to calc'
-  link.href = '/df-talents/professions/'
+  link.href = '/df-talents-old/professions/'
 
   document.body.style.justifyContent = 'start'
   alert(`Current language is set to ${lang.toUpperCase()}`)

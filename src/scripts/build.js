@@ -71,7 +71,7 @@ class Build {
 
   setState() {
     if (!this.class) return
-    let link = `/df-talents/${this.class}/${this.classLink}/`
+    let link = `/df-talents-old/${this.class}/${this.classLink}/`
     if (this.spec) link += `${this.spec}/${this.specLink}`
     history.replaceState('', '', link)
   }

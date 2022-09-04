@@ -2,7 +2,7 @@ import { fileURLToPath } from 'url'
 
 const config = {
   root: 'src',
-  base: '/df-talents/',
+  base: '/df-talents-old/',
   build: {
     outDir: '../dist',
     emptyOutDir: true,
