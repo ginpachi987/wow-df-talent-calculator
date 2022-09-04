@@ -14,12 +14,19 @@ export class BuildService {
 
   classBuild: string = ''
   specBuild: string = ''
+  pvpBuild: string = ''
 
   constructor() { }
 
   setClass(cls: string, spec: string) {
     this.class = cls
     this.spec = spec
+    this.setPoints(0)
+    this.setPoints(0, true)
+
+    this.classBuild = ''
+    this.specBuild = ''
+    this.pvpBuild = ''
   }
 
   setPoints(points: number, cls: boolean = false) {
@@ -37,6 +44,15 @@ export class BuildService {
   updateLink(build: string, cls: boolean = false) {
     if (cls) this.classBuild = build
     else this.specBuild = build
-    history.replaceState('', '', `${environment.baseLink}/classes/${this.class}/${this.classBuild}/${this.spec}/${this.specBuild}`)
+    this.setState()
+  }
+
+  setpvp(build: string) {
+    this.pvpBuild = build
+    this.setState()
+  }
+
+  setState() {
+    history.replaceState('', '', `${environment.baseLink}/classes/${this.class}${this.classBuild ? '/' + this.classBuild:''}/${this.spec}${this.specBuild ? '/' + this.specBuild : ''}${this.specBuild && this.pvpBuild ? '/' + this.pvpBuild : ''}`)
   }
 }

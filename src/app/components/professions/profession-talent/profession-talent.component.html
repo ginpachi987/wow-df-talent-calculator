@@ -1,3 +1,3 @@
-<div class="wrapper round" [style.left]="talent.x+'px'" [style.top]="talent.y+'px'" [appTooltip]="tooltip" #wrapper>
+<div class="wrapper round" [class.relative]="relative" [style.left]="relative?0:talent.x+'px'" [style.top]="relative?0:talent.y+'px'" [appTooltip]="tooltip" #wrapper>
   <div class="talent" [style.backgroundImage]="talent.image | imagePipe"></div>
 </div>

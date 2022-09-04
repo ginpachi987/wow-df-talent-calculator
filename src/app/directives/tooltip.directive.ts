@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { ProfessionTalent } from '../models/profession.model';
+import { ProfessionTalent, ProfessionBonus } from '../models/profession.model';
 import { pvpTalent, Talent } from '../models/talent.model';
 import { Tooltip } from '../models/tooltip.model';
 import { TooltipService } from '../services/tooltip.service';
@@ -8,14 +8,18 @@ import { TooltipService } from '../services/tooltip.service';
   selector: '[appTooltip]'
 })
 export class TooltipDirective {
-  @Input() appTooltip: Tooltip
+  @Input() appTooltip?: Tooltip
   @HostListener('mouseover', ['$event'])
   async onMouseHover(event: MouseEvent) {
+    if (!this.appTooltip) return
     const talent = this.appTooltip.talent
 
     this.tooltip.show = !!talent.title
     this.tooltip.title = talent.title
-    this.tooltip.descr = talent.descr
+
+    if (!(talent instanceof ProfessionBonus))
+      this.tooltip.descr = talent.descr
+    else this.tooltip.descr = ''
 
     if (talent instanceof Talent) {
       this.tooltip.title2 = talent.title2
@@ -34,7 +38,7 @@ export class TooltipDirective {
     else {
       this.tooltip.left = rect.right + 12
     }
-    this.tooltip.top = rect.top - 2 
+    this.tooltip.top = rect.top - 2
 
     await new Promise(r => setTimeout(r, 50))
     if (rect.top + this.tooltip.height + 20 > window.innerHeight) {

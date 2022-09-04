@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ProfessionSpec } from 'src/app/models/profession.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ProfessionSpec, ProfessionTalent } from 'src/app/models/profession.model';
 
 @Component({
   selector: 'app-profession-tab',
@@ -8,10 +8,15 @@ import { ProfessionSpec } from 'src/app/models/profession.model';
 })
 export class ProfessionTabComponent implements OnInit {
   @Input() spec: ProfessionSpec
+  @Input() selected?: ProfessionTalent
+  @Output() selectedChange = new EventEmitter<ProfessionTalent>()
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  select(talent: ProfessionTalent) {
+    this.selectedChange.emit(talent)
+  }
 }

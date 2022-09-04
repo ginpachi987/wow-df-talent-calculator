@@ -42,7 +42,7 @@ export class ProfessionTalent {
   id: number = 0
   title: string = ''
   descr: string = ''
-  bonuses: string[] = []
+  bonuses: ProfessionBonus[] = []
   image: string = ''
   x: number = 0
   y: number = 0
@@ -53,7 +53,7 @@ export class ProfessionTalent {
     this.id = raw.id
     this.title = raw.title
     this.descr = raw.descr
-    this.bonuses = raw.bonuses
+    this.bonuses = raw.bonuses.map(b => new ProfessionBonus(b))
     this.image = raw.image
     this.x = raw.x
     this.y = raw.y
@@ -92,4 +92,10 @@ export interface rawTalentFull extends rawTalent {
   y: number,
   ranks: number,
   children?: number[]
+}
+export class ProfessionBonus {
+  title: string = ''
+  constructor(title: string) {
+    this.title = title
+  }
 }

@@ -3,4 +3,4 @@
 <ng-container *ngFor="let talent of spec.talents">
   <app-profession-connector *ngFor="let child of talent.children" [parent]="talent" [child]="child"></app-profession-connector>
 </ng-container>
-<app-profession-talent *ngFor="let talent of spec.talents" [talent]="talent"></app-profession-talent>
+<app-profession-talent *ngFor="let talent of spec.talents" [talent]="talent" (click)="select(talent)"></app-profession-talent>

@@ -51,6 +51,7 @@ export class ClassesComponent implements OnInit {
     if (clsbuild) this.classTree.setBuild(clsbuild)
     if (specbuild) this.specTree.setBuild(specbuild)
     if (pvpbuild) this.specTree.setPvpBuild(pvpbuild)
+    this.build.setpvp(pvpbuild)
   }
 
   async getTree(cls: string, spec: string) {

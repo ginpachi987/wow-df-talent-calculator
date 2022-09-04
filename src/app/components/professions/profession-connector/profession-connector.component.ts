@@ -17,10 +17,10 @@ export class ProfessionConnectorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.left = `${this.parent.x + 25}px`
-    this.top = `${this.parent.y + 25}px`
+    this.left = `${this.parent.x + 25 + 2}px`
+    this.top = `${this.parent.y + 25 + 1}px`
     this.width = `${Math.hypot(-this.parent.x + this.child.x, -this.parent.y + this.child.y)}px`
-    this.angle = `rotateZ(${Math.atan2( -this.parent.y + this.child.y, -this.parent.x + this.child.x)}rad)`
+    this.angle = `rotateZ(${Math.atan2(-this.parent.y + this.child.y, -this.parent.x + this.child.x)}rad)`
   }
 
 }
