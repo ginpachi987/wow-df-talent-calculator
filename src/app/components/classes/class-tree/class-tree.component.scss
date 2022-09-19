@@ -10,6 +10,7 @@
 
 .tree {
   height: 717px;
+  width: 100%;
   position: relative;
 }
 
@@ -18,8 +19,6 @@
   text-align: center;
   font-size: 17px;
   width: 380px;
-  // position: absolute;
-  // top: -16px;
   left: calc(50% - 190px);
   text-shadow: 1px 1px 2px black, -1px -1px 2px black,
     -1px 1px 2px black, 1px -1px 2px black;
@@ -40,6 +39,7 @@
 .eight {
   top: 315px;
 }
+
 .twenty {
   top: 523px;
 }

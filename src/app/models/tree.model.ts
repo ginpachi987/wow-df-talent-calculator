@@ -2,10 +2,10 @@ import { BuildService } from "../services/build.service"
 import { defaultTalent, pvpTalent, rawTalent, rawTalentFull, rawText, rawTranslation, Talent } from "./talent.model"
 
 export class Tree {
-  cols: number
-  rows: number
+  // cols: number
+  // rows: number
   class: string
-  tree: string
+  spec: string
   talents: Talent[]
   pvpTalents: pvpTalent[]
   defaultTalents: defaultTalent[]
@@ -23,14 +23,13 @@ export class Tree {
       low: 0
     }
   pvpBuild: string = ''
-  // maxid: number
   constructor(
     private build?: BuildService
   ) {
-    this.cols = 0
-    this.rows = 0
+    // this.cols = 0
+    // this.rows = 0
     this.class = ''
-    this.tree = ''
+    this.spec = ''
     this.talents = []
     this.pvpTalents = []
     this.defaultTalents = []
@@ -40,16 +39,14 @@ export class Tree {
   set(raw: rawTree) {
     const tree = raw.tree
     const texts = raw.texts
-    this.cols = tree.cols
-    this.rows = tree.rows
     this.class = tree.class
-    this.tree = tree.tree
+    this.spec = tree.spec
     this.title = texts.title
     this.color = tree.color
     this.talents = []
     this.pvpTalents = []
     this.defaultTalents = tree.defaultTalents
-    this.pointsTotal = tree.tree == 'class' ? 31 : 30
+    this.pointsTotal = tree.spec == 'class' ? 31 : 30
 
     tree.talents.forEach(talent => {
       const text = texts.talents.find(t => t.id == talent.id)
@@ -121,8 +118,8 @@ export class Tree {
         return prev + curr.rank
       }, '')
       const link = (line.match(/.{1,10}/g) || []).map(el => parseInt(el + '0'.repeat(10 - el.length), 4).toString(36)).map(el => el == '0' ? '' : el).join('-').replace(/-*$/, '')
-      this.build?.updateLink(link, this.tree == 'class')
-      this.build?.setPoints(this.pointsSpent, this.tree == 'class')
+      this.build?.updateLink(link, this.spec == 'class')
+      this.build?.setPoints(this.pointsSpent, this.spec == 'class')
     }
     setPoints()
     this.points = {
@@ -187,7 +184,7 @@ interface rawTree {
     cols: number
     rows: number
     class: string
-    tree: string
+    spec: string
     maxid: number
     talents: rawTalentFull[]
     pvpTalents: rawTalent[]

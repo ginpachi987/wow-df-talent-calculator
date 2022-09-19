@@ -31,8 +31,6 @@ export class ClassListComponent implements OnInit {
   
   setClass(cls: string) {
     this.menu.class = cls
-    // this.currentClass = cls
-    // this.specList = classes[cls]
   }
 
   getTrees(spec: string) {

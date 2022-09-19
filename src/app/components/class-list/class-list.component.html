@@ -1,4 +1,4 @@
-<div [class.short]="short">
+<div class="list-wrapper" [class.short]="short">
   <h2 *ngIf="!short">{{language.texts['Choose a class']}}</h2>
   <div class="classes">
     <div class="wrapper relative" *ngFor="let cls of classList" (click)="setClass(cls)" [class.max]="cls == menu.class">

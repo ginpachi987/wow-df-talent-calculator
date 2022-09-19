@@ -62,7 +62,7 @@ h3 {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: -webkit-linear-gradient(top, #555554, #a7a5a8 10%, #cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
-  filter: drop-shadow(0 0 2px rgb(54, 54, 54))
+  filter: drop-shadow(1px 1px .5px rgb(0,0,0));
 }
 
 h2 {

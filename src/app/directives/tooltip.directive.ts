@@ -1,6 +1,6 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { ProfessionTalent, ProfessionBonus } from '../models/profession.model';
-import { pvpTalent, Talent } from '../models/talent.model';
+import { Directive, HostListener, Input } from '@angular/core';
+import { ProfessionBonus } from '../models/profession.model';
+import { Talent } from '../models/talent.model';
 import { Tooltip } from '../models/tooltip.model';
 import { TooltipService } from '../services/tooltip.service';
 
@@ -10,7 +10,7 @@ import { TooltipService } from '../services/tooltip.service';
 export class TooltipDirective {
   @Input() appTooltip?: Tooltip
   @HostListener('mouseover', ['$event'])
-  async onMouseHover(event: MouseEvent) {
+  async onMouseHover() {
     if (!this.appTooltip) return
     const talent = this.appTooltip.talent
 

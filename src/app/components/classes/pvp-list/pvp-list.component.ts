@@ -1,6 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { pvpTalent } from 'src/app/models/talent.model';
-import { Tooltip } from 'src/app/models/tooltip.model';
 import { BuildService } from 'src/app/services/build.service';
 import { LanguageService } from 'src/app/services/language.service';
 

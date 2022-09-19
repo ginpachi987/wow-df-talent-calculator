@@ -20,11 +20,20 @@
     white-space: nowrap;
     overflow-x: scroll;
     position: relative;
+    margin: 4px 0 2px;
   }
 
   .specs {
+    margin: 2px 0 4px;
     justify-content: center;
   }
+}
+
+.list-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .classes, .specs {
