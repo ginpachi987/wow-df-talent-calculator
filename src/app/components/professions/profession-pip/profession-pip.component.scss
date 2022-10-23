@@ -1,0 +1,13 @@
+:host {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.pip {
+  background-image: url('/assets/img/circles/pip.png');
+  width: 100px;
+  height: 100px;
+  transform-origin: bottom center;
+  rotate: -120deg;
+}

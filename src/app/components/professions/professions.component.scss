@@ -28,7 +28,8 @@
 }
 
 .tabs {
-  width: 720px;
+  width: auto;
+  align-self: center;
 }
 
 .tab {
@@ -168,4 +169,9 @@
 
 h2 {
   font-family: sans-serif !important;
+}
+
+.spec-wrapper {
+  display: flex;
+  flex-direction: row;
 }

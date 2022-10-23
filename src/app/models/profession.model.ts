@@ -47,7 +47,9 @@ export class ProfessionTalent {
   x: number = 0
   y: number = 0
   ranks: number = 0
+  rank: number = 0
   children: ProfessionTalent[] = []
+  learned: boolean = false
   constructor(raw?: rawTalentFull) {
     if (!raw) return
     this.id = raw.id

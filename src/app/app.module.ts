@@ -25,6 +25,9 @@ import { LevelComponent } from './components/classes/level/level.component';
 import { ToHtmlPipe } from './pipes/to-html.pipe';
 import { PvpTalentComponent } from './components/classes/pvp-talent/pvp-talent.component';
 import { LanguageComponent } from './components/language/language.component';
+import { ProfessionWheelComponent } from './components/professions/profession-wheel/profession-wheel.component';
+import { ProfessionDialComponent } from './components/professions/profession-dial/profession-dial.component';
+import { ProfessionPipComponent } from './components/professions/profession-pip/profession-pip.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,10 @@ import { LanguageComponent } from './components/language/language.component';
     LevelComponent,
     ToHtmlPipe,
     PvpTalentComponent,
-    LanguageComponent
+    LanguageComponent,
+    ProfessionWheelComponent,
+    ProfessionDialComponent,
+    ProfessionPipComponent
   ],
   imports: [
     BrowserModule,
