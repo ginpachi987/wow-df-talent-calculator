@@ -75,3 +75,23 @@ h2 {
   pointer-events: none;
   cursor: default;
 }
+
+.bmc {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 140px;
+  aspect-ratio: 1090/306;
+  background-size: cover;
+  background-image: url('./assets/img/bmc-button.png');
+  filter: drop-shadow(0 0 0 white);
+  transition: all .2s ease-in;
+
+  &:hover {
+    filter: drop-shadow(0 0 4px white);
+  }
+
+  @media (max-width: 660px) {
+    display: none;
+  }
+}
