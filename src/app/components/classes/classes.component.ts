@@ -39,8 +39,8 @@ export class ClassesComponent implements OnInit {
     const clsbuild = this.route.snapshot.paramMap.get('clsbuild') || ""
     const specbuild = this.route.snapshot.paramMap.get('specbuild') || ""
     const pvpbuild = this.route.snapshot.paramMap.get('pvpbuild') || ""
-    this.classTree.set(await this.getTree(cls, 'class'))
-    this.specTree.set(await this.getTree(cls, spec))
+    await this.classTree.set(await this.getTree(cls, 'class'))
+    await this.specTree.set(await this.getTree(cls, spec))
     this.bgColor = this.specTree.color || '#212121'
     this.bgImage = this.pipe.transform(`${cls}-${spec}`, true)
 
@@ -48,6 +48,7 @@ export class ClassesComponent implements OnInit {
     this.menu.setClass(cls, spec)
 
     this.classTree.setDefault(this.specTree.defaultTalents)
+    this.classTree.replace(this.specTree.replacements)
     if (clsbuild) this.classTree.setBuild(clsbuild)
     if (specbuild) this.specTree.setBuild(specbuild)
     if (pvpbuild) this.specTree.setPvpBuild(pvpbuild)
@@ -56,8 +57,7 @@ export class ClassesComponent implements OnInit {
 
   async getTree(cls: string, spec: string) {
     const req = {
-      lang: 'en',
-      lang2: this.language.lang,
+      lang: this.language.lang,
       class: cls,
       spec: spec
     }

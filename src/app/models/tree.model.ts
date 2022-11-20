@@ -9,6 +9,7 @@ export class Tree {
   talents: Talent[]
   pvpTalents: pvpTalent[]
   defaultTalents: defaultTalent[]
+  replacements: Talent[]
   title: string
   color: string
   pointsTotal: number = 0
@@ -33,32 +34,34 @@ export class Tree {
     this.talents = []
     this.pvpTalents = []
     this.defaultTalents = []
+    this.replacements = []
     this.title = ''
     this.color = ''
   }
-  set(raw: rawTree) {
+  async set(raw: rawTree) {
     const tree = raw.tree
-    const texts = raw.texts
+    // const texts = raw.texts
     this.class = tree.class
     this.spec = tree.spec
-    this.title = texts.title
+    this.title = tree.title
     this.color = tree.color
     this.talents = []
     this.pvpTalents = []
+    this.replacements = []
     this.defaultTalents = tree.defaultTalents
     this.pointsTotal = tree.spec == 'class' ? 31 : 30
 
     tree.talents.forEach(talent => {
-      const text = texts.talents.find(t => t.id == talent.id)
-      const text2 = texts.talents.find(t => t.id == talent.id2)
+      // const text = texts.talents.find(t => t.id == talent.id)
+      // const text2 = texts.talents.find(t => t.id == talent.id2)
 
-      this.talents.push(new Talent(talent, text, text2))
+      this.talents.push(new Talent(talent/*, text, text2*/))
     })
 
     if (tree.pvpTalents) tree.pvpTalents.forEach(talent => {
-      const text = texts.talents.find(t => t.id == talent.id)
+      // const text = texts.talents.find(t => t.id == talent.id)
 
-      this.pvpTalents.push(new pvpTalent(talent, text))
+      this.pvpTalents.push(new pvpTalent(talent/*, text*/))
     })
 
     this.talents.forEach(talent => {
@@ -73,26 +76,32 @@ export class Tree {
       })
     })
 
-    const translation = raw.translation
-    if (!translation) return
-    this.title = translation.title || this.title
-    translation.talents.forEach(tal => {
-      const talent = this.talents.find(t => t.id == tal.id)
-      if (talent) {
-        talent.title = tal.title || talent.title
-        talent.descr = tal.descr || talent.descr
-      }
-      const talent2 = this.talents.find(t => t.id2 == tal.id)
-      if (talent2) {
-        talent2.title2 = tal.title || talent2.title2
-        talent2.descr2 = tal.descr || talent2.descr2
-      }
-      const talent3 = this.pvpTalents.find(t => t.id == tal.id)
-      if (talent3) {
-        talent3.title = tal.title || talent3.title
-        talent3.descr = tal.descr || talent3.descr
-      }
-    })
+    if (tree.replacements) {
+      tree.replacements.forEach(talent => {
+        this.replacements.push(new Talent(talent))
+      })
+    }
+
+    // const translation = raw.translation
+    // if (!translation) return
+    // this.title = translation.title || this.title
+    // translation.talents.forEach(tal => {
+    //   const talent = this.talents.find(t => t.id == tal.id)
+    //   if (talent) {
+    //     talent.title = tal.title || talent.title
+    //     talent.descr = tal.descr || talent.descr
+    //   }
+    //   const talent2 = this.talents.find(t => t.id2 == tal.id)
+    //   if (talent2) {
+    //     talent2.title2 = tal.title || talent2.title2
+    //     talent2.descr2 = tal.descr || talent2.descr2
+    //   }
+    //   const talent3 = this.pvpTalents.find(t => t.id == tal.id)
+    //   if (talent3) {
+    //     talent3.title = tal.title || talent3.title
+    //     talent3.descr = tal.descr || talent3.descr
+    //   }
+    // })
   }
 
   setDefault(talents: defaultTalent[]) {
@@ -173,6 +182,23 @@ export class Tree {
   setPvpBuild(build: string) {
     this.pvpBuild = build
   }
+
+  replace(talents: Talent[]) {
+    talents.forEach(tal => {
+      const talent: Talent | undefined = this.talents.find(t => t.col == tal.col && t.row == tal.row)
+      if (!talent) return
+      talent.title = tal.title
+      talent.descr = tal.descr
+      talent.type = tal.type
+      talent.image = tal.image
+
+      if (talent.type == 'octagon') {
+        talent.title2 = tal.title2
+        talent.descr2 = tal.descr2
+        talent.image2 = tal.image2
+      }
+    })
+  }
 }
 
 interface rawTree {
@@ -186,9 +212,11 @@ interface rawTree {
     class: string
     spec: string
     maxid: number
+    title: string
     talents: rawTalentFull[]
     pvpTalents: rawTalent[]
     defaultTalents: defaultTalent[]
+    replacements: rawTalentFull[]
     color: string
   }
   translation: {
