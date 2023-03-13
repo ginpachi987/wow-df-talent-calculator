@@ -1,7 +1,0 @@
-<app-profession-wheel [talent]="talent" (recalcTree)="recount.emit()"></app-profession-wheel>
-<div class="controls" *ngIf="talent">
-  <div class="unlock" (click)="toggleLearn()">{{talent.learned?'Lock':'Unlock'}}</div>
-  <div class="minus" (click)="addRank(-1)">-</div>
-  <div class="plus" (click)="addRank(1)">+</div>
-  <div class="next">Next major bonus:<br/> {{talent.bonuses[next].title}}</div>
-</div>

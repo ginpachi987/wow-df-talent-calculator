@@ -1,7 +1,7 @@
 # Dragonflight Talent Calculator
 Class and Profession Specializations Calculator preview for World of Warcraft patch 10.0
 
-Live version could be found at [yoro.dev](https://projects.yoro.dev/df-talents)
+Live version could be found at [yoro.dev](https://projects.yoro.dev/df-talents/beta/)
 
 ### Class Trees
 ![preview!](preview.webp)
@@ -12,7 +12,7 @@ Live version could be found at [yoro.dev](https://projects.yoro.dev/df-talents)
 ## Commands
 ### Installation
     npm install
-    ng serve
+    npm run dev
 
 ### Build
-    ng build
+    npm run build
