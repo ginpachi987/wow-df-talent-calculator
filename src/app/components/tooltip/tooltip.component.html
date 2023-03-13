@@ -1,9 +1,10 @@
 <div class="tooltip" [class.hide]="!tooltip.show" [style.top]="tooltip.top + 'px'" [style.left]="tooltip.left + 'px'" #t>
-  <div class="choose" *ngIf="tooltip.choose">Choose node</div>
+  <div [innerHTML]="tooltip.text.text"></div>
+  <!-- <div class="choose" *ngIf="tooltip.choose">Choose node</div>
   <div class="title" [innerHTML]="tooltip.title | toHtml"></div>
   <div class="descr" [innerHTML]="tooltip.descr | toHtml"></div>
   <hr *ngIf="tooltip.title2">
   <div class="title" *ngIf="tooltip.title2" [innerHTML]="tooltip.title2 | toHtml"></div>
   <div class="descr" *ngIf="tooltip.descr2" [innerHTML]="tooltip.descr2 | toHtml"></div>
-  <div class="spend" *ngIf="tooltip.spend">Spend 8 more points to unlock</div>
+  <div class="spend" *ngIf="tooltip.spend">Spend 8 more points to unlock</div> -->
 </div>

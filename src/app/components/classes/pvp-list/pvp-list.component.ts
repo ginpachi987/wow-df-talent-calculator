@@ -53,7 +53,7 @@ export class PvpListComponent implements OnInit {
 
   getTooltip(i: number) {
     return {
-      talent: this.selected[i],
+      talent: {text: this.selected[i].tooltip},
       wrapper: this.wrappers.get(i)
     }
   }

@@ -10,7 +10,7 @@ import { Tooltip } from 'src/app/models/tooltip.model';
 export class ProfessionTalentComponent implements OnInit, AfterViewInit {
   @Input() talent: ProfessionTalent = new ProfessionTalent()
   @Input() relative: boolean = false
-  @ViewChild('wrapper', {static: true}) wrapper: ElementRef<HTMLDivElement>
+  @ViewChild('wrapper', { static: true }) wrapper: ElementRef<HTMLDivElement>
   tooltip: Tooltip
 
   constructor() {
@@ -22,13 +22,24 @@ export class ProfessionTalentComponent implements OnInit, AfterViewInit {
 
   async setTooltip() {
     await new Promise(r => setTimeout(r, 100))
+    let text = ''
+
+    text += `<div class="title">${this.talent.title}</div>`
+    text += `<div class="descr">${this.talent.descr.replace(/\n/g, '<br/>')}</div>`
+
     this.tooltip = {
-      talent: this.talent,
+      talent: { text: text },
       wrapper: this.wrapper
     }
   }
 
   ngOnInit(): void {
+  }
+
+  progress() {
+    const degrees = Math.round(this.talent.rank / this.talent.ranks * 360)
+    const progress = `conic-gradient(green ${degrees}deg, #363633 0)`
+    return progress
   }
 
 }

@@ -1,3 +1,5 @@
-<div class="wrapper round" [class.relative]="relative" [style.left]="relative?0:talent.x+'px'" [style.top]="relative?0:talent.y+'px'" [appTooltip]="tooltip" #wrapper>
+<div class="wrapper round" [class.relative]="relative" [style.left]="relative?0:talent.left+'%'" [style.top]="relative?0:talent.top+'%'" [appTooltip]="tooltip" #wrapper>
+  <div class="progress" [style.backgroundImage]="progress()"></div>
   <div class="talent" [style.backgroundImage]="talent.image | imagePipe"></div>
+  <div class="lock"></div>
 </div>

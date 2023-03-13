@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'classes/:cls/:clsbuild/:spec/:specbuild/:pvpbuild', component: ClassesComponent },
   { path: 'professions', component: ProfessionListComponent },
   { path: 'professions/:prof', component: ProfessionsComponent },
+  { path: 'professions/:prof/:build', component: ProfessionsComponent },
 ];
 
 @NgModule({

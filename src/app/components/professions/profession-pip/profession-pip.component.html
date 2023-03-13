@@ -1,1 +1,3 @@
-<div class="pip"></div>
+<div class="pip" [style.top]="top" [style.left]="left" [class.last]="index == talent.bonuses.length" [appTooltip]="tooltip" (click)="setRank()" #wrapper>
+  <div class="pip-inner" [class.active]="talent.learned  && index * 5 <= talent.rank" [style.rotate]="angle"></div>
+</div>

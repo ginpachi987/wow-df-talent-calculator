@@ -1,4 +1,4 @@
-export const classes: {[key: string]: string[]} = {
+export const classes: { [key: string]: string[] } = {
   "death-knight": ['blood', 'frost', 'unholy'],
   "demon-hunter": ['havoc', 'vengeance'],
   "druid": ['balance', 'feral', 'guardian', 'restoration'],
@@ -14,7 +14,7 @@ export const classes: {[key: string]: string[]} = {
   "warrior": ['arms', 'fury', 'protection']
 }
 
-export const images: {[key: string]: string} = {
+export const images: { [key: string]: string } = {
   'death-knight_class': 'classicon_deathknight',
   'death-knight_blood': 'spell_deathknight_bloodpresence',
   'death-knight_frost': 'spell_deathknight_frostpresence',
@@ -66,4 +66,45 @@ export const images: {[key: string]: string} = {
   'warrior_arms': 'ability_warrior_savageblow',
   'warrior_fury': 'ability_warrior_innerrage',
   'warrior_protection': 'ability_warrior_defensivestance'
+}
+
+export const specID: { [key: string]: number } = {
+  'death-knight_blood': 250,
+  'death-knight_frost': 251,
+  'death-knight_unholy': 252,
+  'demon-hunter_havoc': 577,
+  'demon-hunter_vengeance': 581,
+  'druid_balance': 102,
+  'druid_feral': 103,
+  'druid_guardian': 104,
+  'druid_restoration': 105,
+  'evoker_devastation': 1467,
+  'evoker_preservation': 1468,
+  'hunter_beast-mastery': 253,
+  'hunter_marksmanship': 254,
+  'hunter_survival': 255,
+  'mage_arcane': 62,
+  'mage_fire': 63,
+  'mage_frost': 64,
+  'monk_brewmaster': 268,
+  'monk_mistweaver': 270,
+  'monk_windwalker': 269,
+  'paladin_holy': 65,
+  'paladin_protection': 66,
+  'paladin_retribution': 70,
+  'priest_discipline': 256,
+  'priest_holy': 257,
+  'priest_shadow': 258,
+  'rogue_assassination': 259,
+  'rogue_outlaw': 260,
+  'rogue_subtlety': 261,
+  'shaman_elemental': 262,
+  'shaman_enhancement': 263,
+  'shaman_restoration': 264,
+  'warlock_affliction': 265,
+  'warlock_demonology': 266,
+  'warlock_destruction': 267,
+  'warrior_arms': 71,
+  'warrior_fury': 72,
+  'warrior_protection': 73
 }

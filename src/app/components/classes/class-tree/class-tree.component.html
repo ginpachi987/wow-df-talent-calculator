@@ -1,4 +1,4 @@
-<div class="title">{{tree.title}} ({{tree.pointsSpent}}/{{tree.pointsTotal}}) <span class="reset" (click)="reset()" title="Reset Tree">❌</span></div>
+<div class="title-tree">{{tree.title}} ({{tree.pointsSpent}}/{{tree.pointsTotal}}) <span class="reset" (click)="reset()" title="Reset Tree">❌</span></div>
 <div class="divider eight" [class.max]="tree.points.high>=8"></div>
 <div class="divider twenty" [class.gray]="tree.points.high<8" [class.max]="tree.points.mid+tree.points.high>=20"></div>
 <div class="tree">

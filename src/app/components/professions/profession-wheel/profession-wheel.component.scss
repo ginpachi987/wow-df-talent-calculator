@@ -1,8 +1,14 @@
 :host {
-  // width: 300px;
-  height: 480px;
+  --host: 330px;
+  --icon: 270px;
+  
+  width: var(--host);
+  height: var(--host);
   background-color: #231c13;
-  padding: 20px;
+  // padding: 20px;
+  box-sizing: content-box;
+  display: block;
+  position: relative;
 }
 
 button {
@@ -14,21 +20,31 @@ button {
   margin: 10px;
 }
 
+.big-circle {
+  width: var(--icon);
+  height: var(--icon);
+  position: absolute;
+  top: calc((var(--host) - var(--icon)) / 2);
+  left: calc((var(--host) - var(--icon)) / 2);
+}
+
 .dial {
-  width: 330px;
-  height: 330px;
   background-image: url('../../../../assets/img/circles/bg.png');
   background-size: cover;
   position: relative;
 }
 
 .dial-anim {
-  width: 330px;
-  height: 330px;
-  background-image: url('../../../../assets/img/circles/alchemy.webp');
+  background-image: url('../../../../assets/img/circles/alchemy.webp'), conic-gradient(transparent 60deg, #0e0d0b 0);
+  background-size: cover;
+  background-blend-mode: saturation;
   /* background-color: red; */
   /* background-color: black; */
-  clip-path: polygon(50% 50%, 50% 100%, 11% 100%, 11% 100%, 11% 100%, 11% 100%);
+  // clip-path: polygon(50% 50%, 50% 100%, 11% 100%, 11% 100%, 11% 100%, 11% 100%);
+  // background-blend-mode: screen;
+  transform-origin: center center;
+  rotate: 220deg;
+  border-radius: 50%;
 
   transition: all .2s ease-in;
 }
@@ -38,19 +54,14 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(330px - (var(--border) * 2));
-  height: calc(330px - (var(--border) * 2));
+  width: calc(var(--icon) - (var(--border) * 2));
+  height: calc(var(--icon) - (var(--border) * 2));
   border-radius: 50%;
   /* border: var(--border) dashed #201c18; */
 
 }
 
 .dial-foreground {
-  width: 330px;
-  height: 330px;
-  position: absolute;
-  top: 0;
-  left: 0;
   background-image: url('../../../../assets/img/circles/fg.png');
   background-size: cover;
 }
@@ -60,23 +71,25 @@ button {
 }
 
 .big-roll {
-  --size: 272px;
-  width: var(--size);
-  height: var(--size);
+  --roll: calc(var(--icon) * 0.81);
+  width: var(--roll);
+  height: var(--roll);
   position: absolute;
-  top: calc((330px - var(--size)) / 2);
-  left: calc((330px - var(--size)) / 2);
+  top: calc((var(--host) - var(--roll)) / 2);
+  left: calc((var(--host) - var(--roll)) / 2);
   background-image: url('../../../../assets/img/circles/big-roll.png');
   background-size: cover;
 }
 
 .small-roll,
 .small-roll-over {
-  width: 142px;
-  height: 142px;
+  --roll: calc(var(--icon) * 0.43);
+  top: calc((var(--host) - var(--roll)) / 2);
+  left: calc((var(--host) - var(--roll)) / 2);
+  width: var(--roll);
+  height: var(--roll);
   position: absolute;
-  top: calc(50% - 71px);
-  left: calc(50% - 71px);
+  background-size: cover;
 }
 
 .small-roll {
@@ -88,15 +101,16 @@ button {
 }
 
 .icon {
-  --size: 64px;
+  --icon: 52px;
   position: absolute;
-  width: var(--size);
-  height: var(--size);
-  top: calc(50% - var(--size)/2 + 2px);
-  left: calc(50% - var(--size)/2 + 2px);
+  width: var(--icon);
+  height: var(--icon);
+  top: calc(50% - var(--icon)/2);
+  left: calc(50% - var(--icon)/2);
   background-size: cover;
   border-radius: 50%;
-  border: 4px solid #777572;
+  border: 2px solid #777572;
+  box-sizing: border-box;
 }
 
 .learned {
@@ -115,6 +129,6 @@ button {
   background-size: cover;
   background-image: url('../../../../assets/img/circles/lock.png');
   position: absolute;
-  top: calc(50% + 24px);
+  top: calc(50% + 16px);
   left: calc(50% - 7px);
 }

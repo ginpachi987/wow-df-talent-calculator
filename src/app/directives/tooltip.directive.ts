@@ -12,23 +12,25 @@ export class TooltipDirective {
   @HostListener('mouseover', ['$event'])
   async onMouseHover() {
     if (!this.appTooltip) return
-    const talent = this.appTooltip.talent
+    // const talent = this.appTooltip.talent
 
-    this.tooltip.show = !!talent.title
-    this.tooltip.title = talent.title
+    this.tooltip.text = this.appTooltip.talent
 
-    if (!(talent instanceof ProfessionBonus))
-      this.tooltip.descr = talent.descr
-    else this.tooltip.descr = ''
+    this.tooltip.show = !!this.tooltip
+    // this.tooltip.title = talent.title
 
-    if (talent instanceof Talent) {
-      this.tooltip.title2 = talent.title2
-      this.tooltip.descr2 = talent.descr2
-    }
-    else {
-      this.tooltip.title2 = ''
-      this.tooltip.descr2 = ''
-    }
+    // if (!(talent instanceof ProfessionBonus))
+    //   this.tooltip.descr = talent.descr
+    // else this.tooltip.descr = ''
+
+    // if (talent instanceof Talent) {
+    //   this.tooltip.title2 = talent.title2
+    //   this.tooltip.descr2 = talent.descr2
+    // }
+    // else {
+    //   this.tooltip.title2 = ''
+    //   this.tooltip.descr2 = ''
+    // }
 
     if (!this.appTooltip.wrapper) return
     const rect = this.appTooltip.wrapper.nativeElement.getBoundingClientRect()

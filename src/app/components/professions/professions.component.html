@@ -7,18 +7,6 @@
 <div class="spec-wrapper">
   <div class="spec" [style.backgroundImage]="profession.title | imagePipe : true">
     <app-profession-tab *ngFor="let spec of profession.specs; index as i" [class.hidden]="currentTab !== i" [spec]="spec" [(selected)]="selected"></app-profession-tab>
-    <!-- <div class="details" *ngIf="selected">
-      <app-profession-talent [relative]="true" [talent]="selected"></app-profession-talent>
-      <div class="bonuses">
-        <div class="progressbar">
-          <div class="current" [style.width]="0"></div>
-          <div class="rank">{{selected.title}}: 0/{{selected.ranks}}</div>
-        </div>
-        <div class="bonus-wrapper">
-          <div class="bonus" *ngFor="let bonus of selected.bonuses; index as i" [class.gray]="i > 0" [appTooltip]="getTooltip(i)" #bonus></div>
-        </div>
-      </div>
-    </div> -->
   </div>
-  <app-profession-wheel [talent]="selected"></app-profession-wheel>
+  <app-profession-side [talent]="selected" (recount)="recount()"></app-profession-side>
 </div>

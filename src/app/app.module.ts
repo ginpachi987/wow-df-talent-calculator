@@ -28,6 +28,7 @@ import { LanguageComponent } from './components/language/language.component';
 import { ProfessionWheelComponent } from './components/professions/profession-wheel/profession-wheel.component';
 import { ProfessionDialComponent } from './components/professions/profession-dial/profession-dial.component';
 import { ProfessionPipComponent } from './components/professions/profession-pip/profession-pip.component';
+import { ProfessionSideComponent } from './components/professions/profession-side/profession-side.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ProfessionPipComponent } from './components/professions/profession-pip/
     LanguageComponent,
     ProfessionWheelComponent,
     ProfessionDialComponent,
-    ProfessionPipComponent
+    ProfessionPipComponent,
+    ProfessionSideComponent
   ],
   imports: [
     BrowserModule,

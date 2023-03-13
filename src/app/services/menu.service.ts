@@ -27,6 +27,10 @@ export class MenuService {
     this.show = !!state
   }
 
+  setProfession(prof: string) {
+    this.profession = prof
+  }
+
   setClass(cls: string, spec: string) {
     this.class = cls
     this.spec = spec

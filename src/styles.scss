@@ -95,3 +95,24 @@ h2 {
     display: none;
   }
 }
+
+hr {
+  margin: 12px 0;
+}
+
+.title {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: calc(300px - 55px);
+  margin-bottom: 4px;
+}
+
+.descr {
+  color: #ffd100;
+  font-weight: 100;
+}
+
+.rank-prof {
+  margin-bottom: 16px;
+}

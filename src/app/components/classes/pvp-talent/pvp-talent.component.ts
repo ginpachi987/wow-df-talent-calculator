@@ -12,16 +12,33 @@ export class PvpTalentComponent implements OnInit, AfterViewInit {
   @ViewChild('wrapper') wrapper: ElementRef<HTMLDivElement>
   tooltip: Tooltip
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    this.generateTooltip()
   }
 
   ngAfterViewInit(): void {
+    this.generateTooltip()
+  }
+
+  generateTooltip() {
+    // this.tooltip = {
+    //   talent: '',
+    //   wrapper: this.wrapper
+    // }
+    let text = ''
+
+    text += `<div class="title">${this.talent.title}</div>`
+    text += `<div class="descr">${this.talent.descr.replace(/\n/g, '<br/>')}</div>`
+
+
     this.tooltip = {
-      talent: this.talent,
+      talent: { text: text },
       wrapper: this.wrapper
     }
+    this.talent.tooltip = text
   }
 
 }

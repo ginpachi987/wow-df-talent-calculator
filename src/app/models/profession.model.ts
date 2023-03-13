@@ -18,6 +18,7 @@ export class ProfessionSpec {
   descr: string = ''
   talents: ProfessionTalent[] = []
   lastID: number = 0
+  selected: ProfessionTalent
   constructor(spec: rawTabFull) {
     this.title = spec.title
     this.descr = spec.descr
@@ -35,6 +36,8 @@ export class ProfessionSpec {
         if (child) talent.children?.push(child)
       })
     })
+
+    this.selected = this.talents[0]
   }
 }
 
@@ -44,12 +47,15 @@ export class ProfessionTalent {
   descr: string = ''
   bonuses: ProfessionBonus[] = []
   image: string = ''
-  x: number = 0
-  y: number = 0
+  top: number = 0
+  left: number = 0
   ranks: number = 0
   rank: number = 0
   children: ProfessionTalent[] = []
   learned: boolean = false
+  parent?: boolean
+  selected: ProfessionTalent[] = []
+  parentTal?: ProfessionTalent
   constructor(raw?: rawTalentFull) {
     if (!raw) return
     this.id = raw.id
@@ -57,9 +63,26 @@ export class ProfessionTalent {
     this.descr = raw.descr
     this.bonuses = raw.bonuses.map(b => new ProfessionBonus(b))
     this.image = raw.image
-    this.x = raw.x
-    this.y = raw.y
+    this.top = raw.top
+    this.left = raw.left
     this.ranks = raw.ranks
+    this.parent = raw.parent
+  }
+
+  toggleLearn(state = !this.learned) {
+    if (this.parentTal && !this.parentTal.learned) return
+    this.learned = state
+    if (this.learned) {
+      this.parentTal?.children.push(this)
+      return
+    }
+    if (this.parentTal) {
+      this.parentTal.children = this.parentTal.children.filter(e => e !== this)
+    }
+    this.rank = 0
+    this.selected.forEach(tal => {
+      tal.toggleLearn(false)
+    })
   }
 }
 
@@ -90,10 +113,11 @@ export interface rawTalent {
 }
 export interface rawTalentFull extends rawTalent {
   image: string,
-  x: number,
-  y: number,
+  top: number,
+  left: number,
   ranks: number,
-  children?: number[]
+  children?: number[],
+  parent?: boolean
 }
 export class ProfessionBonus {
   title: string = ''

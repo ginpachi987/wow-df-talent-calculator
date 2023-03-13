@@ -11,7 +11,7 @@ export const professions: { [key: string]: string } = {
   "Skinning": "ui_profession_skinning",
   "Tailoring": "ui_profession_tailoring",
   // "Archaeology": "trade_archaeology",
-  "Cooking": "ui_profession_cooking",
-  "Fishing": "ui_profession_fishing",
+  // "Cooking": "ui_profession_cooking",
+  // "Fishing": "ui_profession_fishing",
   // "Dragon Riding": "ability_dragonriding_forwardflap01"
 }

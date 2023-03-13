@@ -22,10 +22,11 @@ export class ClassTalentComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.tooltip = {
-      talent: this.talent,
-      wrapper: this.wrapper
-    }
+    this.generateTooltip()
+    // this.tooltip = {
+    //   talent: '',
+    //   wrapper: this.wrapper
+    // }
   }
 
   ngOnInit(): void {
@@ -33,8 +34,23 @@ export class ClassTalentComponent implements OnInit, AfterViewInit {
 
     this.top = this.talent.row * (this.cellSize + this.cellSpace) + this.cellSpace + 'px'
 
-    this.tooltip = {
-      talent: this.talent,
+    this.generateTooltip()
+  }
+
+  generateTooltip() {
+    this.talent.generateTooltip()
+    
+
+    // <!-- <div class="choose" *ngIf="tooltip.choose">Choose node</div>
+    // <div class="title" [innerHTML]="tooltip.title | toHtml"></div>
+    // <div class="descr" [innerHTML]="tooltip.descr | toHtml"></div>
+    // <hr *ngIf="tooltip.title2">
+    // <div class="title" *ngIf="tooltip.title2" [innerHTML]="tooltip.title2 | toHtml"></div>
+    // <div class="descr" *ngIf="tooltip.descr2" [innerHTML]="tooltip.descr2 | toHtml"></div>
+    // <div class="spend" *ngIf="tooltip.spend">Spend 8 more points to unlock</div> -->
+
+    return  {
+      talent: this.talent.tooltip,
       wrapper: this.wrapper
     }
   }

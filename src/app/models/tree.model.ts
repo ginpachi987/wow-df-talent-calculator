@@ -1,4 +1,5 @@
 import { BuildService } from "../services/build.service"
+import { TooltipService } from "../services/tooltip.service"
 import { defaultTalent, pvpTalent, rawTalent, rawTalentFull, rawText, rawTranslation, Talent } from "./talent.model"
 
 export class Tree {
@@ -25,6 +26,7 @@ export class Tree {
     }
   pvpBuild: string = ''
   constructor(
+    // private tooltip?: TooltipService,
     private build?: BuildService
   ) {
     // this.cols = 0

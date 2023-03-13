@@ -17,6 +17,7 @@ export class ProfessionTabComponent implements OnInit {
   }
 
   select(talent: ProfessionTalent) {
+    this.selected = talent
     this.selectedChange.emit(talent)
   }
 }
