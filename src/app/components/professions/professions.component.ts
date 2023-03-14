@@ -33,7 +33,8 @@ export class ProfessionsComponent implements OnInit {
 
     const req = {
       lang: this.language.lang,
-      profession: prof
+      profession: prof,
+      version: '10.0.2'
     }
     const body = { method: 'getProfession', body: req }
     const tree = await (await fetch('https://projects.yoro.dev/df-talents/api/', {

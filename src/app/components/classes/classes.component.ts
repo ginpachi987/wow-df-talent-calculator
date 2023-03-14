@@ -59,7 +59,8 @@ export class ClassesComponent implements OnInit {
     const req = {
       lang: this.language.lang,
       class: cls,
-      spec: spec
+      spec: spec,
+      version: '10.0.2'
     }
     const body = {method: 'getTree', body: req}
     const tree = await (await fetch('https://projects.yoro.dev/df-talents/api/', {
