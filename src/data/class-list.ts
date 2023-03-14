@@ -68,6 +68,47 @@ export const images: { [key: string]: string } = {
   'warrior_protection': 'ability_warrior_defensivestance'
 }
 
+export const colors: { [key: string]: string } = {
+  "death-knight_blood": "#231616",
+  "death-knight_frost": "#121b2a",
+  "death-knight_unholy": "#1a1a16",
+  "demon-hunter_havoc": "#0e1707",
+  "demon-hunter_vengeance": "#200f40",
+  "druid_balance": "#161634",
+  "druid_feral": "#221420",
+  "druid_guardian": "#221616",
+  "druid_restoration": "#161d12",
+  "evoker_devastation": "#1c0e11",
+  "evoker_preservation": "#07140d",
+  "hunter_beast-mastery": "#131b2d",
+  "hunter_marksmanship": "#181c12",
+  "hunter_survival": "#1e1816",
+  "mage_arcane": "#1a132f",
+  "mage_fire": "#1b0e09",
+  "mage_frost": "#01162f",
+  "monk_brewmaster": "#131b04",
+  "monk_mistweaver": "#0b2221",
+  "monk_windwalker": "#23212b",
+  "paladin_holy": "#201810",
+  "paladin_protection": "#21150b",
+  "paladin_retribution": "#1f1612",
+  "priest_discipline": "#111d27",
+  "priest_holy": "#1e1a0e",
+  "priest_shadow": "#181828",
+  "rogue_assassination": "#231616",
+  "rogue_outlaw": "#151c1c",
+  "rogue_subtlety": "#181922",
+  "shaman_elemental": "#081a28",
+  "shaman_enhancement": "#11112c",
+  "shaman_restoration": "#08122a",
+  "warlock_affliction": "#050c45",
+  "warlock_demonology": "#270e0b",
+  "warlock_destruction": "#29170b",
+  "warrior_arms": "#071a1f",
+  "warrior_fury": "#13110f",
+  "warrior_protection": "#2a1b09"
+}
+
 export const specID: { [key: string]: number } = {
   'death-knight_blood': 250,
   'death-knight_frost': 251,

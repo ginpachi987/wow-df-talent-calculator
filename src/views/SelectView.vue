@@ -2,14 +2,19 @@
 </script>
 
 <template>
-<div class="frames">
-  <RouterLink to="/classes" class="frame frame-class"><h3>Classes</h3></RouterLink>
-  <RouterLink to="/professions" class="frame frame-profession"><h3>Professions (WIP)</h3></RouterLink>
-</div>
+  <div class="frames">
+    <RouterLink to="/classes" class="frame frame-class">
+      <h3>Classes</h3>
+    </RouterLink>
+    <RouterLink to="/professions" class="frame frame-profession">
+      <h3>Professions (WIP)</h3>
+    </RouterLink>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .frames {
+  flex: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -67,5 +72,4 @@
 
 .frame-profession {
   background-image: url('https://projects.yoro.dev/df-talents/professions.ababd10249047f8f.webp');
-}
-</style>
+}</style>

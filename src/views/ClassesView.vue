@@ -5,14 +5,20 @@ import { ref, reactive, type Ref } from 'vue'
 import Tree from '@/components/Tree.vue'
 import { Tree as TreeClass, type TreeInterface } from '@/components/Tree'
 import { useSelected } from '@/stores/selected'
+import { colors } from '@/data/class-list'
+import { useVersion } from '@/stores/version'
 
 const route = useRoute()
 const selected = useSelected()
 
-const version = ref('10.0.2')
+const version = useVersion()
 
 watch(route, (newRoute, oldRoute) => {
   LoadTrees(newRoute.params.class)
+})
+
+watch(version, () => {
+  LoadTrees()
 })
 
 const trees = ref<TreeClass[]>([
@@ -23,11 +29,14 @@ const trees = ref<TreeClass[]>([
 LoadTrees()
 
 async function LoadTrees(cls?: string | string[], spec?: string) {
-  if (!cls || cls != selected.selectedClass)
+  if (!cls || cls != selected.selectedClass) {
     trees.value[0].setTree(await getTree(route.params.class, 'class'))
+    selected.selectedClass = route.params.class
+  }
   const specTree: TreeInterface = await getTree(route.params.class, route.params.spec)
   trees.value[1].setTree(specTree)
 
+  trees.value[0].setDefault(specTree.defaultTalents)
   if (specTree.replacements)
     trees.value[0].replace(specTree.replacements)
   // console.log(trees.value[0])
@@ -37,7 +46,8 @@ async function getTree(cls: string | string[], spec: string | string[]) {
   const req = {
     lang: 'en',
     class: cls,
-    spec: spec
+    spec: spec,
+    version: version.version
   }
   const body = { method: 'getTree', body: req }
   const tree = await (await fetch('https://projects.yoro.dev/df-talents/api/', {
@@ -53,9 +63,9 @@ async function getTree(cls: string | string[], spec: string | string[]) {
 </script>
 
 <template>
-  <div class="trees" :style="{
+  <div class="trees" v-show="selected.selectedClass" :style="{
     backgroundImage: `url(https://projects.yoro.dev/df-talents/img/bg/${route.params.class}-${route.params.spec}.webp)`,
-    backgroundColor: trees[1].color
+    backgroundColor: colors[`${route.params.class}_${route.params.spec}`]
   }">
     <Tree v-for="tree of trees" :tree="tree" />
   </div>
@@ -82,6 +92,10 @@ async function getTree(cls: string | string[], spec: string | string[]) {
     --cell-size: 40px;
     background-size: 70%;
     padding: 4px 8px;
+  }
+
+  @media (max-width: 900px) {
+    padding-bottom: 80px;
   }
 
   @media (max-width:760px) {

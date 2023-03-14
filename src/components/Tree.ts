@@ -1,4 +1,4 @@
-import { Talent, type PvpTalentInterface, type TalentInterface } from "./Talent"
+import { Talent, PvPTalent, type PvpTalentInterface, type TalentInterface } from "./Talent"
 
 export class Tree {
   class: string = ''
@@ -6,8 +6,7 @@ export class Tree {
   talents: Array<Talent> = []
   title: string = ''
   points: number = 0
-  pvpTalents?: Array<PvpTalentInterface>
-  color?: string
+  pvpTalents?: Array<PvPTalent>
 
   constructor(title: string) {
     this.title = title
@@ -30,8 +29,7 @@ export class Tree {
       })
     })
 
-    this.pvpTalents = rawTree.pvpTalents
-    this.color = rawTree.color
+    this.pvpTalents = rawTree.pvpTalents?.map(talent => new PvPTalent(talent))
   }
 
   replace(talents: Array<TalentInterface>) {
@@ -43,6 +41,18 @@ export class Tree {
       talent.replace(rawTalent)
     })
   }
+
+  setDefault(talents: DefaultTalents[]) {
+    this.talents.forEach(t => t.countable = true)
+    talents.forEach(tal => {
+      const col = tal.col * 2 + 1
+      const row = tal.row + 1
+      const talent = this.talents.find(t => t.col == col && t.row == row)
+      if (!talent) return
+      talent.countable = false
+      talent.learned = talent.ranks
+    })
+  }
 }
 
 export interface TreeInterface {
@@ -52,5 +62,10 @@ export interface TreeInterface {
   title: string
   pvpTalents?: Array<PvpTalentInterface>
   replacements?: Array<TalentInterface>
-  color?: string
+  defaultTalents: Array<DefaultTalents>
+}
+
+interface DefaultTalents {
+  col: number
+  row: number
 }

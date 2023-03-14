@@ -14,6 +14,7 @@ class Talent {
   childrenIds?: number[]
   learned: number = 0
   parents: Talent[] = []
+  countable: boolean
 
   constructor(rawTalent: TalentInterface) {
     this.id = rawTalent.id
@@ -25,12 +26,14 @@ class Talent {
       this.descr2 = rawTalent.descr2
       this.image2 = rawTalent.image2
     }
-    this.col = rawTalent.col * 2 + 1 + (rawTalent.shiftRight?1:0)
+    this.col = rawTalent.col * 2 + 1 + (rawTalent.shiftRight ? 1 : 0)
     this.row = rawTalent.row + 1
     this.type = rawTalent.type
     this.ranks = rawTalent.ranks
     this.children = []
     this.childrenIds = rawTalent.children
+
+    this.countable = true
   }
 
   replace(rawTalent: TalentInterface) {
@@ -38,6 +41,33 @@ class Talent {
     this.descr = rawTalent.descr
     this.image = rawTalent.image
     this.type = rawTalent.type
+  }
+
+  addRank(rank: number, checkParents?: boolean) {
+    if (checkParents) {
+      if (this.parents.find(t => (t.type != 'octagon' && t.learned == t.ranks) || (t.type == 'octagon' && t.learned > 0)))
+        return
+    }
+    if (this.learned + rank > this.ranks || this.learned + rank < 0) return
+    this.learned += rank
+    if ((this.type == 'octagon' && this.learned == 0) || (this.type != 'octagon' && this.learned != this.ranks))
+      this.children?.forEach(child => child.addRank(-child.learned, true))
+  }
+}
+
+class PvPTalent {
+  id: number
+  title: string
+  descr: string
+  image: string
+  learned: boolean
+
+  constructor(rawTalent: PvpTalentInterface) {
+    this.id = rawTalent.id
+    this.title = rawTalent.title
+    this.descr = rawTalent.descr
+    this.image = rawTalent.image
+    this.learned = false
   }
 }
 
@@ -64,4 +94,4 @@ interface PvpTalentInterface {
   image: string
 }
 
-export { Talent, type TalentInterface, type PvpTalentInterface }
+export { Talent, PvPTalent, type TalentInterface, type PvpTalentInterface }

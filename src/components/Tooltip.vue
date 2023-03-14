@@ -1,11 +1,21 @@
 <script setup lang="ts">
 import { useTooltipText } from '@/stores/tooltiptext'
+import { ref } from 'vue'
 
 const text = useTooltipText()
+
+const top = ref('')
+const left = ref('')
+
+document.body.addEventListener('mousemove', (e) => {
+  if (!text.state) return
+  left.value = `${e.clientX + 20}px`
+  top.value = `${e.clientY}px`
+})
 </script>
 
 <template>
-  <div :class="!text.state?'hide':''" class="tooltip" v-html="text.text"></div>
+  <div :class="!text.state?'hide':''" class="tooltip" v-html="text.text" :style="{top: top, left: left}"></div>
 </template>
 
 <style scoped lang="scss">
@@ -42,6 +52,10 @@ const text = useTooltipText()
 
   z-index: 4;
   opacity: 1;
+}
+
+.tooltip h4 {
+  margin: 300px;
 }
 
 .tooltip.hide {

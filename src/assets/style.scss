@@ -12,7 +12,7 @@
   color: white;
 
   -ms-overflow-style: none;
-    scrollbar-width: none;
+  scrollbar-width: none;
 
   ::-webkit-scrollbar {
     display: none;
@@ -25,7 +25,7 @@ body {
   width: 100%;
   height: 100vh;
   background-color: #212121;
-  background-image: url('https://projects.yoro.dev/df-talents/bg.afece128d6f68ae2.webp');
+  // background-image: url('/bg.webp');
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
@@ -40,13 +40,11 @@ body {
   font-weight: normal;
   position: relative;
   width: 100%;
-  min-height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 900px) {
-    padding-bottom: 60px;
-  }
+
 }
 
 h2,
@@ -60,7 +58,7 @@ h3 {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: -webkit-linear-gradient(top, #555554, #a7a5a8 10%, #cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
-  filter: drop-shadow(1px 1px .5px rgb(0,0,0));
+  filter: drop-shadow(1px 1px .5px rgb(0, 0, 0));
 }
 
 h2 {
@@ -74,4 +72,11 @@ h2 {
 
 a {
   text-decoration: none;
+}
+
+.p10_0 {
+  background-image: url('/bg10.0.webp');
+}
+.p10_1 {
+  background-image: url('/bg10.1.webp');
 }
