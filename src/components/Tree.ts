@@ -32,6 +32,28 @@ export class Tree {
     this.pvpTalents = rawTree.pvpTalents?.map(talent => new PvPTalent(talent))
   }
 
+  updateTexts(rawTree: TreeInterface) {
+    this.title = rawTree.title
+    this.talents.forEach(tal => {
+      const newTal = rawTree.talents.find(t => t.id == tal.id)
+      if (!newTal) return
+      tal.title = newTal.title
+      tal.descr = newTal.descr
+
+      if (!newTal.title2) return
+      tal.title2 = newTal.title2
+      tal.descr2 = newTal.descr2
+    })
+    if (!this.pvpTalents) return
+    this.pvpTalents.forEach(tal => {
+      if (!rawTree.pvpTalents) return
+      const newTal = rawTree.pvpTalents.find(t => t.id == tal.id)
+      if (!newTal) return
+      tal.title = newTal.title
+      tal.descr = newTal.descr
+    })
+  }
+
   replace(talents: Array<TalentInterface>) {
     talents.forEach(rawTalent => {
       const col = rawTalent.col * 2 + 1

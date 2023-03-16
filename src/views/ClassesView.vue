@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { ref, reactive, type Ref } from 'vue'
+import { ref } from 'vue'
 import Tree from '@/components/Tree.vue'
 import { Tree as TreeClass, type TreeInterface } from '@/components/Tree'
 import { useSelected } from '@/stores/selected'
 import { colors } from '@/data/class-list'
 import { useVersion } from '@/stores/version'
+import { useLanguage } from '@/stores/lang'
 
 const route = useRoute()
 const selected = useSelected()
 
 const version = useVersion()
 
-watch(route, (newRoute, oldRoute) => {
-  LoadTrees(newRoute.params.class)
+watch(route, () => {
+  LoadTrees(route.params.class)
 })
 
 watch(version, () => {
@@ -39,12 +40,11 @@ async function LoadTrees(cls?: string | string[], spec?: string) {
   trees.value[0].setDefault(specTree.defaultTalents)
   if (specTree.replacements)
     trees.value[0].replace(specTree.replacements)
-  // console.log(trees.value[0])
 }
 
 async function getTree(cls: string | string[], spec: string | string[]) {
   const req = {
-    lang: 'en',
+    lang: useLanguage().language,
     class: cls,
     spec: spec,
     version: version.version
@@ -57,9 +57,13 @@ async function getTree(cls: string | string[], spec: string | string[]) {
     },
     body: JSON.stringify(body)
   })).json()
-  // console.log(tree.spec)
   return tree.tree
 }
+
+watch(() => useLanguage().language, async () => {
+  trees.value[0].updateTexts(await getTree(route.params.class, 'class'))
+  trees.value[1].updateTexts(await getTree(route.params.class, route.params.spec))
+})
 </script>
 
 <template>
@@ -94,7 +98,7 @@ async function getTree(cls: string | string[], spec: string | string[]) {
     padding: 4px 8px;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     padding-bottom: 80px;
   }
 

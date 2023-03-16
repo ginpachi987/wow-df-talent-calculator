@@ -1,3 +1,0 @@
-<template>
-  PvP Talents
-</template>

@@ -3,7 +3,8 @@ import { useRoute } from 'vue-router'
 import { classes, images as classImages } from '@/data/class-list'
 import { professions } from '@/data/profession-list'
 import { onMounted, ref, watch } from 'vue'
-import { useSelected } from '@/stores/selected';
+import { useSelected } from '@/stores/selected'
+import { useLanguage } from '@/stores/lang'
 
 const selected = useSelected()
 const selectedClass = ref('')
@@ -20,23 +21,30 @@ onMounted(async () => {
   selectedClass.value = route.params.class
 })
 
+const page = ref('')
+const cls = ref('')
+const prof = ref('')
+
 watch(route, () => {
   if (route.params.page != 'classes') {
     selected.selectedClass = ''
     selectedClass.value = ''
   }
+  page.value = route.params.page
+  cls.value = route.params.class || ''
+  prof.value = route.params.prof || ''
 })
 </script>
 
 <template>
-  <header :class="{ wide: !route.params.class && !route.params.prof }">
+  <header :class="{ wide: !route.params.class && !route.params.prof, flex: page && !cls && !prof}">
     <RouterLink to="/" style="padding-top: 10px;">
-      <img src="/df-logo.webp" style="width: 300px;display: block; margin: 0 auto;filter: drop-shadow(1px 1px .5px rgb(0,0,0));" alt="Home">
-      <h2 style="margin-top:-4px;">Talent Calculator</h2>
+      <img src="/img/df-logo.webp" style="width: 300px;display: block; margin: 0 auto;filter: drop-shadow(1px 1px .5px rgb(0,0,0));" alt="Home">
+      <h2 style="margin-top:-4px;">{{ useLanguage().texts['Talent Calculator'] }}</h2>
     </RouterLink>
     <div class="class-spec" v-if="route.params.page == 'classes'">
-      <h2 v-if="!route.params.class">Select Class</h2>
-      <div class="list">
+      <h2 v-if="!route.params.class">{{ useLanguage().texts['Choose a class'] }}</h2>
+      <div class="list" :class="{'big-list': !route.params.class}">
         <div class="class" v-for="(specs, cls) in classes">
           <div class="talent-wrapper" :class="{ learned: cls == selectedClass }" @click="selectedClass = `${cls}`">
             <div class="talent" :style="{
@@ -45,13 +53,9 @@ watch(route, () => {
             </div>
           </div>
         </div>
-
-        <!-- <div  class="class" v-for="(specs, cls) in classes">
-                <img class="icon" style="cursor: pointer;" :class="{ selected: cls == selectedClass }" :src="`https://icons.wowdb.com/beta/medium/${classImages[`${cls}_class`]}.jpg`" @click="selectedClass = `${cls}`">
-              </div> -->
       </div>
-      <h2 v-if="!route.params.class && selectedClass">Select Specialization</h2>
-      <div class="list" v-show="selectedClass">
+      <h2 v-if="!route.params.class && selectedClass">{{ useLanguage().texts['Choose a spec'] }}</h2>
+      <div class="list" :class="{'big-list': !route.params.class}" v-show="selectedClass">
         <div v-if="route.params.page == 'classes'" class="class" v-for="spec of classes[selectedClass]">
           <RouterLink :to="`/classes/${selectedClass}/${spec}`">
             <div class="talent-wrapper" :class="{ learned: route.params.spec == spec }">
@@ -65,8 +69,8 @@ watch(route, () => {
       </div>
     </div>
     <div class="prof-list" v-if="route.params.page == 'professions'">
-      <h2 v-if="!route.params.prof">Select Profession</h2>
-      <div class="list" >
+      <h2 v-if="!route.params.prof">{{ useLanguage().texts['Choose a prof'] }}</h2>
+      <div class="list" :class="{'big-list': !route.params.prof}" >
         <div class="class" v-for="(img, prof) in professions">
           <!-- {{ className(prof) }} -->
           <RouterLink :to="`/professions/${prof}`">
@@ -133,8 +137,19 @@ header {
   overflow-y: auto;
 }
 
+.class {
+  display: inline-block;
+}
+
+.big-list {
+  overflow-y: unset;
+  max-width: 364px;
+  display: block;
+  text-align: center;
+}
+
 .wide {
-  flex: 1;
+  // flex: 1;
   flex-direction: column;
 
   .talent-wrapper {
@@ -142,8 +157,12 @@ header {
   }
 
   .class-spec {
-    width: 364px;
-    display: block;
+    // width: 364px;
+    display: flex;
   }
+}
+
+.flex {
+  flex: 1;
 }
 </style>
