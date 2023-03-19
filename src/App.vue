@@ -37,6 +37,10 @@ watch(route, () => {
   flex-direction: column;
   justify-content: center;
 
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+
   transition: background-image .5s ease-in;
 }
 

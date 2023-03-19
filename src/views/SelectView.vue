@@ -43,7 +43,7 @@ import { useLanguage } from '@/stores/lang'
   cursor: pointer;
 
   &:after {
-    background-image: url('https://projects.yoro.dev/df-talents/frame1.1fc5987483560ce7.webp');
+    background-image: url('/img/frame1.webp');
     width: 100%;
     height: 100%;
     background-size: cover;
@@ -59,7 +59,7 @@ import { useLanguage } from '@/stores/lang'
   }
 
   &:hover:after {
-    background-image: url('https://projects.yoro.dev/df-talents/frame2.ede7678b9d228b33.webp');
+    background-image: url('/img/frame2.webp');
   }
 
   h3 {
@@ -68,10 +68,10 @@ import { useLanguage } from '@/stores/lang'
 }
 
 .frame-class {
-  background-image: url('https://projects.yoro.dev/df-talents/classes.ae8a1582af62aae1.webp');
+  background-image: url('/img/classes.webp');
 }
 
 .frame-profession {
-  background-image: url('https://projects.yoro.dev/df-talents/professions.ababd10249047f8f.webp');
+  background-image: url('/img/professions.webp');
 }
 </style>

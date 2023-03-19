@@ -8,7 +8,7 @@ export const useLanguage = defineStore('lang', () => {
     "de": "Deutsch",
     "it": "Italiano",
     "ru": "Русский",
-    "cn": "简体中文"
+    "zh": "简体中文"
   }
 
   const browserLang = navigator.language.split('-')[0]

@@ -12,6 +12,7 @@ const props = defineProps<{
 function click(event: MouseEvent) {
   if (unavailable.value || !props.talent.countable) return
   if (event.button != 0 && event.button != 2) return
+  if (event.button == 0 && props.left == 0) return
   const rank = event.button == 0? 1: -1
   props.talent.addRank(rank)
 }

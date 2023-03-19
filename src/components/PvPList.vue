@@ -108,6 +108,8 @@ function hideTooltip() {
   max-height: 650px;
   width: 300px;
   overflow-y: auto;
+
+  z-index: 4;
 }
 
 .pvp-talent {
