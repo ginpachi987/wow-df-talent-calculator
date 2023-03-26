@@ -3,6 +3,7 @@ import { useTooltipText } from '@/stores/tooltiptext'
 import { computed, ref } from 'vue';
 import type { Talent } from './Profession'
 import Pip from './ProfessionPip.vue'
+import { useLanguage } from '@/stores/lang'
 
 const props = defineProps<{
   talent?: Talent
@@ -96,7 +97,7 @@ function dividerPos() {
       </div>
       <div class="wheel-talent-descr">
         <h3>{{ talent.title }} ({{ talent.ranksLearned }}/{{ talent.ranks }})</h3>
-        <div class="next-bonus">{{ talent.learned ? 'Next major bonus' : 'On learning this specialization' }}:</div>
+        <div class="next-bonus">{{ talent.learned ? useLanguage().texts["Next bonus"] : useLanguage().texts["On learning"] }}:</div>
         <div class="next-bonus-text">{{ talent.bonuses[Math.floor(talent.ranksLearned / 5) + 1] }}</div>
       </div>
     </div>

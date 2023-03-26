@@ -87,7 +87,7 @@ const knowledgeSpent = computed(() => {
   <div class="profs" v-show="profession.title">
     <h2>{{ profession.title }}</h2>
     <div class="tabs">
-      <div class="tab" v-for="(spec, i) of profession.specs" @click="selectedSpec = i">{{ spec.title }}</div>
+      <div class="tab" v-for="(spec, i) of profession.specs" @click="selectedSpec = i" :class="{'selected-tab': selectedSpec == i}">{{ spec.title }}</div>
     </div>
     <div class="content">
       <div class="spec" v-for="(spec, i) of profession.specs" v-show="selectedSpec == i">
@@ -103,7 +103,7 @@ const knowledgeSpent = computed(() => {
           </svg>
           <Talent v-for="talent of spec.talents" :talent="talent" @click="selectedTalent = talent" />
         </div>
-        <div class="knowledge">{{ profession.title }} knowledge needed: {{ knowledgeSpent }}</div>
+        <div class="knowledge">{{ useLanguage().texts["Knowledge needed"] }}: {{ knowledgeSpent }}</div>
       </div>
       <Wheel :talent="selectedTalent" />
     </div>
@@ -121,13 +121,13 @@ const knowledgeSpent = computed(() => {
   background-repeat: no-repeat;
   background-position: top right;
 
-  background-color: #21212191;
+  background-color: #261c1491; // #21212191;
   border-top: 2px solid #808080;
 
   @media (max-width: 1200px) {
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 8px;
     --cell-size: 40px;
     background-size: 70%;
     padding: 4px 8px;
@@ -153,16 +153,43 @@ const knowledgeSpent = computed(() => {
   display: flex;
   flex-direction: row;
   gap: 16px;
+
+  @media (max-width:760px) {
+    width: 100%;
+    overflow-y: auto;
+  }
 }
 
 .tab {
   cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.267);
+  padding: 8px 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border: 2px solid gray;
+  border-bottom: none;
+
+  transition: all .2s ease-in;
+
+  @media (max-width:1200px) {
+    border-bottom: 2px solid gray;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.tab:hover, .selected-tab {
+  background-color: #261c1491;
 }
 
 .spec,
 .wheel-wrapper {
   width: 600px;
-  background-color: rgba(128, 128, 128, 0.267);
+  
 
   @media (max-width:760px) {
     width: 100%;
@@ -189,9 +216,13 @@ const knowledgeSpent = computed(() => {
 .content {
   display: flex;
   flex-direction: row;
+  border: 2px solid gray;
+  border-radius: 8px;
+  background-color: rgba(128, 128, 128, 0.267);
 
   @media (max-width:1200px) {
     flex-direction: column;
+    gap: 32px;
   }
 
   @media (max-width:760px) {
@@ -214,5 +245,9 @@ line {
 .prof-spec-descr {
   font-size: 14px;
   height: calc(18 * 4px);
+}
+
+.knowledge {
+  text-align: center;
 }
 </style>

@@ -27,7 +27,7 @@ watch(() => lang.language, () => {
     <select v-model="version.version">
       <option v-for="v of ['10.0.2', '10.0.5', '10.0.7', '10.1']" :value="v">{{ v }}</option>
     </select>
-    <a href="https://github.com/ginpachi987/wow-df-talent-calculator/tree/vue" target="_blank">v2.0.3</a>
+    <a href="https://github.com/ginpachi987/wow-df-talent-calculator/" target="_blank">v2.0.4</a>
   </div>
 </template>
 

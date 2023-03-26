@@ -14,10 +14,12 @@ export const useLanguage = defineStore('lang', () => {
   const browserLang = navigator.language.split('-')[0]
   const language = ref(localStorage.getItem('language') || (Object.keys(langs).includes(browserLang) ? browserLang : 'en'))
 
-  const texts = ref({})
+  const texts = ref<{
+    [key: string]: string
+  }>({})
 
   async function getTexts() {
-    const body = {method: 'getTexts', body: {lang: language.value}}
+    const body = { method: 'getTexts', body: { lang: language.value } }
     const newTexts = await (await fetch('https://projects.yoro.dev/df-talents/api/', {
       method: 'POST',
       headers: {
@@ -25,7 +27,7 @@ export const useLanguage = defineStore('lang', () => {
       },
       body: JSON.stringify(body)
     })).json() || {}
-    texts.value = {...newTexts}
+    texts.value = { ...newTexts }
   }
 
   return { language, langs, texts, getTexts }
