@@ -1,6 +1,0 @@
-<h2 *ngIf="!short">{{language.texts['Choose a prof']}}</h2>
-<div class="profs" [class.short]="short">
-  <div class="wrapper relative" *ngFor="let prof of professions"  (click)="getProf(prof.toLowerCase())">
-    <div class="talent" [title]="prof | capitalize" [style.backgroundImage]="images[prof] | imagePipe"  [title]="prof"></div>
-  </div>
-</div>
