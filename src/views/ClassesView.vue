@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import Tree from '@/components/Tree.vue'
 import { Tree as TreeClass, type TreeInterface } from '@/components/Tree'
 import { useSelected } from '@/stores/selected'
-import { specID, classIDs, colors } from '@/data/class-list'
+import { specID, colors } from '@/data/class-list'
 import { useVersion } from '@/stores/version'
 import { useLanguage } from '@/stores/lang'
+import router from '@/router'
 
-import { lm, gE } from '@/data/builds'
+// import { lm, gE } from '@/data/builds'
 
 const route = useRoute()
 const selected = useSelected()
@@ -21,6 +22,11 @@ watch(route, () => {
 })
 
 watch(version, () => {
+  if (version.version < '10.1.5' && route.params.spec == 'augmentation') {
+    selected.resetSelected()
+    router.push('/classes')
+    return
+  }
   LoadTrees()
 })
 
@@ -150,6 +156,11 @@ watch(() => useLanguage().language, async () => {
 //   console.log(l)
 //   return l
 // })
+
+onMounted(() => {
+  if (useVersion().version < '10.1.5' && route.params.spec == 'augmentation')
+    router.push('/classes')
+})
 </script>
 
 <template>

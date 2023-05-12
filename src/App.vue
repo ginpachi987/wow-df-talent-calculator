@@ -19,7 +19,7 @@ watch(route, () => {
 </script>
 
 <template>
-  <div id="app-wrapper" :class="[`p${useVersion().version.substring(0,4).replace('.', '_')}`, {fit: page != '' && (cls != '' || prof != '')}]">
+  <div id="app-wrapper" :class="[`p${useVersion().version.replaceAll('.', '_')}`, {fit: page != '' && (cls != '' || prof != '')}]">
     <Header />
     <RouterView />
     <Tooltip />

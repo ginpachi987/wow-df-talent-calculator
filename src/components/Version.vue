@@ -16,6 +16,8 @@ watch(() => lang.language, () => {
   localStorage.setItem('language', lang.language)
   lang.getTexts()
 })
+
+const versions = ['10.0.2', '10.0.5', '10.0.7', '10.1', '10.1.5']
 </script>
 
 <template>
@@ -25,9 +27,9 @@ watch(() => lang.language, () => {
       <option v-for="(value, key) of lang.langs" :value="key">{{ value }}</option>
     </select>
     <select v-model="version.version">
-      <option v-for="v of ['10.0.2', '10.0.5', '10.0.7', '10.1']" :value="v">{{ v }}</option>
+      <option v-for="v of versions" :value="v">{{ v }}</option>
     </select>
-    <a href="https://github.com/ginpachi987/wow-df-talent-calculator/" target="_blank">v2.0.4</a>
+    <a href="https://github.com/ginpachi987/wow-df-talent-calculator/" target="_blank">v2.0.5</a>
   </div>
 </template>
 

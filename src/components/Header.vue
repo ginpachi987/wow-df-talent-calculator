@@ -2,9 +2,10 @@
 import { useRoute } from 'vue-router'
 import { classes, images as classImages } from '@/data/class-list'
 import { professions } from '@/data/profession-list'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useSelected } from '@/stores/selected'
 import { useLanguage } from '@/stores/lang'
+import { useVersion } from '@/stores/version'
 
 const selected = useSelected()
 const selectedClass = ref('')
@@ -34,6 +35,13 @@ watch(route, () => {
   cls.value = route.params.class || ''
   prof.value = route.params.prof || ''
 })
+
+const showedClasses = computed<{ [key: string]: string[] }>(() => {
+  const res = {...classes}
+  if (useVersion().version < '10.1.5')
+    res['evoker'] = res['evoker'].filter(s => s != 'augmentation')
+  return res
+})
 </script>
 
 <template>
@@ -45,7 +53,7 @@ watch(route, () => {
     <div class="class-spec" v-if="route.params.page == 'classes'">
       <h2 v-if="!route.params.class">{{ useLanguage().texts['Choose a class'] }}</h2>
       <div class="list" :class="{'big-list': !route.params.class}">
-        <div class="class" v-for="(specs, cls) in classes">
+        <div class="class" v-for="(specs, cls) in showedClasses">
           <div class="talent-wrapper" :class="{ learned: cls == selectedClass }" @click="selectedClass = `${cls}`">
             <div class="talent" :style="{
               backgroundImage: `url(https://icons.wowdb.com/beta/medium/${classImages[`${cls}_class`]}.jpg)`
@@ -56,7 +64,7 @@ watch(route, () => {
       </div>
       <h2 v-if="!route.params.class && selectedClass">{{ useLanguage().texts['Choose a spec'] }}</h2>
       <div class="list" :class="{'big-list': !route.params.class}" v-show="selectedClass">
-        <div v-if="route.params.page == 'classes'" class="class" v-for="spec of classes[selectedClass]">
+        <div v-if="route.params.page == 'classes'" class="class" v-for="spec of showedClasses[selectedClass]">
           <RouterLink :to="`/classes/${selectedClass}/${spec}`">
             <div class="talent-wrapper" :class="{ learned: route.params.spec == spec }">
               <div class="talent" :style="{

@@ -6,5 +6,11 @@ export const useSelected = defineStore('selected', () => {
   const selectedSpec = ref('')
   const selectedProf = ref('')
 
-  return { selectedClass, selectedSpec, selectedProf }
+  function resetSelected() {
+    selectedClass.value = ''
+    selectedSpec.value = ''
+    selectedProf.value = ''
+  }
+
+  return { selectedClass, selectedSpec, selectedProf, resetSelected }
 })
