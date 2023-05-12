@@ -9,7 +9,7 @@ const props = defineProps<{
 const tooltip = useTooltipText()
 
 function showTooltip(e: MouseEvent) {
-  tooltip.set(props.talent.title, props.talent.descr)
+  tooltip.set([{ title: props.talent.title, descr: props.talent.descr }])
   const target = e.target as HTMLDivElement
   tooltip.position(target.getBoundingClientRect())
 }
@@ -24,14 +24,14 @@ function hideTooltip() {
     top: `${talent.top}%`,
     left: `${talent.left}%`
   }">
-    <div class="prof-talent-progress" :style="{ backgroundImage: `conic-gradient(green ${talent.ranksLearned/talent.ranks*360}deg, rgb(54, 54, 51) 0deg)` }">
+    <div class="prof-talent-progress" :style="{ backgroundImage: `conic-gradient(green ${talent.ranksLearned / talent.ranks * 360}deg, rgb(54, 54, 51) 0deg)` }">
       <div class="prof-talent" :style="{
-        backgroundImage: `url(https://icons.wowdb.com/beta/medium/${talent.image}.jpg)`
+        backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${talent.image}.jpg)`
         // backgroundImage: `url('/img/placeholder-talent.png')`
       }">
       </div>
     </div>
-    <!-- <img :src="`https://icons.wowdb.com/beta/medium/${talent.image}.jpg`"> -->
+    <!-- <img :src="`https://icons.wowdb.com/ptr/medium/${talent.image}.jpg`"> -->
   </div>
 </template>
 

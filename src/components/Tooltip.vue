@@ -5,9 +5,12 @@ const tooltip = useTooltipText()
 </script>
 
 <template>
-  <div :class="!tooltip.state?'hide':''" class="tooltip" :style="{top: tooltip.top, left: tooltip.left}">
-    <h4>{{ tooltip.title }}</h4>
-    <div>{{ tooltip.descr }}</div>
+  <div :class="!tooltip.state ? 'hide' : ''" class="tooltip" :style="{ top: tooltip.top, left: tooltip.left }">
+    <template v-for="(tt, i) of tooltip.tooltips">
+      <h4>{{ tt.title }}</h4>
+      <div>{{ tt.descr }}</div>
+      <hr v-if="i != tooltip.tooltips.length - 1">
+    </template>
   </div>
 </template>
 
@@ -58,5 +61,9 @@ const tooltip = useTooltipText()
 
 .tooltip.hide {
   opacity: 0;
+}
+
+hr {
+  margin: 12px 0;
 }
 </style>

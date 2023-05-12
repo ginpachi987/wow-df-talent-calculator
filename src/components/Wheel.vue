@@ -13,7 +13,7 @@ const tooltip = useTooltipText()
 
 function showTooltip(e: MouseEvent) {
   if (!props.talent) return
-  tooltip.set(props.talent.title, props.talent.descr)
+  tooltip.set([{title: props.talent.title, descr: props.talent.descr}])
   const target = e.target as HTMLDivElement
   tooltip.position(target.getBoundingClientRect())
 }
@@ -76,7 +76,7 @@ function dividerPos() {
         <div class="small-roll anim" :class="{ learned: talent?.learned }"></div>
         <div class="wheel-talent-wrapper">
           <div v-if="talent" class="prof-talent" @mouseenter="e => showTooltip(e)" @mouseleave="e => hideTooltip()" :style="{
-            backgroundImage: `url('https://icons.wowdb.com/beta/medium/${talent.image}.jpg')`
+            backgroundImage: `url('https://icons.wowdb.com/ptr/medium/${talent.image}.jpg')`
           }">
             <div class="lock" v-show="!talent.learned"></div>
           </div>

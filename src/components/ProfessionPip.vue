@@ -19,7 +19,7 @@ const left = computed(() => `${50 - Math.sin(angle.value) * 56}%`)
 // const angle = ''
 
 function showTooltip(e: MouseEvent) {
-  tooltip.set(props.talent.descr, '')
+  tooltip.set([{title: props.talent.descr, descr: ''}])
   const target = e.target as HTMLDivElement
   tooltip.position(target.getBoundingClientRect())
 }

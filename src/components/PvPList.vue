@@ -34,7 +34,7 @@ function selectTalent(talent: PvPTalent) {
 
 function showTooltip(talent: PvPTalent,e: MouseEvent) {
   const target = e.target as HTMLDivElement
-  tooltip.set(talent.title, talent.descr)
+  tooltip.set([{title: talent.title, descr: talent.descr}])
   tooltip.position(target.getBoundingClientRect())
 }
 
@@ -55,7 +55,7 @@ function hideTooltip() {
       <div class="selected-pvp" @click="showList = !showList">
         <div class="talent-wrapper octagon" v-for="talent of selected" @mouseenter="e => showTooltip(talent, e)" @mouseleave="e => hideTooltip()">
           <div class="talent" :style="{
-            backgroundImage: `url(https://icons.wowdb.com/beta/medium/${talent.image}.jpg)`
+            backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${talent.image}.jpg)`
           }">
           </div>
         </div>
@@ -64,7 +64,7 @@ function hideTooltip() {
         <div class="pvp-talent" v-for="talent of talents" :class="{ 'selected': talent.learned }" @click="selectTalent(talent)" @mouseenter="e => showTooltip(talent, e)" @mouseleave="e => hideTooltip()">
           <div class="talent-wrapper octagon" :class="{ learned: talent.learned }">
             <div class="talent" :style="{
-              backgroundImage: `url(https://icons.wowdb.com/beta/medium/${talent.image}.jpg)`
+              backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${talent.image}.jpg)`
             }">
             </div>
           </div>

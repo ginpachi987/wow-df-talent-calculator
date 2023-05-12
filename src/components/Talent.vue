@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TooltipType } from '@/models/tooltipType'
 import type { Talent, PvpTalentInterface } from './Talent'
 import { useTooltipText } from '@/stores/tooltiptext'
 import { computed } from 'vue';
@@ -13,15 +14,25 @@ function click(event: MouseEvent) {
   if (unavailable.value || !props.talent.countable) return
   if (event.button != 0 && event.button != 2) return
   if (event.button == 0 && props.left == 0) return
-  const rank = event.button == 0? 1: -1
+  const rank = event.button == 0 ? 1 : -1
   props.talent.addRank(rank)
+  updateTooltip()
 }
 
 const tooltip = useTooltipText()
 
+function updateTooltip() {
+  const tooltips: TooltipType[] = []
+  if (props.talent.type != 'octagon' || [0, 1].includes(props.talent.learned))
+    tooltips.push({ title: props.talent.title, descr: props.talent.descr })
+  if (props.talent.type == 'octagon' && [0, 2].includes(props.talent.learned))
+    tooltips.push({ title: props.talent.title2 || '', descr: props.talent.descr2 || '' })
+  tooltip.set(tooltips)
+}
+
 function showTooltip(e: MouseEvent) {
   const target = e.target as HTMLDivElement
-  tooltip.set(props.talent.title, props.talent.descr)
+  updateTooltip()
   tooltip.position(target.getBoundingClientRect())
 }
 
@@ -45,9 +56,9 @@ const learned = computed(() => {
     gridColumnStart: talent.col,
     gridRowStart: talent.row
   }">
-    <div v-if="talent.type != 'octagon'" class="talent-wrapper" :class="[talent.type, { learned: learned }, { gray: unavailable }]" @click.prevent="e => click(e)" @contextmenu.prevent="e => click(e)" @mouseenter="e =>showTooltip(e)" @mouseleave="e =>hideTooltip()">
+    <div v-if="talent.type != 'octagon'" class="talent-wrapper" :class="[talent.type, { learned: learned }, { gray: unavailable }]" @click.prevent="e => click(e)" @contextmenu.prevent="e => click(e)" @mouseenter="e => showTooltip(e)" @mouseleave="e => hideTooltip()">
       <div class="talent" :class="talent.type" :style="{
-        backgroundImage: `url(https://icons.wowdb.com/beta/medium/${talent.image}.jpg)`
+        backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${talent.image}.jpg)`
       }">
       </div>
       <div v-if="talent.ranks > 1" class="rank">{{ talent.learned }}/{{ talent.ranks }}</div>
@@ -55,12 +66,11 @@ const learned = computed(() => {
 
     <div v-if="talent.type == 'octagon'" class="talent-wrapper" :class="[talent.type, { learned: learned }, { gray: unavailable }]" @click.prevent="e => click(e)" @contextmenu.prevent="e => click(e)" @mouseenter="e => showTooltip(e)" @mouseleave="e => hideTooltip()">
       <div v-show="talent.learned != 2" class="talent octagon" :class="{ first: talent.learned != 1 }" :style="{
-        backgroundImage: `url(https://icons.wowdb.com/beta/medium/${talent.image}.jpg)`
+        backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${talent.image}.jpg)`
       }"></div>
       <div v-show="talent.learned != 1" class="talent octagon" :class="{ second: talent.learned != 2 }" :style="{
-        backgroundImage: `url(https://icons.wowdb.com/beta/medium/${talent.image2}.jpg)`
-      }">
-      </div>
+        backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${talent.image2}.jpg)`
+      }"></div>
     </div>
   </div>
 </template>

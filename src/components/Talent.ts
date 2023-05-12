@@ -16,7 +16,7 @@ class Talent {
   parents: Talent[] = []
   countable: boolean
 
-  constructor(rawTalent: TalentInterface) {
+  constructor(rawTalent: TalentInterface, version: number) {
     this.id = rawTalent.id
     this.title = rawTalent.title
     this.descr = rawTalent.descr
@@ -26,8 +26,14 @@ class Talent {
       this.descr2 = rawTalent.descr2
       this.image2 = rawTalent.image2
     }
-    this.col = rawTalent.col * 2 + 1 + (rawTalent.shiftRight ? 1 : 0)
-    this.row = rawTalent.row + 1
+    if (version == 2) {
+      this.col = rawTalent.col
+      this.row = rawTalent.row
+    }
+    else {
+      this.col = rawTalent.col * 2 + 1 + (rawTalent.shiftRight ? 1 : 0)
+      this.row = rawTalent.row + 1
+    }
     this.type = rawTalent.type
     this.ranks = rawTalent.ranks
     this.children = []
@@ -50,6 +56,7 @@ class Talent {
     }
     if (this.learned + rank > this.ranks || this.learned + rank < 0) return
     this.learned += rank
+    
     if ((this.type == 'octagon' && this.learned == 0) || (this.type != 'octagon' && this.learned != this.ranks))
       this.children?.forEach(child => child.addRank(-child.learned, true))
   }

@@ -1,12 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { TooltipType } from '@/models/tooltipType'
 
 export const useTooltipText = defineStore('tooltipText', () => {
-  const title = ref('')
-  const descr = ref('')
-  function set(t: string, d: string) {
-    title.value = t
-    descr.value = d
+  const tooltips = ref<TooltipType[]>([])
+  function set(data: TooltipType[]) {
+    tooltips.value = data
 
     show()
   }
@@ -38,5 +37,5 @@ export const useTooltipText = defineStore('tooltipText', () => {
     top.value = `${pos.top - 4}px`
   }
 
-  return { title, descr, set, state, show, hide, position, top, left }
+  return { tooltips, set, state, show, hide, position, top, left }
 })

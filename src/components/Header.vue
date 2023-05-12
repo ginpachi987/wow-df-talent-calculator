@@ -56,7 +56,7 @@ const showedClasses = computed<{ [key: string]: string[] }>(() => {
         <div class="class" v-for="(specs, cls) in showedClasses">
           <div class="talent-wrapper" :class="{ learned: cls == selectedClass }" @click="selectedClass = `${cls}`">
             <div class="talent" :style="{
-              backgroundImage: `url(https://icons.wowdb.com/beta/medium/${classImages[`${cls}_class`]}.jpg)`
+              backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${cls}_class`]}.jpg)`
             }">
             </div>
           </div>
@@ -68,7 +68,7 @@ const showedClasses = computed<{ [key: string]: string[] }>(() => {
           <RouterLink :to="`/classes/${selectedClass}/${spec}`">
             <div class="talent-wrapper" :class="{ learned: route.params.spec == spec }">
               <div class="talent" :style="{
-                backgroundImage: `url(https://icons.wowdb.com/beta/medium/${classImages[`${selectedClass}_${spec}`]}.jpg)`
+                backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${selectedClass}_${spec}`]}.jpg)`
               }">
               </div>
             </div>
@@ -84,7 +84,7 @@ const showedClasses = computed<{ [key: string]: string[] }>(() => {
           <RouterLink :to="`/professions/${prof}`">
             <div class="talent-wrapper" :class="{ learned: route.params.prof == prof }">
               <div class="talent" :style="{
-                backgroundImage: `url(https://icons.wowdb.com/beta/medium/${professions[prof]}.jpg)`
+                backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${professions[prof]}.jpg)`
               }">
               </div>
             </div>
