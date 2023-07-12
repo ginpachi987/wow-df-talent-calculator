@@ -79,7 +79,7 @@ export const colors: { [key: string]: string } = {
   "druid_feral": "#221420",
   "druid_guardian": "#221616",
   "druid_restoration": "#161d12",
-  "evoker_augmentation": "#18140d",
+  "evoker_augmentation": "#141316",
   "evoker_devastation": "#1c0e11",
   "evoker_preservation": "#07140d",
   "hunter_beast-mastery": "#131b2d",
