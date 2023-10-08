@@ -17,7 +17,7 @@ watch(() => lang.language, () => {
   lang.getTexts()
 })
 
-const versions = ['10.0.2', '10.0.5', '10.0.7', '10.1', '10.1.5', '10.1.7']
+const versions = ['10.0.2', '10.0.5', '10.0.7', '10.1', '10.1.5', '10.1.7', '10.2']
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const versions = ['10.0.2', '10.0.5', '10.0.7', '10.1', '10.1.5', '10.1.7']
     <select v-model="version.version">
       <option v-for="v of versions" :value="v">{{ v }}</option>
     </select>
-    <a href="https://github.com/ginpachi987/wow-df-talent-calculator/" target="_blank">v2.0.5c</a>
+    <a href="https://github.com/ginpachi987/wow-df-talent-calculator/" target="_blank">v2.0.5d</a>
   </div>
 </template>
 
