@@ -17,11 +17,11 @@ function line(parent: any, child: any) {
 </script>
 
 <template>
-  <div class="flex flex-col justify-between items-center md:w-[440px] hero-border sm:w-full">
+  <div class="flex flex-col justify-between items-center md:w-[360px] hero-border sm:w-full">
     <div class="flex flex-col justify-start items-center" style="background-color: #0f0f0f;">
-      <div class="text-xl mb-3">{{ tree?.title }}</div>
-      <img class="inline-block w-48 rounded-full border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/${tree.image}.png`" alt="">
-      <div class="h-[120px] text-sm">{{ tree?.descr }}</div>
+      <div class="text-xl mb-3 uppercase">{{ tree?.title }}</div>
+      <img class="inline-block w-36 rounded-full border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/${tree.image}.png`" alt="">
+      <div class="h-[120px] text-sm text-yellow-500">{{ tree?.descr }}</div>
       <div class="w-[200px] relative hero-tree grid grid-cols-3 grid-rows-5 items-center justify-items-center">
         <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;z-index: 0; filter: drop-shadow(1px 1px 1px rgb(0 0 0 / 0.4));" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <template v-for="talent of tree.talents">

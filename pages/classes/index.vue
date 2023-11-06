@@ -2,7 +2,6 @@
 definePageMeta({
   layout: 'classes'
 })
-useRouter().push('/classes/druid/balance')
 </script>
 
 <template>

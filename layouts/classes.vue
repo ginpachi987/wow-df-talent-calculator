@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="w-full overflow-auto h-screen bg-neutral-800 text-white p11_0">
+  <div class="w-full overflow-auto h-screen bg-neutral-800 text-white bg-center bg-fixed bg-cover p11_0">
     <ClassesHeader />
     <slot></slot>
   </div>

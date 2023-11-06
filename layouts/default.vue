@@ -2,8 +2,8 @@
 </script>
 
 <template>
-  <div class="w-full h-screen bg-neutral-800 text-white p11_0">
-    <Header />
+  <div class="w-full h-screen bg-neutral-800 text-white bg-center bg-fixed bg-cover p11_0">
+    <!-- <Header /> -->
     <slot></slot>
   </div>
   <Tooltip />

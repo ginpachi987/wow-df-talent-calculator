@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
-    baseURL: '/tww-talents/',
+    baseURL: process.env.NUXT_APP_BASE_URL || '',
     head: {
       link: [{rel: 'icon', href: 'https://projects.yoro.dev/favicon.svg'}],
       title: 'The War Within Talent Calculator',
@@ -10,6 +10,6 @@ export default defineNuxtConfig({
     }
   },
   modules: ['@nuxtjs/tailwindcss'],
-  css: ['@/assets/style/main.scss'],
+  css: ['@/assets/style/main.scss', '@/assets/style/talents.scss'],
   ssr: false
 })
