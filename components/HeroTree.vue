@@ -18,7 +18,7 @@ function line(parent: any, child: any) {
 
 <template>
   <div class="flex flex-col justify-between items-center md:w-[360px] hero-border sm:w-full">
-    <div class="flex flex-col justify-start items-center" style="background-color: #0f0f0f;">
+    <div class="flex flex-col justify-start items-center" style="background-color: rgba(15,15,15);">
       <div class="text-xl mb-3 uppercase">{{ tree?.title }}</div>
       <img class="inline-block w-36 rounded-full border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/${tree.image}.png`" alt="">
       <div class="h-[120px] text-sm text-yellow-500">{{ tree?.descr }}</div>
@@ -38,16 +38,11 @@ function line(parent: any, child: any) {
 .hero-border {
   border-image: url('/img/bg-hero-talents.png');
   padding: 20px;
-  border-image-slice:
-    20 20 20 20;
-  border-image-width:
-    20px 20px 20px 20px;
-  border-image-outset:
-    0px 0px 0px 0px;
-  border-image-repeat:
-    stretch stretch;
-  border-style:
-    solid;
+  border-image-slice: 20 20 20 20;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  border-style: solid;
 }
 
 .hero-tree {

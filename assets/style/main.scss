@@ -7,3 +7,18 @@
 .p11_0 {
   background-image: url('/img/bg11.0.webp');
 }
+
+h3 {
+  @apply text-xl;
+  
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  margin: 4px 0;
+  text-transform: uppercase;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(to bottom, #555554, #a7a5a8 10%, #cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
+  filter: drop-shadow(1px 1px .5px rgb(0, 0, 0));
+}

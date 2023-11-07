@@ -3,11 +3,7 @@
 </script>
 
 <template>
-  <div class="w-full h-screen flex flex-col items-center justify-center">
-    <div class="flex items-center">
-      <img class="w-32" src="/img/tww-logo.webp" alt="">
-      <h3 class="text-2xl uppercase">Talent<br />Calculator</h3>
-    </div>
+  <!-- <div class="w-full h-screen flex flex-col items-center justify-center"> -->
     <div>
       <div class="frames">
         <NuxtLink to="/classes" class="frame frame-class">
@@ -22,7 +18,7 @@
       <!-- <NuxtLink href="/classes">Classes</NuxtLink>
         <NuxtLink href="/professions">Professions</NuxtLink> -->
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <style scoped lang="scss">

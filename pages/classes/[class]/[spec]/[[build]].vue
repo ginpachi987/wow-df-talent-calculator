@@ -47,7 +47,7 @@ const { data: trees } = await useFetch('https://projects.yoro.dev/tww-talents/ap
 <template>
   <!-- <ClassTree :tree="classTree.tree" />
                 <ClassTree :tree="specTree.tree"/> -->
-  <div class="md:flex md:gap-4 items-center justify-center">
+  <div class="flex-1 md:flex md:gap-4 items-start justify-center">
     <HeroTree v-for="tree of trees" :tree="tree" />
   </div>
 </template>
