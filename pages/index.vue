@@ -41,7 +41,7 @@
   padding: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   background-clip: content-box;

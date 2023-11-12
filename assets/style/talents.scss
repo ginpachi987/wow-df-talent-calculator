@@ -42,7 +42,7 @@
   height: 100%;
 }
 
-.round, .round::after {
+.round, .round::after, .round .talent, .round .talent::after {
   clip-path: none;
   border-radius: 50%;
 }

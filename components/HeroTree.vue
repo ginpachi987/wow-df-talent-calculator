@@ -17,12 +17,14 @@ function line(parent: any, child: any) {
 </script>
 
 <template>
-  <div class="flex flex-col justify-between items-center md:w-[360px] hero-border sm:w-full">
-    <div class="flex flex-col justify-start items-center" style="background-color: rgba(15,15,15);">
+  <div class="flex flex-col justify-between items-center md:w-[360px] hero-border w-full">
+    <div class="w-full flex flex-col justify-start items-center" style="background-color: rgba(15,15,15);">
       <div class="text-xl mb-3 uppercase">{{ tree?.title }}</div>
-      <img class="inline-block w-36 rounded-full border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/${tree.image}.png`" alt="">
-      <div class="h-[120px] text-sm text-yellow-500">{{ tree?.descr }}</div>
-      <div class="w-[200px] relative hero-tree grid grid-cols-3 grid-rows-5 items-center justify-items-center">
+      <div class="flex md:flex-col gap-4 md:gap-0 items-start md:items-center md:h-[280px]">
+        <img class="w-24 border-2 md:w-36 rounded-full md:border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/${tree.image}.png`" alt="">
+        <div class="flex-1 text-xs md:text-sm text-yellow-500">{{ tree?.descr }}</div>
+      </div>
+      <div class="w-[180px] relative hero-tree grid grid-cols-3 grid-rows-5 items-center justify-items-center">
         <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;z-index: 0; filter: drop-shadow(1px 1px 1px rgb(0 0 0 / 0.4));" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <template v-for="talent of tree.talents">
             <line v-for="child of talent.children" class="connection" v-bind="line(talent, child)"></line>
@@ -46,7 +48,7 @@ function line(parent: any, child: any) {
 }
 
 .hero-tree {
-  aspect-ratio: 3.5/5;
+  aspect-ratio: 3/5;
 }
 
 .connection {

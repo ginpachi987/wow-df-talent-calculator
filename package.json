@@ -1,6 +1,6 @@
 {
   "name": "wow-df-talent-calculator",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,6 +21,8 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@prisma/client": "^5.5.2"
+    "@pinia/nuxt": "^0.5.1",
+    "@prisma/client": "^5.5.2",
+    "pinia": "^2.1.7"
   }
 }

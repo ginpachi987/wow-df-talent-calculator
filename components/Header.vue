@@ -4,8 +4,8 @@ defineProps<{isFull: boolean}>()
 
 <template>
   <NuxtLink href="/">
-    <div class="flex items-center justify-center gap-2">
-      <img :class="isFull?'w-36':'w-24'" src="/img/tww-logo.webp" alt="">
+    <div class="flex items-center justify-center gap-2" :class="!isFull?'w-24':''">
+      <img :class="isFull?'w-36':'w-28'" src="/img/tww-logo.webp" alt="" style="filter: drop-shadow(0px 0px 2px orange);">
       <div v-if="isFull">
         <h3 class="text-3xl uppercase text-left">Talent<br/>Calculator</h3>
       </div>

@@ -1,4 +1,6 @@
-export const currentClass = ref('')
-export const currentSpec = ref('')
-export const currentProf = ref('')
-export const isFull = ref(true)
+const currentClass = ref('')
+const currentSpec = ref('')
+const currentProf = ref('')
+const isFull = ref(true)
+
+export { currentClass, currentSpec, currentProf, isFull }
