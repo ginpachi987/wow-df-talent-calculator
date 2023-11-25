@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@900&display=swap');
 
 * {
   margin: 0;
@@ -21,6 +23,8 @@
 
 h3 {
   @apply text-xl;
+  position: relative;
+  -webkit-appearance: none;
   
   width: 100%;
   text-align: center;
@@ -30,6 +34,12 @@ h3 {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(to bottom, #555554, #a7a5a8 10%, #cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
-  filter: drop-shadow(1px 1px .5px rgb(0, 0, 0));
+  // -webkit-text-stroke: 4px transparent;
+  // background-image: linear-gradient(to bottom, #555554, #a7a5a8 10%, #cccbc5 22%, #899090 56%, #696866 78%, #3d3d3d);
+  filter: drop-shadow(1px -1px .8px #ffb564) drop-shadow(-1px -1px .8px #ffb564) drop-shadow(1px 1px .8px #fd5909) drop-shadow(-1px 1px .8px #fd5909);
+
+  font-family: 'Noto Serif', serif;
+  // font-family: 'Mulish', sans-serif;
+  background-image: linear-gradient(to bottom, #360000, #0c0000);
+  // background-image: linear-gradient(to bottom, #ffe895, #fd5909);
 }

@@ -111,7 +111,7 @@ export const colors: { [key: string]: string } = {
   "warrior_protection": "#2a1b09"
 }
 
-export const specID: { [key: string]: number } = {
+export const specIDs: { [key: string]: number } = {
   'death-knight_blood': 250,
   'death-knight_frost': 251,
   'death-knight_unholy': 252,

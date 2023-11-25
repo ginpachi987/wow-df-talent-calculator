@@ -1,6 +1,6 @@
 {
   "name": "wow-df-talent-calculator",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,12 +13,16 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.9.4",
+    "firebase": "^10.6.0",
+    "firebase-admin": "^11.11.0",
     "nuxt": "^3.8.0",
+    "nuxt-vuefire": "^0.4.1",
     "prisma": "^5.5.2",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "vue": "^3.3.7",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vuefire": "^3.1.18"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",

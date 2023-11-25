@@ -11,5 +11,16 @@ export default defineNuxtConfig({
   },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
   css: ['@/assets/style/main.scss', '@/assets/style/talents.scss'],
-  ssr: false
+  ssr: false,
+  vuefire: {
+    auth: true,
+    config: {
+      apiKey: process.env.APIKEY,
+      authDomain: process.env.AUTHDOMAIN,
+      projectId: process.env.PROJECTID,
+      storageBucket: process.env.STORAGEBUCKET,
+      messagingSenderId: process.env.MESSAGINGSENDERID,
+      appId: process.env.APPID
+    }
+  }
 })

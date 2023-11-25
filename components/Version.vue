@@ -15,7 +15,7 @@ watch(language, () => {
     </div>
     <div>Patch 11.0</div>
     <div>
-      <NuxtLink to="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">v3.0.3</NuxtLink>
+      <NuxtLink to="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">v3.0.4</NuxtLink>
     </div>
   </div>
 </template>

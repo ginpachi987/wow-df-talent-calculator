@@ -21,7 +21,7 @@ function line(parent: any, child: any) {
     <div class="w-full flex flex-col justify-start items-center" style="background-color: rgba(15,15,15);">
       <div class="text-xl mb-3 uppercase">{{ tree?.title }}</div>
       <div class="flex md:flex-col gap-4 md:gap-0 items-start md:items-center md:h-[280px]">
-        <img class="w-24 border-2 md:w-36 rounded-full md:border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/${tree.image}.png`" alt="">
+        <img class="w-24 border-2 md:w-36 rounded-full md:border-4 mb-3" :src="`https://projects.yoro.dev/tww-talents/img/hero_trees/${tree.image}.png`" alt="">
         <div class="flex-1 text-xs md:text-sm text-yellow-500">{{ tree?.descr }}</div>
       </div>
       <div class="w-[180px] relative hero-tree grid grid-cols-3 grid-rows-5 items-center justify-items-center">

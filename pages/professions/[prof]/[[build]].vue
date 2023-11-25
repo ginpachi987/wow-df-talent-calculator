@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  Prof
+  {{useRoute().params.prof}}
 </template>
 
 <style scoped lang="scss">

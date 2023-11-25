@@ -1,11 +1,10 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: 'classes'
-})
 </script>
 
 <template>
-  
+  <div class="h-full items-center justify-center">
+    <ClassesHeader :wide="true" />
+  </div>
 </template>
 
 <style scoped lang="scss">

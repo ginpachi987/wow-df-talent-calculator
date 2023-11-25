@@ -1,22 +1,60 @@
 <script setup lang="ts">
-defineProps<{isFull: boolean}>()
+const state = ref<'' | 'classes' | 'professions'>('')
+
+const route = useRoute()
+
+function checkRoute() {
+  if (route.path.match(/classes/) && route.params.spec) {
+    state.value = 'classes'
+    return
+  }
+  if (route.path.match(/professions/) && route.params.prof) {
+    state.value = 'professions'
+    return
+  }
+  state.value = ''
+}
+
+onMounted(() => {
+  checkRoute()
+})
+
+watch(() => route.path, () => {
+  checkRoute()
+})
 </script>
 
 <template>
-  <NuxtLink href="/">
-    <div class="flex items-center justify-center gap-2" :class="!isFull?'w-24':''">
-      <img :class="isFull?'w-36':'w-28'" src="/img/tww-logo.webp" alt="" style="filter: drop-shadow(0px 0px 2px orange);">
-      <div v-if="isFull">
-        <h3 class="text-3xl uppercase text-left">Talent<br/>Calculator</h3>
-      </div>
+  <div class="absolute top-0 left-0 w-full header-bg z-20 p-2">
+    <div class="m-auto max-w-[600px] flex items-center h-24">
+      <NuxtLink href="/">
+        <div class="flex flex-col items-center justify-center gap-2 ">
+          <img class="w-80" src="/img/tww-logo-text.webp" alt="" style="filter: drop-shadow(0px 0px 2px orange);">
+          <div v-if="!state" class="-mt-5">
+
+            <h3 class="text-[28px] uppercase text-left relative">Talent Calculator</h3>
+          </div>
+        </div>
+      </NuxtLink>
+      <ClassesHeader v-if="state == 'classes'" />
+      <ProfessionsHeader v-if="state == 'professions'" />
+      <div class="absolute -bottom-5 left-0 h-10 w-full bg-center bg-repeat-x header-bottom"></div>
     </div>
-  </NuxtLink>
+  </div>
 </template>
 
 <style scoped lang="scss">
-h3 {
-  background-image: repeating-linear-gradient(to bottom, #555554, #a7a5a8 5%, #cccbc5 11%, #899090 28%, #696866 39%, #3d3d3d 50%);
+// h3 {
+//   background-image: repeating-linear-gradient(to bottom, #555554, #a7a5a8 5%, #cccbc5 11%, #899090 28%, #696866 39%, #3d3d3d 50%);
 
-  line-height: 32px;
+//   line-height: 32px;
+// }
+
+.header-bg {
+  background-image: url('/img/header_bg.jpg');
+}
+
+.header-bottom {
+  background-image: url('/img/header_line.png');
 }
 </style>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // import { classes, classImages } from '~/consumables/classes'
+import { currentClass, currentSpec } from '~/composables/currentSelection'
 
-import { currentClass, currentSpec, isFull } from '~/composables/currentSelection'
+const { wide } = defineProps<{ wide?: boolean }>()
 
 watch(() => useRoute().params, (newParams, oldParams) => {
   if (newParams.class) isFull.value = false
@@ -31,14 +32,14 @@ const allowedSpecs = ['balance', 'guardian', 'arcane']
 </script>
 
 <template>
-  <div class="w-full pb-2" :class="isFull ? '' : 'header-bg'">
+  <div class="w-full pb-2">
     <!-- <div v-if="!isFull" class="w-full h-2 mb-2 bg-repeat-x" style="background-image: url(/img/Border_2-1.png);"></div> -->
-    <div class="m-2 flex md:justify-center items-center gap-2" :class="[isFull ? 'flex-col' : '']">
-      <Header :isFull="isFull" />
+    <div class="m-2 flex md:justify-center items-center gap-2" :class="[wide ? 'flex-col' : '']">
+      <!-- <Header :isFull="isFull" /> -->
       <div class="overflow-scroll">
         <div class="max-w-full overflow-auto">
-          <h3 v-if="isFull">Choose a class</h3>
-          <div class="list mb-1" :class="isFull ? 'full' : ''">
+          <h3 v-if="wide">Choose a class</h3>
+          <div class="list mb-1" :class="wide ? 'full' : ''">
             <div class="inline-block" v-for="(specs, cls) in classes">
               <div class="talent-wrapper" :class="[{ 'grayscale': cls != 'druid' }, cls == currentClass ? 'learned' : '']" @click="setClass(cls)">
                 <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${cls}_class`]}.jpg)` }"></div>
@@ -47,8 +48,8 @@ const allowedSpecs = ['balance', 'guardian', 'arcane']
           </div>
         </div>
         <div v-if="currentClass">
-          <h3 v-if="isFull">Choose a specialization</h3>
-          <div class="list mb-1" :class="isFull ? 'full' : ''">
+          <h3 v-if="wide">Choose a specialization</h3>
+          <div class="list mb-1" :class="wide ? 'full' : ''">
             <div v-for="spec in classes[currentClass]" @click="setSpec(spec)" class="talent-wrapper" :class="[{ 'grayscale': spec != 'balance' }, spec == currentSpec ? 'learned' : '']">
               <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${currentClass}_${spec}`]}.jpg)` }"></div>
             </div>
@@ -58,12 +59,12 @@ const allowedSpecs = ['balance', 'guardian', 'arcane']
     </div>
   </div>
 
-  <div v-if="!isFull" class="w-full z-30 h-10 -mt-6 bg-center bg-repeat-x header-bottom"></div>
+  <!-- <div v-if="!isFull" class="w-full z-30 h-10 -mt-6 bg-center bg-repeat-x header-bottom"></div> -->
 
   <div class="hidden">
     <!-- <template v-for="(specs, cls) in classes">
-          <NuxtLink v-for="spec of specs" :to="`/classes/${cls}/${spec}`">{{ cls }} {{ spec }}</NuxtLink>
-        </template> -->
+            <NuxtLink v-for="spec of specs" :to="`/classes/${cls}/${spec}`">{{ cls }} {{ spec }}</NuxtLink>
+          </template> -->
     <NuxtLink to="/classes/druid/balance">Druid Balance</NuxtLink>
   </div>
 </template>

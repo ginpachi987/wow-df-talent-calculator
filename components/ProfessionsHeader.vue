@@ -1,14 +1,29 @@
 <script setup lang="ts">
 // import { professions } from '~/consumables/professions'
-
+const { wide } = defineProps<{ wide?: boolean }>()
 </script>
 
 <template>
-  <NuxtLink to="/"><img src="/img/tww-logo.webp" alt=""></NuxtLink>
-  <div v-for="img, prof in professions">
-    <NuxtLink :to="`/professions/${prof}`"><img :src="`https://icons.wowdb.com/ptr/medium/${img}.jpg`" alt=""></NuxtLink>
+  <div>
+    <h3 v-if="wide">Choose a profession</h3>
+    <div class="list" :class="wide ? 'full' : ''">
+      <NuxtLink v-for="(img, prof) in professions" :to="`/professions/${prof}`">
+        <div @click="" class="talent-wrapper">
+          <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${img}.jpg)` }"></div>
+        </div>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.talent-wrapper {
+  --cell-size: 32px;
+}
+
+.list {
+  display: flex;
+  max-width: 100%;
+  overflow-y: auto;
+}
 </style>

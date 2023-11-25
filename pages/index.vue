@@ -4,20 +4,20 @@
 
 <template>
   <!-- <div class="w-full h-screen flex flex-col items-center justify-center"> -->
-    <div>
-      <div class="frames">
-        <NuxtLink to="/classes" class="frame frame-class">
-          <h3 class="uppercase">Classes</h3>
-        </NuxtLink>
-        <!-- <NuxtLink to="/professions"> -->
-          <div class="frame frame-profession grayscale">
-            <h3 class="uppercase">Professions</h3>
-          </div>
-        <!-- </NuxtLink> -->
-      </div>
-      <!-- <NuxtLink href="/classes">Classes</NuxtLink>
-        <NuxtLink href="/professions">Professions</NuxtLink> -->
+  <div class="flex-1 h-full flex items-center justify-center">
+    <div class="frames">
+      <NuxtLink to="/classes" class="frame frame-class">
+        <h3 class="uppercase">Classes</h3>
+      </NuxtLink>
+      <!-- <NuxtLink to="/professions"> -->
+      <div class="frame frame-profession grayscale">
+        <h3 class="uppercase">Professions</h3>
     </div>
+      <!-- </NuxtLink> -->
+    </div>
+    <!-- <NuxtLink href="/classes">Classes</NuxtLink>
+          <NuxtLink href="/professions">Professions</NuxtLink> -->
+  </div>
   <!-- </div> -->
 </template>
 
@@ -70,9 +70,9 @@
     background-image: url('/img/frame2.webp');
   }
 
-  h3 {
-    filter: drop-shadow(0 0 4px rgb(0, 0, 0))
-  }
+  // h3 {
+  //   filter: drop-shadow(0 0 4px rgb(0, 0, 0))
+  // }
 }
 
 .frame-class {
@@ -93,7 +93,7 @@
 }
 
 
-h3 {
-  filter: drop-shadow(0 0 4px rgb(0, 0, 0))
-}
+// h3 {
+//   filter: drop-shadow(0 0 4px rgb(0, 0, 0))
+// }
 </style>
