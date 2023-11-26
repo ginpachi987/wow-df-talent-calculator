@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: 'classes'
-})
+// definePageMeta({
+//   layout: 'classes'
+// })
 </script>
 
 <template>

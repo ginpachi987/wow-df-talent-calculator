@@ -1,17 +1,18 @@
 <script setup lang="ts">
+const { texts } = storeToRefs(useLanguage())
 // useRouter().push('/classes/druid/balance')
 </script>
 
 <template>
   <!-- <div class="w-full h-screen flex flex-col items-center justify-center"> -->
-  <div class="flex-1 h-full flex items-center justify-center">
+  <div class="flex-1 h-full flex items-center justify-center md:pb-32">
     <div class="frames">
       <NuxtLink to="/classes" class="frame frame-class">
-        <h3 class="uppercase">Classes</h3>
+        <h3 class="uppercase">{{texts["Classes"]}}</h3>
       </NuxtLink>
       <!-- <NuxtLink to="/professions"> -->
       <div class="frame frame-profession grayscale">
-        <h3 class="uppercase">Professions</h3>
+        <h3 class="uppercase">{{texts["Professions"]}}</h3>
     </div>
       <!-- </NuxtLink> -->
     </div>

@@ -7,11 +7,13 @@ const { wide } = defineProps<{ wide?: boolean }>()
   <div>
     <h3 v-if="wide">Choose a profession</h3>
     <div class="list" :class="wide ? 'full' : ''">
-      <NuxtLink v-for="(img, prof) in professions" :to="`/professions/${prof}`">
+      <ClassIcon v-for="(img, prof) in professions" :img="img" :big="wide" />
+
+      <!-- <NuxtLink v-for="(img, prof) in professions" :to="`/professions/${prof}`">
         <div @click="" class="talent-wrapper">
           <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${img}.jpg)` }"></div>
         </div>
-      </NuxtLink>
+      </NuxtLink> -->
     </div>
   </div>
 </template>

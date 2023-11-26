@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="h-full items-center justify-center">
+  <div class="md:pb-32 h-full flex items-center justify-center">
     <ClassesHeader :wide="true" />
   </div>
 </template>

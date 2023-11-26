@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { HeroTreeType } from '~/composables/heroTree'
+
 const { tree } = defineProps<{
-  tree: any
+  tree: HeroTreeType
 }>()
 
 function line(parent: any, child: any) {

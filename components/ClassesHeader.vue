@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { classes, classImages } from '~/consumables/classes'
-import { currentClass, currentSpec } from '~/composables/currentSelection'
+const { currentClass, classChanged, currentSpec } = storeToRefs(useStates())
+const { texts } = storeToRefs(useLanguage())
 
 const { wide } = defineProps<{ wide?: boolean }>()
 
@@ -10,14 +11,25 @@ watch(() => useRoute().params, (newParams, oldParams) => {
 })
 
 function setClass(cls: string | number) {
-  if (allowedClasses.includes(<string>cls))
-    currentClass.value = cls + ''
+  if (!availableClasses.includes(<string>cls)) return
+  currentClass.value = cls + ''
+  classChanged.value = true
 }
 
 function setSpec(spec: string | number) {
-  if (!allowedSpecs.includes(<string>spec)) return
+  const router = useRouter()
+  if (!availableSpecs.includes(<string>spec)) return
+
+  const currentVal = currentSpec.value
   currentSpec.value = spec + ''
-  useRouter().push(`/classes/${currentClass.value}/${spec}`)
+  if (currentVal) {
+    history.pushState({}, '', `/classes/${currentClass.value}/${spec}`)
+
+    useRoute().params.spec = spec + ''
+    // console.log(useRoute().params)
+    return
+  }
+  router.push(`/classes/${currentClass.value}/${spec}`)
 }
 
 onMounted(() => {
@@ -27,32 +39,35 @@ onMounted(() => {
   if (params.class) isFull.value = false
 })
 
-const allowedClasses = ['druid', 'mage']
-const allowedSpecs = ['balance', 'guardian', 'arcane']
+const availableClasses = ['druid']//, 'mage']
+const availableSpecs = ['balance']//, 'guardian', 'arcane']
 </script>
 
 <template>
-  <div class="w-full pb-2">
+  <div class="md:pb-2">
     <!-- <div v-if="!isFull" class="w-full h-2 mb-2 bg-repeat-x" style="background-image: url(/img/Border_2-1.png);"></div> -->
-    <div class="m-2 flex md:justify-center items-center gap-2" :class="[wide ? 'flex-col' : '']">
+    <div class="m-1 md:m-2 flex md:justify-center items-center gap-0 md:gap-2" :class="[wide ? 'flex-col' : '']">
       <!-- <Header :isFull="isFull" /> -->
       <div class="overflow-scroll">
         <div class="max-w-full overflow-auto">
-          <h3 v-if="wide">Choose a class</h3>
-          <div class="list mb-1" :class="wide ? 'full' : ''">
-            <div class="inline-block" v-for="(specs, cls) in classes">
-              <div class="talent-wrapper" :class="[{ 'grayscale': cls != 'druid' }, cls == currentClass ? 'learned' : '']" @click="setClass(cls)">
-                <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${cls}_class`]}.jpg)` }"></div>
-              </div>
-            </div>
+          <h3 v-if="wide" class="text-2xl">{{ texts["Choose a class"] }}</h3>
+          <div class="list " :class="wide ? 'full' : ''">
+            <ClassIcon v-for="(specs, cls) in classes" :img="classImages[`${cls}_class`]" :big="wide" @click="setClass(cls)" :grayscale="!availableClasses.includes(<string>cls)" :learned="currentClass == cls" />
+            <!-- <div class="inline-block" v-for="(specs, cls) in classes">
+                  <div class="talent-wrapper aspect-square" :class="[{ 'grayscale': cls != 'druid' }, cls == currentClass ? 'learned' : '']" @click="setClass(cls)">
+                    <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${cls}_class`]}.jpg)` }"></div>
+                  </div>
+                </div> -->
           </div>
         </div>
         <div v-if="currentClass">
-          <h3 v-if="wide">Choose a specialization</h3>
-          <div class="list mb-1" :class="wide ? 'full' : ''">
-            <div v-for="spec in classes[currentClass]" @click="setSpec(spec)" class="talent-wrapper" :class="[{ 'grayscale': spec != 'balance' }, spec == currentSpec ? 'learned' : '']">
-              <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${currentClass}_${spec}`]}.jpg)` }"></div>
-            </div>
+          <h3 v-if="wide" class="text-2xl">{{ texts["Choose a spec"] }}</h3>
+          <div class="list " :class="wide ? 'full' : ''">
+            <ClassIcon v-for="spec in classes[currentClass]" :img="classImages[`${currentClass}_${spec}`]" :big="wide" @click="setSpec(spec)" :grayscale="!availableSpecs.includes(spec)" :learned="currentSpec == spec" />
+
+            <!-- <div v-for="spec in classes[currentClass]" @click="setSpec(spec)" class="talent-wrapper" :class="[{ 'grayscale': spec != 'balance' }, spec == currentSpec ? 'learned' : '']">
+                  <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${currentClass}_${spec}`]}.jpg)` }"></div>
+                </div> -->
           </div>
         </div>
       </div>
@@ -63,8 +78,8 @@ const allowedSpecs = ['balance', 'guardian', 'arcane']
 
   <div class="hidden">
     <!-- <template v-for="(specs, cls) in classes">
-            <NuxtLink v-for="spec of specs" :to="`/classes/${cls}/${spec}`">{{ cls }} {{ spec }}</NuxtLink>
-          </template> -->
+                <NuxtLink v-for="spec of specs" :to="`/classes/${cls}/${spec}`">{{ cls }} {{ spec }}</NuxtLink>
+              </template> -->
     <NuxtLink to="/classes/druid/balance">Druid Balance</NuxtLink>
   </div>
 </template>

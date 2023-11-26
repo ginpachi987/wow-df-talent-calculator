@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const state = ref<'' | 'classes' | 'professions'>('')
+const { texts } = storeToRefs(useLanguage())
+const { setLanguage } = useLanguage()
 
 const route = useRoute()
 
@@ -17,6 +19,7 @@ function checkRoute() {
 
 onMounted(() => {
   checkRoute()
+  setLanguage()
 })
 
 watch(() => route.path, () => {
@@ -25,14 +28,13 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <div class="absolute top-0 left-0 w-full header-bg z-20 p-2">
-    <div class="m-auto max-w-[600px] flex items-center h-24">
+  <div class="relative md:absolute top-0 left-0 w-full header-bg z-20 p-1 md:p-2">
+    <div class="m-auto flex flex-col md:flex-row md:gap-2 items-center justify-center md:h-20">
       <NuxtLink href="/">
-        <div class="flex flex-col items-center justify-center gap-2 ">
-          <img class="w-80" src="/img/tww-logo-text.webp" alt="" style="filter: drop-shadow(0px 0px 2px orange);">
-          <div v-if="!state" class="-mt-5">
-
-            <h3 class="text-[28px] uppercase text-left relative">Talent Calculator</h3>
+        <div class="flex flex-col items-center justify-center ">
+          <img class="w-56 md:w-72" src="/img/tww-logo-text.webp" alt="" style="filter: drop-shadow(0px 0px 2px orange);">
+          <div class="-mt-3">
+            <h3 class="text-[18px] md:text-[22px] uppercase text-left relative">{{ texts["Talent Calculator"] }}</h3>
           </div>
         </div>
       </NuxtLink>

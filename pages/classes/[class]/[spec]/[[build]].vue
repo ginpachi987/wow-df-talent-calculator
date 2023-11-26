@@ -1,23 +1,29 @@
 <script setup lang="ts">
-import { currentClass } from '@/composables/currentSelection'
+import type { HeroTreeType } from '~/composables/heroTree'
 
-const { data: trees } = await useFetch<any[]>('https://projects.yoro.dev/tww-talents/api/', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ method: 'getHeroTalents', body: { class: useRoute().params.class } }),
-  watch: [() => useRoute().params.class]
-})
+const { currentClass, classChanged, currentSpec } = storeToRefs(useStates())
+const { language } = storeToRefs(useLanguage())
 
-const specid = computed(() => {
-  return specIDs[`${useRoute().params.class}_${useRoute().params.spec}`]
-})
+const trees = ref<HeroTreeType[]>()
+
+const specid = ref<number>(0)
 const selectedTrees = computed(() => {
   // return trees.value
   if (!trees.value) return []
   return trees.value.filter(t => t.specs.includes(specid.value))
 })
+
+async function getHeroTrees() {
+  const { data: newTrees } = await useFetch<HeroTreeType[]>('https://projects.yoro.dev/tww-talents/api/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ method: 'getHeroTalents', body: { class: currentClass.value, lang: language.value } })
+  })
+
+  trees.value = newTrees.value || []
+}
 
 // const req = {
 //   lang: 'en',
@@ -50,19 +56,29 @@ const selectedTrees = computed(() => {
 // })
 
 // console.log(classTree.value, specTree.value)
-watch(() => useRoute().params, () => {
-  console.log(useRoute().params.class)
+
+watch(currentSpec, () => {
+  if (classChanged.value) getHeroTrees()
+  classChanged.value = false
+  specid.value = specIDs[`${currentClass.value}_${currentSpec.value}`]
+  console.log(currentSpec.value)
   // refresh()
 })
 
+watch(language, () => {
+  getHeroTrees()
+})
+
 onMounted(() => {
-  console.log('cum')
+  currentClass.value = <string>useRoute().params.class
+  specid.value = specIDs[`${currentClass.value}_${currentSpec.value}`]
+  getHeroTrees()
 })
 </script>
 
 <template>
   <!-- <ClassTree :tree="classTree.tree" />
-                    <ClassTree :tree="specTree.tree"/> -->
+                          <ClassTree :tree="specTree.tree"/> -->
   <div class="flex-1 overscroll-none">
     <div class="flex-1 flex flex-col md:flex-row gap-3 md:gap-4 items-start justify-center">
       <HeroTree v-for="tree of selectedTrees" :tree="tree" :key="'cum'" />
