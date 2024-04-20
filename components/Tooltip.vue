@@ -18,10 +18,12 @@ const tooltipStyle = computed(() => {
 <template>
   <div v-if="tooltipShow" class="absolute w-72 bg-black text-white flex flex-col tooltip z-20 bottom-2" :style="tooltipStyle">
     <div class="mb-2 font-bold">{{ tooltipData.title }}</div>
-    <div class="tooltip-text">{{ tooltipData.descr }}</div>
-    <div v-if="tooltipData.title2" class="h-px w-full bg-white my-3"></div>
-    <div class="mb-2 font-bold">{{ tooltipData.title2 }}</div>
-    <div class="tooltip-text">{{ tooltipData.descr2 }}</div>
+    <div class="tooltip-text" v-html="tooltipData.descr?.replaceAll('\n','<br>')"></div>
+    <template v-if="tooltipData.title2">
+      <div class="h-px w-full bg-white my-3"></div>
+      <div class="mb-2 font-bold">{{ tooltipData.title2 }}</div>
+      <div class="tooltip-text" v-html="tooltipData.descr2.replaceAll('\n','<br>')"></div>
+    </template>
   </div>
 </template>
 

@@ -61,7 +61,6 @@ watch(currentSpec, () => {
   if (classChanged.value) getHeroTrees()
   classChanged.value = false
   specid.value = specIDs[`${currentClass.value}_${currentSpec.value}`]
-  console.log(currentSpec.value)
   // refresh()
 })
 

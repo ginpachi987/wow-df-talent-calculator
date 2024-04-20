@@ -11,6 +11,7 @@
     </div>
   </div>
   <Tooltip />
+  <Controlls />
 </template>
 
 <style scoped lang="scss">

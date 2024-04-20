@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { classes, classImages } from '~/consumables/classes'
+import { classes, classImages } from '~/composables/classes'
 const { currentClass, classChanged, currentSpec } = storeToRefs(useStates())
 const { texts } = storeToRefs(useLanguage())
 
@@ -11,25 +11,25 @@ watch(() => useRoute().params, (newParams, oldParams) => {
 })
 
 function setClass(cls: string | number) {
-  if (!availableClasses.includes(<string>cls)) return
+  if (!classes[cls]) return
   currentClass.value = cls + ''
   classChanged.value = true
 }
 
 function setSpec(spec: string | number) {
   const router = useRouter()
-  if (!availableSpecs.includes(<string>spec)) return
+  if (!classes[currentClass.value].includes(<string>spec)) return
 
   const currentVal = currentSpec.value
   currentSpec.value = spec + ''
   if (currentVal) {
-    history.pushState({}, '', `/classes/${currentClass.value}/${spec}`)
+    history.replaceState({}, '', `/${useRuntimeConfig().public.ROOT}/classes/${currentClass.value}/${spec}/`)
 
     useRoute().params.spec = spec + ''
     // console.log(useRoute().params)
     return
   }
-  router.push(`/classes/${currentClass.value}/${spec}`)
+  router.push(`/classes/${currentClass.value}/${spec}/`)
 }
 
 onMounted(() => {
@@ -37,10 +37,11 @@ onMounted(() => {
   currentClass.value = params.class as string
   currentSpec.value = params.spec as string
   if (params.class) isFull.value = false
+
+  useClasses().getClasses()
 })
 
-const availableClasses = ['druid']//, 'mage']
-const availableSpecs = ['balance']//, 'guardian', 'arcane']
+// const { classes: classes } = storeToRefs(useClasses())
 </script>
 
 <template>
@@ -52,7 +53,7 @@ const availableSpecs = ['balance']//, 'guardian', 'arcane']
         <div class="max-w-full overflow-auto">
           <h3 v-if="wide" class="text-2xl">{{ texts["Choose a class"] }}</h3>
           <div class="list " :class="wide ? 'full' : ''">
-            <ClassIcon v-for="(specs, cls) in classes" :img="classImages[`${cls}_class`]" :big="wide" @click="setClass(cls)" :grayscale="!availableClasses.includes(<string>cls)" :learned="currentClass == cls" />
+            <ClassIcon v-for="(specs, cls) in classes" :img="classImages[`${cls}_class`]" :big="wide" @click="setClass(cls)" :grayscale="!classes[<string>cls]" :learned="currentClass == cls" />
             <!-- <div class="inline-block" v-for="(specs, cls) in classes">
                   <div class="talent-wrapper aspect-square" :class="[{ 'grayscale': cls != 'druid' }, cls == currentClass ? 'learned' : '']" @click="setClass(cls)">
                     <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${cls}_class`]}.jpg)` }"></div>
@@ -63,7 +64,7 @@ const availableSpecs = ['balance']//, 'guardian', 'arcane']
         <div v-if="currentClass">
           <h3 v-if="wide" class="text-2xl">{{ texts["Choose a spec"] }}</h3>
           <div class="list " :class="wide ? 'full' : ''">
-            <ClassIcon v-for="spec in classes[currentClass]" :img="classImages[`${currentClass}_${spec}`]" :big="wide" @click="setSpec(spec)" :grayscale="!availableSpecs.includes(spec)" :learned="currentSpec == spec" />
+            <ClassIcon v-for="spec in classes[currentClass]" :img="classImages[`${currentClass}_${spec}`]" :big="wide" @click="setSpec(spec)" :grayscale="!classes[currentClass].includes(spec)" :learned="currentSpec == spec" />
 
             <!-- <div v-for="spec in classes[currentClass]" @click="setSpec(spec)" class="talent-wrapper" :class="[{ 'grayscale': spec != 'balance' }, spec == currentSpec ? 'learned' : '']">
                   <div class="talent" :style="{ backgroundImage: `url(https://icons.wowdb.com/ptr/medium/${classImages[`${currentClass}_${spec}`]}.jpg)` }"></div>

@@ -21,13 +21,14 @@ onMounted(() => {
     </div>
     <div>{{texts["Patch"]}} 11.0</div>
     <div>
-      <NuxtLink to="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">v3.0.5</NuxtLink>
+      <NuxtLink to="https://github.com/ginpachi987/wow-df-talent-calculator" target="_blank">v3.1.0</NuxtLink>
     </div>
     <div class="flex gap-2 items-center justify-end">
-      <NuxtLink to="mailto:ginpachi987@gmail.com" target="_blank" title="e-mail"><img class="w-5" src="/img/social/envelope-solid.svg" /></NuxtLink>
+      <NuxtLink to="https://boosty.to/ginpachi987" target="_blank" title="Telegram"><img class="w-6" src="/img/social/boosty.svg" /></NuxtLink>
       <NuxtLink to="https://t.me/ginpachi987" target="_blank" title="Telegram"><img class="w-5" src="/img/social/telegram.svg" /></NuxtLink>
       <NuxtLink to="https://twitter.com/ginpachi987" target="_blank" title="X (Twitter)"><img class="w-5" src="/img/social/x-twitter.svg" /></NuxtLink>
       <NuxtLink to="https://discordapp.com/users/ginpachi987" target="_blank" title="Discord"><img class="w-5" src="/img/social/discord.svg" /></NuxtLink>
+      <NuxtLink to="mailto:ginpachi987@gmail.com" target="_blank" title="e-mail"><img class="w-5" src="/img/social/envelope-solid.svg" /></NuxtLink>
     </div>
   </div>
 </template>
