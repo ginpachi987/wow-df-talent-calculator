@@ -121,6 +121,7 @@ export const specID: { [key: string]: number } = {
   'druid_feral': 103,
   'druid_guardian': 104,
   'druid_restoration': 105,
+  'evoker_augmentation': 1473,
   'evoker_devastation': 1467,
   'evoker_preservation': 1468,
   'hunter_beast-mastery': 253,

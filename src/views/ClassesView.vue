@@ -9,6 +9,7 @@ import { specID, colors } from '@/data/class-list'
 import { useVersion } from '@/stores/version'
 import { useLanguage } from '@/stores/lang'
 import router from '@/router'
+import HeroTree from '@/components/HeroTree.vue'
 
 // import { lm, gE } from '@/data/builds'
 
@@ -170,6 +171,7 @@ onMounted(() => {
     backgroundColor: colors[`${route.params.class}_${route.params.spec}`]
   }">
     <Tree v-for="tree of trees" :tree="tree" />
+    <!-- <HeroTree /> -->
   </div>
 </template>
 
